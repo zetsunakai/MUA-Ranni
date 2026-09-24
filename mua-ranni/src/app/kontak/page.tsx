@@ -37,7 +37,7 @@ export default function KontakPage() {
             <ChatIcon className="h-6 w-6" />
           </span>
           <span>
-            <span className="block text-sm text-white/80">WhatsApp</span>
+            <span className="block text-sm text-white/90">WhatsApp</span>
             <span className="block text-lg font-semibold">{site.whatsappDisplay}</span>
           </span>
         </a>
@@ -52,7 +52,7 @@ export default function KontakPage() {
             <InstagramIcon className="h-6 w-6" />
           </span>
           <span>
-            <span className="block text-sm text-foreground/60">Instagram</span>
+            <span className="block text-sm text-foreground/70">Instagram</span>
             <span className="block text-lg font-semibold">{site.instagramHandle}</span>
           </span>
         </a>
@@ -62,7 +62,7 @@ export default function KontakPage() {
             <PinIcon className="h-6 w-6" />
           </span>
           <span>
-            <span className="block text-sm text-foreground/60">Area layanan</span>
+            <span className="block text-sm text-foreground/70">Area layanan</span>
             <span className="block font-semibold">{site.serviceAreas.join(", ")}</span>
           </span>
         </div>
@@ -72,7 +72,7 @@ export default function KontakPage() {
             <ClockIcon className="h-6 w-6" />
           </span>
           <span>
-            <span className="block text-sm text-foreground/60">Jam respon chat</span>
+            <span className="block text-sm text-foreground/70">Jam respon chat</span>
             <span className="block font-semibold">{site.responseHours}</span>
           </span>
         </div>

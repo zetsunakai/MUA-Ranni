@@ -50,7 +50,7 @@ export default function TentangPage() {
               <div key={h.label} className="rounded-xl border border-line bg-surface px-3 py-4 text-center">
                 <dt className="sr-only">{h.label}</dt>
                 <dd className="font-heading text-xl font-semibold sm:text-2xl">{h.value}</dd>
-                <dd className="mt-1 text-xs text-foreground/60">{h.label}</dd>
+                <dd className="mt-1 text-xs text-foreground/70">{h.label}</dd>
               </div>
             ))}
           </dl>
@@ -78,7 +78,7 @@ export default function TentangPage() {
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-sm text-foreground/60">{bookingInfo.transport}</p>
+        <p className="mt-3 text-sm text-foreground/70">{bookingInfo.transport}</p>
       </section>
 
       <div className="mt-16">

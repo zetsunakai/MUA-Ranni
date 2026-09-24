@@ -10,7 +10,7 @@
   --color-surface: #ffffff; /* kartu paket, lightbox */
   --color-foreground: #2b2320; /* cokelat tua: judul dan isi */
   --color-accent: #b76e79; /* rose gold: label kategori aktif, dekorasi */
-  --color-accent-strong: #9a5461; /* rose gold gelap: tombol dan link berteks (kontras AA) */
+  --color-accent-strong: #8a4a56; /* rose gold gelap: tombol, link, badge berteks (kontras AA, juga di atas blush) */
   --color-accent-soft: #f1ddd8; /* blush: latar section, badge */
   --color-line: #e8dfd9; /* border kartu, pemisah */
 }

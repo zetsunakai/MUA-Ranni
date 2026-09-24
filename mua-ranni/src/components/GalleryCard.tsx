@@ -29,7 +29,7 @@ export default function GalleryCard({ item, onOpen, eager = false }: Props) {
         )}
       </div>
       <p className="mt-2 text-sm font-medium leading-snug group-hover:text-accent-strong">{item.title}</p>
-      <p className="text-xs text-foreground/60">{categoryLabels[item.category]}</p>
+      <p className="text-xs text-foreground/70">{categoryLabels[item.category]}</p>
     </button>
   );
 }

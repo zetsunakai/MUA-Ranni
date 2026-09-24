@@ -103,7 +103,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
               <h2 className="font-heading text-2xl font-semibold leading-tight">{item.title}</h2>
               {item.description && <p className="text-sm text-foreground/75">{item.description}</p>}
               {item.beforeImageUrl && (
-                <p className="text-xs text-foreground/60">Geser garis di foto untuk melihat sebelum dan sesudah.</p>
+                <p className="text-xs text-foreground/70">Geser garis di foto untuk melihat sebelum dan sesudah.</p>
               )}
               <a
                 href={whatsappUrl(
@@ -115,7 +115,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
               >
                 Tanya look ini via WhatsApp
               </a>
-              <p className="text-center text-xs text-foreground/50">
+              <p className="text-center text-xs text-foreground/70">
                 {index! + 1} / {items.length}
               </p>
             </div>

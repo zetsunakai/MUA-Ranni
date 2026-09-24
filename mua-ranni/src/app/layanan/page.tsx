@@ -39,7 +39,7 @@ export default function LayananPage() {
             <li key={addOn.id} className="flex items-center justify-between gap-4 rounded-xl border border-line bg-surface px-5 py-4">
               <div>
                 <p className="font-medium">{addOn.name}</p>
-                {addOn.note && <p className="text-sm text-foreground/60">{addOn.note}</p>}
+                {addOn.note && <p className="text-sm text-foreground/70">{addOn.note}</p>}
               </div>
               <p className="font-semibold tabular-nums">
                 {formatRupiah(addOn.priceFrom)}

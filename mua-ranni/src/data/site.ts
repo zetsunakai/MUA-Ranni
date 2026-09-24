@@ -2,6 +2,7 @@ import type { Category, NavLink } from "@/types";
 
 // Nama, WhatsApp, dan Instagram dari Price List 2026.
 export const site = {
+  url: "https://mua-ranni.vercel.app", // ganti kalau nanti pakai domain sendiri
   name: "Ranni Tary Makeup",
   tagline: "Makeup artist wisuda, pesta, dan acara pernikahan",
   whatsappNumber: "6283136359324",

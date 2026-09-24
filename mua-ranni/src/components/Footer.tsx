@@ -56,7 +56,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-line">
-        <p className="mx-auto max-w-6xl px-4 pt-4 pb-24 text-xs text-foreground/60 sm:px-6 sm:pb-4">
+        <p className="mx-auto max-w-6xl px-4 pt-4 pb-24 text-xs text-foreground/70 sm:px-6 sm:pb-4">
           © {new Date().getFullYear()} {site.name}. Semua foto digunakan dengan izin klien.
         </p>
       </div>

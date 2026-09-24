@@ -1,6 +1,10 @@
 import type { Testimonial } from "@/types";
 
-// DUMMY: ganti dengan testimoni asli (dengan izin klien).
+// DUMMY: ganti dengan testimoni asli (dengan izin klien), lalu ubah flag di bawah jadi false.
+// Selama masih true, section testimoni tidak tampil di website production (lihat lib/testimonials.ts)
+// supaya pengunjung tidak membaca ulasan karangan sebagai ulasan asli.
+export const testimonialsArePlaceholder = true;
+
 export const testimonials: Testimonial[] = [
   {
     id: "t1",

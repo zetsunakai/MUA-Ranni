@@ -40,7 +40,7 @@ export default function CategoryFilter({ value, onChange, counts }: Props) {
             }`}
           >
             {option.label}
-            <span aria-hidden="true" className={active ? "ml-1.5 text-white/80" : "ml-1.5 text-foreground/50"}>
+            <span aria-hidden="true" className={active ? "ml-1.5 text-white/90" : "ml-1.5 text-foreground/70"}>
               {counts[option.value]}
             </span>
           </button>
