@@ -1,10 +1,12 @@
 import type { Category, NavLink } from "@/types";
 
-// DUMMY: ganti dengan data asli MUA sebelum launch.
+// Nama, WhatsApp, dan Instagram dari Price List 2026.
 export const site = {
-  name: "Ranni Makeup",
-  tagline: "Makeup artist bridal, wisuda, dan photoshoot",
+  name: "Ranni Tary Makeup",
+  tagline: "Makeup artist wisuda, pesta, dan acara pernikahan",
   whatsappNumber: "6283136359324",
+  whatsappDisplay: "0831-3635-9324",
+  instagramHandle: "@rannitary_makeup",
   instagramUrl: "https://instagram.com/rannitary_makeup",
   tiktokUrl: "https://tiktok.com/@rannitary_makeup",
   serviceAreas: ["Depok", "Kota Bogor", "Bogor"],

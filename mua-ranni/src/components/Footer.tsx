@@ -6,8 +6,8 @@ import { whatsappUrl } from "@/lib/whatsapp";
 
 export default function Footer() {
   const socials = [
-    { href: whatsappUrl(), label: "WhatsApp" },
-    { href: site.instagramUrl, label: "Instagram" },
+    { href: whatsappUrl(), label: `WhatsApp ${site.whatsappDisplay}` },
+    { href: site.instagramUrl, label: `Instagram ${site.instagramHandle}` },
     { href: site.tiktokUrl, label: "TikTok" },
   ];
 
@@ -56,7 +56,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-line">
-        <p className="mx-auto max-w-6xl px-4 py-4 text-xs text-foreground/60 sm:px-6">
+        <p className="mx-auto max-w-6xl px-4 pt-4 pb-24 text-xs text-foreground/60 sm:px-6 sm:pb-4">
           © {new Date().getFullYear()} {site.name}. Semua foto digunakan dengan izin klien.
         </p>
       </div>

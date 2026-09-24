@@ -14,14 +14,36 @@ export type PortfolioItem = {
   createdAt: string; // ISO date, contoh "2026-08-17"
 };
 
-export type Package = {
+// Harga mengikuti Price List 2026: per orang, dikelompokkan per grup.
+// Setiap grup punya satu set bonus (includes) yang berlaku untuk semua item di dalamnya.
+export type ServiceItem = {
   id: string;
   name: string;
-  price: number; // rupiah
+  price: number; // rupiah per orang
+};
+
+export type ServiceGroup = {
+  id: string;
+  name: string;
+  tier: "reguler" | "premium";
   includes: string[];
-  durationHours: number;
-  notes?: string;
+  items: ServiceItem[];
   order: number;
+};
+
+export type AddOn = {
+  id: string;
+  name: string;
+  priceFrom: number;
+  priceTo?: number; // diisi kalau harganya rentang
+  note?: string;
+};
+
+export type Brand = {
+  name: string;
+  logo: string;
+  width: number;
+  height: number;
 };
 
 export type Testimonial = {
