@@ -25,3 +25,22 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
 }
+
+/* Outline fokus yang jelas untuk navigasi keyboard. */
+:focus-visible {
+  outline: 2px solid var(--color-accent-strong);
+  outline-offset: 2px;
+}
+
+/* Kunci scroll halaman saat lightbox (<dialog>) terbuka. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Sembunyikan scrollbar untuk baris chip yang bisa di-scroll horizontal. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -4,11 +4,11 @@ import type { Category, NavLink } from "@/types";
 export const site = {
   name: "Ranni Makeup",
   tagline: "Makeup artist bridal, wisuda, dan photoshoot",
-  whatsappNumber: "6281234567890", // format internasional tanpa "+" atau spasi
-  instagramUrl: "https://instagram.com/ranni.makeup",
-  tiktokUrl: "https://tiktok.com/@ranni.makeup",
-  serviceAreas: ["Depok", "Jakarta Selatan", "Bogor"],
-  responseHours: "Setiap hari, 08.00–21.00 WIB",
+  whatsappNumber: "6283136359324",
+  instagramUrl: "https://instagram.com/rannitary_makeup",
+  tiktokUrl: "https://tiktok.com/@rannitary_makeup",
+  serviceAreas: ["Depok", "Kota Bogor", "Bogor"],
+  responseHours: "Setiap hari, 08.00–22.00 WIB",
 };
 
 export const navLinks: NavLink[] = [
@@ -24,3 +24,6 @@ export const categoryLabels: Record<Category, string> = {
   engagement: "Engagement",
   photoshoot: "Photoshoot",
 };
+
+// Urutan chip filter di halaman Portofolio.
+export const categories = Object.keys(categoryLabels) as Category[];
