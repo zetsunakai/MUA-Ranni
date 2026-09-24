@@ -6,7 +6,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 
 export default function Footer() {
   const socials = [
-    { href: whatsappUrl(), label: `WhatsApp ${site.whatsappDisplay}` },
+    { href: whatsappUrl("footer"), label: `WhatsApp ${site.whatsappDisplay}` },
     { href: site.instagramUrl, label: `Instagram ${site.instagramHandle}` },
     { href: site.tiktokUrl, label: "TikTok" },
   ];

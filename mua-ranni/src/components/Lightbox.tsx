@@ -107,6 +107,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
               )}
               <a
                 href={whatsappUrl(
+                  "lightbox",
                   `Halo Kak, saya suka hasil makeup "${item.title}" di website. Boleh tanya paket ${categoryLabels[item.category]} dan jadwal kosongnya?`,
                 )}
                 target="_blank"

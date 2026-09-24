@@ -28,7 +28,7 @@ export default function KontakPage() {
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         <a
-          href={whatsappUrl()}
+          href={whatsappUrl("kontak")}
           target="_blank"
           rel="noopener noreferrer"
           className="group flex items-center gap-4 rounded-xl bg-accent-strong p-5 text-white transition-colors hover:bg-foreground sm:p-6"

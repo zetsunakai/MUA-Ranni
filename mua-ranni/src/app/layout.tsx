@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import SiteAnalytics from "@/components/SiteAnalytics";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
         <FloatingWhatsAppButton />
+        <SiteAnalytics />
       </body>
     </html>
   );

@@ -39,6 +39,7 @@ export default function ServiceGroupCard({ group }: { group: ServiceGroup }) {
           <li key={item.id}>
             <a
               href={whatsappUrl(
+                "layanan",
                 `Halo Kak, saya mau booking makeup ${group.name} - ${item.name} (${formatRupiah(item.price)}) untuk tanggal ... di ...`,
               )}
               target="_blank"

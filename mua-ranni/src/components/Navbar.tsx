@@ -48,7 +48,7 @@ export default function Navbar() {
             ))}
           </ul>
           <a
-            href={whatsappUrl()}
+            href={whatsappUrl("navbar")}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full bg-accent-strong px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-foreground"
@@ -93,7 +93,7 @@ export default function Navbar() {
           </ul>
           <div className="px-4 pb-4 pt-2">
             <a
-              href={whatsappUrl()}
+              href={whatsappUrl("navbar")}
               target="_blank"
               rel="noopener noreferrer"
               className="block rounded-full bg-accent-strong py-3 text-center font-medium text-white"

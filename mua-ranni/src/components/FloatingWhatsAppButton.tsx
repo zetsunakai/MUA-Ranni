@@ -5,7 +5,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 export default function FloatingWhatsAppButton() {
   return (
     <a
-      href={whatsappUrl()}
+      href={whatsappUrl("floating")}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat WhatsApp"

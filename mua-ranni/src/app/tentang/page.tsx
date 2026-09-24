@@ -83,6 +83,7 @@ export default function TentangPage() {
 
       <div className="mt-16">
         <WhatsAppCta
+          source="tentang"
           title="Yuk, cek jadwal kosong"
           description="Kirim tanggal, lokasi, dan jenis acaramu lewat WhatsApp."
         />

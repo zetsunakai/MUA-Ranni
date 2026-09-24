@@ -82,6 +82,7 @@ export default function LayananPage() {
 
       <div className="mt-14">
         <WhatsAppCta
+          source="layanan-cta"
           title="Bingung pilih yang mana?"
           description="Ceritakan acaramu, tanggal, dan lokasinya. Nanti dibantu pilihkan layanan yang paling pas."
           message="Halo Kak, saya mau konsultasi pilihan makeup untuk acara saya."

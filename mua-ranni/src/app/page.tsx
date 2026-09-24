@@ -39,7 +39,7 @@ export default function Home() {
           </p>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <a
-              href={whatsappUrl()}
+              href={whatsappUrl("hero")}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 rounded-full bg-accent-strong px-6 py-3 font-medium text-white transition-colors hover:bg-foreground"
@@ -150,6 +150,7 @@ export default function Home() {
 
       <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-14 sm:px-6">
         <WhatsAppCta
+          source="home-cta"
           title="Siap tampil flawless?"
           description="Kirim tanggal, lokasi, dan jenis acaramu. Jadwal dicek dan dibalas secepatnya."
         />
