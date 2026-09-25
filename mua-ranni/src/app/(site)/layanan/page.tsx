@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceGroupCard from "@/components/ServiceGroupCard";
 import WhatsAppCta from "@/components/WhatsAppCta";
-import { addOns, bookingInfo, serviceGroups, terms } from "@/data/services";
+import { bookingInfo, terms } from "@/data/services";
 import { formatRupiah } from "@/lib/format";
+import { getAddOns, getServiceGroups, lowestPrice } from "@/lib/prices";
 
 export const metadata: Metadata = {
   title: "Layanan & Harga",
@@ -11,9 +12,10 @@ export const metadata: Metadata = {
     "Price list 2026 makeup wisuda, pagar ayu, pesta, lamaran, siraman, pengajian, dan akad. Harga per orang, termasuk bulu mata dan hijab do.",
 };
 
-export default function LayananPage() {
-  const groups = [...serviceGroups].sort((a, b) => a.order - b.order);
-  const lowestPrice = Math.min(...groups.flatMap((g) => g.items.map((i) => i.price)));
+// Harga dibaca dari database saat build, lalu halaman disimpan sebagai HTML statis.
+// Setelah admin menyimpan harga baru, revalidatePath("/layanan") membuat ulang halaman ini.
+export default async function LayananPage() {
+  const [groups, addOns] = await Promise.all([getServiceGroups(), getAddOns()]);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
@@ -21,7 +23,7 @@ export default function LayananPage() {
         as="h1"
         eyebrow="Price list 2026"
         title="Layanan & Harga"
-        description={`Harga per orang, mulai ${formatRupiah(lowestPrice)}. Ketuk salah satu layanan untuk langsung booking lewat WhatsApp.`}
+        description={`Harga per orang, mulai ${formatRupiah(lowestPrice(groups))}. Ketuk salah satu layanan untuk langsung booking lewat WhatsApp.`}
       />
 
       <div className="mt-8 grid gap-5 md:grid-cols-2">

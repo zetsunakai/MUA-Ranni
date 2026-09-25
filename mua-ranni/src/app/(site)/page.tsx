@@ -7,16 +7,17 @@ import WhatsAppCta from "@/components/WhatsAppCta";
 import { ArrowRightIcon, CheckIcon, ChatIcon } from "@/components/icons";
 import { about } from "@/data/about";
 import { portfolioItems } from "@/data/portfolio";
-import { serviceGroups } from "@/data/services";
 import { site } from "@/data/site";
 import { formatRupiah } from "@/lib/format";
+import { getServiceGroups, lowestPrice } from "@/lib/prices";
 import { getPublicTestimonials } from "@/lib/testimonials";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 // Grup yang diringkas di Home. Daftar lengkap ada di /layanan.
 const HIGHLIGHT_GROUPS = ["reguler-dewasa", "premium-dewasa", "premium-pernikahan"];
 
-export default function Home() {
+export default async function Home() {
+  const serviceGroups = await getServiceGroups();
   const featured = portfolioItems.filter((item) => item.featured).slice(0, 6);
   const highlightGroups = serviceGroups.filter((g) => HIGHLIGHT_GROUPS.includes(g.id));
   const testimonials = getPublicTestimonials().slice(0, 3);
@@ -34,7 +35,7 @@ export default function Home() {
           </h1>
           <p className="max-w-lg text-foreground/75">
             Makeup artist panggilan ke lokasimu. Harga jelas per orang mulai{" "}
-            {formatRupiah(Math.min(...serviceGroups.flatMap((g) => g.items.map((i) => i.price))))}, sudah termasuk
+            {formatRupiah(lowestPrice(serviceGroups))}, sudah termasuk
             bulu mata dan hijab do.
           </p>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">

@@ -26,10 +26,14 @@ body {
   color: var(--color-foreground);
 }
 
-/* Outline fokus yang jelas untuk navigasi keyboard. */
-:focus-visible {
-  outline: 2px solid var(--color-accent-strong);
-  outline-offset: 2px;
+/* Outline fokus yang jelas untuk navigasi keyboard.
+   Ditaruh di @layer base supaya class utility (mis. outline-none pada input
+   yang punya penanda fokus sendiri) bisa menimpanya. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-accent-strong);
+    outline-offset: 2px;
+  }
 }
 
 /* Kunci scroll halaman saat lightbox (<dialog>) terbuka. */

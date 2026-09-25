@@ -5,22 +5,24 @@ import SectionHeading from "@/components/SectionHeading";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import { PinIcon } from "@/components/icons";
 import { about } from "@/data/about";
-import { bookingInfo, brands, serviceGroups } from "@/data/services";
+import { bookingInfo, brands } from "@/data/services";
 import { site } from "@/data/site";
 import { formatRupiah } from "@/lib/format";
+import { getServiceGroups, lowestPrice } from "@/lib/prices";
 
 export const metadata: Metadata = {
   title: "Tentang",
   description: `Kenalan dengan ${site.name}: makeup artist wisuda, pesta, dan acara pernikahan di ${site.serviceAreas.join(", ")}.`,
 };
 
-export default function TentangPage() {
+export default async function TentangPage() {
+  const serviceGroups = await getServiceGroups();
   // Sorotan dihitung dari data asli, bukan angka karangan.
   const allItems = serviceGroups.flatMap((g) => g.items);
   const highlights = [
     { value: String(allItems.length), label: "jenis layanan" },
     { value: String(brands.length), label: "brand produk" },
-    { value: formatRupiah(Math.min(...allItems.map((i) => i.price))), label: "harga mulai" },
+    { value: formatRupiah(lowestPrice(serviceGroups)), label: "harga mulai" },
   ];
 
   return (
