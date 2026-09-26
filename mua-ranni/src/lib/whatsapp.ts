@@ -14,6 +14,7 @@ export const WHATSAPP_SOURCES = [
   "layanan",
   "layanan-cta",
   "lightbox",
+  "jadwal",
   "tentang",
   "kontak",
   "footer",

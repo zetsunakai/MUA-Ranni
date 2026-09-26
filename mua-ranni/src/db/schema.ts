@@ -1,4 +1,4 @@
-import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, date, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 // Tabel harga, mengikuti tipe ServiceGroup / ServiceItem / AddOn di src/types.
 // Padanan di Odoo: setiap pgTable = satu models.Model, setiap kolom = satu fields.*.
@@ -78,4 +78,15 @@ export const testimonials = pgTable("testimonials", {
   status: text("status", { enum: ["pending", "approved", "rejected"] }).notNull().default("pending"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   approvedAt: timestamp("approved_at", { withTimezone: true }),
+}).enableRLS();
+
+// Kalender ketersediaan. Tanggal yang TIDAK ada di tabel ini = tersedia.
+// "limited" = masih bisa tapi slot terbatas, "full" = penuh.
+// note = catatan pribadi admin (nama klien, lokasi); tidak pernah dikirim ke halaman publik.
+// mode "string": tanggal disimpan/dibaca sebagai "YYYY-MM-DD" apa adanya, tanpa konversi zona waktu.
+export const scheduleDays = pgTable("schedule_days", {
+  date: date("date", { mode: "string" }).primaryKey(),
+  status: text("status", { enum: ["limited", "full"] }).notNull(),
+  note: text("note"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();

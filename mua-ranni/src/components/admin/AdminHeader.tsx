@@ -3,6 +3,7 @@ import { logout } from "@/app/admin/actions";
 import { site } from "@/data/site";
 
 const tabs = [
+  { href: "/admin/jadwal", label: "Jadwal" },
   { href: "/admin/harga", label: "Harga" },
   { href: "/admin/portofolio", label: "Portofolio" },
   { href: "/admin/testimoni", label: "Testimoni" },

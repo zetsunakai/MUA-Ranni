@@ -17,6 +17,7 @@ export const site = {
 export const navLinks: NavLink[] = [
   { href: "/portfolio", label: "Portofolio" },
   { href: "/layanan", label: "Layanan & Harga" },
+  { href: "/jadwal", label: "Jadwal" },
   { href: "/tentang", label: "Tentang" },
   { href: "/kontak", label: "Kontak" },
 ];
