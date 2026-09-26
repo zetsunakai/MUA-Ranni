@@ -1,15 +1,24 @@
 import "server-only";
 
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import * as schema from "./schema";
 
 // DATABASE_URL = connection string "Transaction pooler" dari Supabase (port 6543).
-// Pooler mode transaction tidak mendukung prepared statement, jadi prepare: false.
-// Jangan set max: 1. Saat `next build`, beberapa halaman membaca harga bersamaan
-// dan satu koneksi membuat render macet sampai timeout 60 detik.
+//
+// Driver: node-postgres (pg), BUKAN postgres.js. postgres.js menumpuk (pipelining)
+// beberapa query di satu koneksi saat semua koneksi sibuk, dan Supabase transaction
+// pooler kadang kehilangan jawabannya -> query menggantung. Ini membuat `next build`
+// di Vercel (1 worker, 36 halaman sekaligus) timeout. pg menjalankan satu query per
+// koneksi dan sisanya antre di pool, jadi aman untuk transaction pooler.
 function createDb(url: string) {
-  return drizzle(postgres(url, { prepare: false }), { schema });
+  const pool = new Pool({
+    connectionString: url,
+    max: 5,
+    idleTimeoutMillis: 10_000,
+    connectionTimeoutMillis: 15_000,
+  });
+  return drizzle(pool, { schema });
 }
 
 // Di mode dev, file ini dimuat ulang setiap ada perubahan kode; simpan koneksi di
