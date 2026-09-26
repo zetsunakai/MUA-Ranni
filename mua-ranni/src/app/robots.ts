@@ -5,7 +5,7 @@ import { site } from "@/data/site";
 // tombol WhatsApp) dan /admin, dan memberi tahu lokasi sitemap.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/chat/", "/admin"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/chat/", "/admin", "/testimoni/"] },
     sitemap: `${site.url}/sitemap.xml`,
   };
 }

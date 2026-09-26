@@ -5,6 +5,7 @@ import { site } from "@/data/site";
 const tabs = [
   { href: "/admin/harga", label: "Harga" },
   { href: "/admin/portofolio", label: "Portofolio" },
+  { href: "/admin/testimoni", label: "Testimoni" },
 ] as const;
 
 type Props = { email: string; current: (typeof tabs)[number]["href"] };

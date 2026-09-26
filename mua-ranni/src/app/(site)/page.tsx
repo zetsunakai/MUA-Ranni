@@ -20,7 +20,7 @@ export default async function Home() {
   const [serviceGroups, portfolioItems] = await Promise.all([getServiceGroups(), getPortfolioItems()]);
   const featured = portfolioItems.filter((item) => item.featured).slice(0, 6);
   const highlightGroups = serviceGroups.filter((g) => HIGHLIGHT_GROUPS.includes(g.id));
-  const testimonials = getPublicTestimonials().slice(0, 3);
+  const testimonials = (await getPublicTestimonials()).slice(0, 3);
 
   return (
     <>

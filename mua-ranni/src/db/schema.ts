@@ -53,3 +53,29 @@ export const portfolioItems = pgTable("portfolio_items", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
+
+// Testimoni diisi klien sendiri lewat link undangan sekali pakai.
+// Alur: admin buat undangan -> klien isi form -> status "pending" -> admin setujui -> tampil di Home.
+export const testimonialInvites = pgTable("testimonial_invites", {
+  id: text("id").primaryKey(), // token acak 128-bit di URL /testimoni/<id>
+  clientName: text("client_name").notNull(),
+  eventType: text("event_type", { enum: ["bridal", "wisuda", "engagement", "photoshoot"] }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+}).enableRLS();
+
+export const testimonials = pgTable("testimonials", {
+  id: text("id").primaryKey(),
+  inviteId: text("invite_id")
+    .unique()
+    .references(() => testimonialInvites.id, { onDelete: "set null" }),
+  clientName: text("client_name").notNull(),
+  eventType: text("event_type", { enum: ["bridal", "wisuda", "engagement", "photoshoot"] }).notNull(),
+  quote: text("quote").notNull(),
+  photoUrl: text("photo_url"),
+  photoPath: text("photo_path"),
+  status: text("status", { enum: ["pending", "approved", "rejected"] }).notNull().default("pending"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  approvedAt: timestamp("approved_at", { withTimezone: true }),
+}).enableRLS();
