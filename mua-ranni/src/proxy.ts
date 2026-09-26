@@ -30,7 +30,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
   if (loggedIn && onLoginPage) {
-    return NextResponse.redirect(new URL("/admin/harga", request.url));
+    return NextResponse.redirect(new URL("/admin", request.url));
   }
   return response;
 }

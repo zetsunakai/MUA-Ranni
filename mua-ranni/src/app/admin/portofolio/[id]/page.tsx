@@ -5,12 +5,14 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import DeletePortfolioButton from "@/components/admin/DeletePortfolioButton";
 import PortfolioForm from "@/components/admin/PortfolioForm";
 import { requireAdmin } from "@/lib/auth";
+import { getCategories } from "@/lib/categories";
 import { getPortfolioItem } from "@/lib/portfolio";
 
 export const metadata: Metadata = { title: "Edit foto" };
 
 export default async function EditPortfolioPage({ params }: PageProps<"/admin/portofolio/[id]">) {
   const admin = await requireAdmin();
+  const categories = await getCategories();
   const { id } = await params;
   const item = await getPortfolioItem(id);
   if (!item) notFound();
@@ -27,7 +29,7 @@ export default async function EditPortfolioPage({ params }: PageProps<"/admin/po
           <DeletePortfolioButton id={item.id} title={item.title} />
         </div>
         <div className="mt-6">
-          <PortfolioForm key={item.id} item={item} />
+          <PortfolioForm key={item.id} item={item} categories={categories} />
         </div>
       </div>
     </>

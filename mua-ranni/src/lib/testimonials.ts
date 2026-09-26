@@ -5,18 +5,20 @@ import { cache } from "react";
 import { testimonials as staticTestimonials, testimonialsArePlaceholder } from "@/data/testimonials";
 import { getDb } from "@/db";
 import { testimonialInvites, testimonials } from "@/db/schema";
-import type { Category, Testimonial } from "@/types";
+import { getCategories, labelOf } from "@/lib/categories";
+import type { Category, CategoryOption, Testimonial } from "@/types";
 
 // VERCEL_ENV diisi otomatis oleh Vercel saat build: "production" untuk domain utama.
 const isProduction = process.env.VERCEL_ENV === "production";
 
 type TestimonialRow = typeof testimonials.$inferSelect;
 
-function toTestimonial(row: TestimonialRow): Testimonial {
+function toTestimonial(row: TestimonialRow, categories: CategoryOption[]): Testimonial {
   return {
     id: row.id,
     clientName: row.clientName,
     eventType: row.eventType,
+    eventLabel: labelOf(categories, row.eventType),
     quote: row.quote,
     photoUrl: row.photoUrl ?? undefined,
   };
@@ -25,14 +27,17 @@ function toTestimonial(row: TestimonialRow): Testimonial {
 // Testimoni untuk website publik: HANYA yang sudah disetujui admin, terbaru di atas.
 // Tanpa database, pakai data dummy (dan tetap disembunyikan di production).
 export const getPublicTestimonials = cache(async (): Promise<Testimonial[]> => {
-  const db = getDb();
-  if (!db) return testimonialsArePlaceholder && isProduction ? [] : staticTestimonials;
+  const [db, categories] = [getDb(), await getCategories()];
+  if (!db) {
+    if (testimonialsArePlaceholder && isProduction) return [];
+    return staticTestimonials.map((t) => ({ ...t, eventLabel: labelOf(categories, t.eventType) }));
+  }
   const rows = await db
     .select()
     .from(testimonials)
     .where(eq(testimonials.status, "approved"))
     .orderBy(desc(testimonials.approvedAt));
-  return rows.map(toTestimonial);
+  return rows.map((row) => toTestimonial(row, categories));
 });
 
 export type InviteCheck =

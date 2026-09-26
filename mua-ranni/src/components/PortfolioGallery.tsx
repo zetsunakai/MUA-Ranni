@@ -7,25 +7,25 @@ import { useState } from "react";
 import CategoryFilter, { type CategoryFilterValue } from "@/components/CategoryFilter";
 import GalleryCard from "@/components/GalleryCard";
 import Lightbox from "@/components/Lightbox";
-import { categories } from "@/data/site";
-import type { PortfolioItem } from "@/types";
+import type { CategoryOption, PortfolioItem } from "@/types";
 
 type Props = {
   items: PortfolioItem[];
+  categories: CategoryOption[];
 };
 
-export default function PortfolioGallery({ items }: Props) {
+export default function PortfolioGallery({ items, categories }: Props) {
   const [filter, setFilter] = useState<CategoryFilterValue>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const visibleItems = filter === "all" ? items : items.filter((item) => item.category === filter);
 
   const counts = { all: items.length } as Record<CategoryFilterValue, number>;
-  for (const c of categories) counts[c] = items.filter((item) => item.category === c).length;
+  for (const c of categories) counts[c.id] = items.filter((item) => item.category === c.id).length;
 
   return (
     <>
-      <CategoryFilter value={filter} onChange={setFilter} counts={counts} />
+      <CategoryFilter value={filter} onChange={setFilter} counts={counts} categories={categories} />
 
       <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-5">
         {visibleItems.map((item, index) => (

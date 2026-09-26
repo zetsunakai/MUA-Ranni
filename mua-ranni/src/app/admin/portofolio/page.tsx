@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { categoryLabels } from "@/data/site";
 import { requireAdmin } from "@/lib/auth";
 import { getPortfolioItems } from "@/lib/portfolio";
 
@@ -31,12 +30,17 @@ export default async function AdminPortfolioPage({ searchParams }: PageProps<"/a
               {items.length} foto · {featuredCount} tampil di Home
             </p>
           </div>
-          <Link
-            href="/admin/portofolio/baru"
-            className="shrink-0 rounded-full bg-accent-strong px-5 py-3 text-sm font-medium text-white hover:bg-foreground"
-          >
-            + Tambah foto
-          </Link>
+          <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-center">
+            <Link href="/admin/portofolio/kategori" className="rounded-full border border-line px-4 py-2.5 text-sm">
+              Kelola kategori
+            </Link>
+            <Link
+              href="/admin/portofolio/baru"
+              className="rounded-full bg-accent-strong px-5 py-3 text-sm font-medium text-white hover:bg-foreground"
+            >
+              + Tambah foto
+            </Link>
+          </div>
         </div>
 
         {notice && (
@@ -63,7 +67,7 @@ export default async function AdminPortfolioPage({ searchParams }: PageProps<"/a
                   )}
                 </div>
                 <p className="mt-2 text-sm font-medium leading-snug group-hover:text-accent-strong">{item.title}</p>
-                <p className="text-xs text-foreground/70">{categoryLabels[item.category]} · Edit</p>
+                <p className="text-xs text-foreground/70">{item.categoryLabel} · Edit</p>
               </Link>
             </li>
           ))}

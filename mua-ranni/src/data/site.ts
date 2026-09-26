@@ -1,4 +1,4 @@
-import type { Category, NavLink } from "@/types";
+import type { CategoryOption, NavLink } from "@/types";
 
 // Nama, WhatsApp, dan Instagram dari Price List 2026.
 export const site = {
@@ -14,6 +14,9 @@ export const site = {
   responseHours: "Setiap hari, 08.00–22.00 WIB",
 };
 
+// Link tambahan di footer dan sitemap (tidak di navbar supaya menu tetap ringkas).
+export const extraLinks: NavLink[] = [{ href: "/faq", label: "FAQ" }];
+
 export const navLinks: NavLink[] = [
   { href: "/portfolio", label: "Portofolio" },
   { href: "/layanan", label: "Layanan & Harga" },
@@ -22,12 +25,11 @@ export const navLinks: NavLink[] = [
   { href: "/kontak", label: "Kontak" },
 ];
 
-export const categoryLabels: Record<Category, string> = {
-  bridal: "Bridal",
-  wisuda: "Wisuda",
-  engagement: "Engagement",
-  photoshoot: "Photoshoot",
-};
-
-// Urutan chip filter di halaman Portofolio.
-export const categories = Object.keys(categoryLabels) as Category[];
+// Kategori bawaan. Kategori sebenarnya dikelola admin di database (tabel categories);
+// daftar ini hanya dipakai kalau database belum disambungkan.
+export const defaultCategories: CategoryOption[] = [
+  { id: "bridal", label: "Bridal" },
+  { id: "wisuda", label: "Wisuda" },
+  { id: "engagement", label: "Engagement" },
+  { id: "photoshoot", label: "Photoshoot" },
+];

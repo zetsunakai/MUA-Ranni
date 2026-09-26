@@ -9,14 +9,18 @@ import { bookingInfo, brands } from "@/data/services";
 import { site } from "@/data/site";
 import { formatRupiah } from "@/lib/format";
 import { getServiceGroups, lowestPrice } from "@/lib/prices";
+import { getProfile } from "@/lib/profile";
 
-export const metadata: Metadata = {
-  title: "Tentang",
-  description: `Kenalan dengan ${site.name}: makeup artist wisuda, pesta, dan acara pernikahan di ${site.serviceAreas.join(", ")}.`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return {
+    title: "Tentang",
+    description: `Kenalan dengan ${site.name}: makeup artist wisuda, pesta, dan acara pernikahan di ${profile.serviceAreas.join(", ")}.`,
+  };
+}
 
 export default async function TentangPage() {
-  const serviceGroups = await getServiceGroups();
+  const [serviceGroups, profile] = await Promise.all([getServiceGroups(), getProfile()]);
   // Sorotan dihitung dari data asli, bukan angka karangan.
   const allItems = serviceGroups.flatMap((g) => g.items);
   const highlights = [
@@ -40,9 +44,9 @@ export default async function TentangPage() {
         </div>
 
         <div>
-          <SectionHeading as="h1" eyebrow={`Tentang ${site.name}`} title={about.greeting} />
+          <SectionHeading as="h1" eyebrow={`Tentang ${site.name}`} title={profile.greeting} />
           <div className="mt-4 space-y-4 text-foreground/80">
-            {about.bio.map((paragraph) => (
+            {profile.bio.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
@@ -73,7 +77,7 @@ export default async function TentangPage() {
       <section className="mt-16">
         <SectionHeading eyebrow="Area layanan" title="Aku datang ke lokasimu" />
         <ul className="mt-6 flex flex-wrap gap-2">
-          {site.serviceAreas.map((area) => (
+          {profile.serviceAreas.map((area) => (
             <li key={area} className="flex items-center gap-2 rounded-full bg-accent-soft px-4 py-2 text-sm">
               <PinIcon className="h-4 w-4 text-accent-strong" />
               {area}

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { categoryLabels } from "@/data/site";
 import type { PortfolioItem } from "@/types";
 
 type Props = {
@@ -14,7 +13,7 @@ export default function GalleryCard({ item, onOpen, eager = false }: Props) {
       <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-accent-soft">
         <Image
           src={item.imageUrl}
-          alt={`${item.title}, riasan ${categoryLabels[item.category]}`}
+          alt={`${item.title}, riasan ${item.categoryLabel}`}
           fill
           // Grid: 2 kolom di HP, 3 di tablet, 4 di desktop. `sizes` memberi tahu browser
           // ukuran tampil gambar supaya tidak mengunduh versi yang terlalu besar.
@@ -29,7 +28,7 @@ export default function GalleryCard({ item, onOpen, eager = false }: Props) {
         )}
       </div>
       <p className="mt-2 text-sm font-medium leading-snug group-hover:text-accent-strong">{item.title}</p>
-      <p className="text-xs text-foreground/70">{categoryLabels[item.category]}</p>
+      <p className="text-xs text-foreground/70">{item.categoryLabel}</p>
     </button>
   );
 }

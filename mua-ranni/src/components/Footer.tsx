@@ -1,14 +1,16 @@
 // Server Component: tidak ada state atau event handler, jadi tidak perlu "use client".
 
 import Link from "next/link";
-import { navLinks, site } from "@/data/site";
+import { extraLinks, navLinks, site } from "@/data/site";
+import { getProfile } from "@/lib/profile";
 import { whatsappUrl } from "@/lib/whatsapp";
 
-export default function Footer() {
+export default async function Footer() {
+  const profile = await getProfile();
   const socials = [
-    { href: whatsappUrl("footer"), label: `WhatsApp ${site.whatsappDisplay}` },
-    { href: site.instagramUrl, label: `Instagram ${site.instagramHandle}` },
-    { href: site.tiktokUrl, label: "TikTok" },
+    { href: whatsappUrl("footer"), label: `WhatsApp ${profile.whatsappDisplay}` },
+    { href: profile.instagramUrl, label: `Instagram @${profile.instagramHandle}` },
+    ...(profile.tiktokUrl ? [{ href: profile.tiktokUrl, label: "TikTok" }] : []),
   ];
 
   return (
@@ -22,7 +24,7 @@ export default function Footer() {
         <div>
           <h2 className="text-sm font-semibold uppercase tracking-wider">Menu</h2>
           <ul className="mt-3 space-y-2 text-sm">
-            {navLinks.map((link) => (
+            {[...navLinks, ...extraLinks].map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="text-foreground/75 hover:text-accent-strong">
                   {link.label}
@@ -49,9 +51,9 @@ export default function Footer() {
             ))}
           </ul>
           <p className="mt-4 text-sm text-foreground/75">
-            Area layanan: {site.serviceAreas.join(", ")}
+            Area layanan: {profile.serviceAreas.join(", ")}
           </p>
-          <p className="mt-1 text-sm text-foreground/75">{site.responseHours}</p>
+          <p className="mt-1 text-sm text-foreground/75">{profile.responseHours}</p>
         </div>
       </div>
 

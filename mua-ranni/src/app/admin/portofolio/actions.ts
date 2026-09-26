@@ -8,6 +8,7 @@ import type { FormState } from "@/app/admin/actions";
 import { getDb } from "@/db";
 import { portfolioItems } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
+import { categoryExists } from "@/lib/categories";
 import { createSupabaseAdminClient, PORTFOLIO_BUCKET } from "@/lib/supabase/admin";
 
 const MAX_FILE_BYTES = 2 * 1024 * 1024; // sama dengan batas bucket
@@ -15,7 +16,7 @@ const ALLOWED_TYPES: Record<string, string> = { "image/webp": "webp", "image/jpe
 
 const fieldsSchema = z.object({
   title: z.string().trim().min(1, "Judul wajib diisi.").max(80, "Judul maksimal 80 karakter."),
-  category: z.enum(["bridal", "wisuda", "engagement", "photoshoot"], "Pilih kategori."),
+  category: z.string().min(1, "Pilih kategori."),
   description: z.string().trim().max(300, "Deskripsi maksimal 300 karakter."),
   featured: z.boolean(),
 });
@@ -52,6 +53,8 @@ export async function savePortfolioItem(_prev: FormState, formData: FormData): P
   const fieldErrors: Record<string, string> = {};
   if (!parsed.success) {
     for (const issue of parsed.error.issues) fieldErrors[String(issue.path[0])] ??= issue.message;
+  } else if (!(await categoryExists(parsed.data.category))) {
+    fieldErrors.category = "Kategori ini sudah dihapus. Pilih kategori lain.";
   }
 
   const existingId = String(formData.get("id") ?? "");

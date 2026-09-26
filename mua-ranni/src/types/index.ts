@@ -1,12 +1,19 @@
 // Struktur data mengikuti PRD, dipakai sama dari Tahap 2 sampai 4
 // supaya migrasi ke Supabase nanti tinggal pindah sumber data.
 
-export type Category = "bridal" | "wisuda" | "engagement" | "photoshoot";
+// Kategori sekarang dikelola admin (tabel categories). Nilainya = id/slug kategori.
+export type Category = string;
+
+export type CategoryOption = {
+  id: string;
+  label: string;
+};
 
 export type PortfolioItem = {
   id: string;
   title: string;
   category: Category;
+  categoryLabel: string;
   imageUrl: string;
   beforeImageUrl?: string;
   description?: string;
@@ -50,6 +57,7 @@ export type Testimonial = {
   id: string;
   clientName: string;
   eventType: Category;
+  eventLabel: string;
   quote: string;
   photoUrl?: string;
 };

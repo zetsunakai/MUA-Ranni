@@ -37,13 +37,23 @@ export const addOns = pgTable("add_ons", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
 
+// Kategori acara (Bridal, Wisuda, ...). Dipakai portofolio DAN "jenis acara" testimoni.
+// id = slug yang tidak pernah berubah; label boleh diganti admin.
+export const categoryTable = pgTable("categories", {
+  id: text("id").primaryKey(),
+  label: text("label").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+}).enableRLS();
+
 // Portofolio. Foto disimpan di Supabase Storage (bucket "portfolio");
 // kolom *_url = URL publik untuk ditampilkan, *_path = lokasi file di bucket
 // (untuk menghapus file lama). *_path kosong untuk foto dari luar (dummy Unsplash).
 export const portfolioItems = pgTable("portfolio_items", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
-  category: text("category", { enum: ["bridal", "wisuda", "engagement", "photoshoot"] }).notNull(),
+  category: text("category")
+    .notNull()
+    .references(() => categoryTable.id, { onDelete: "restrict", onUpdate: "cascade" }),
   imageUrl: text("image_url").notNull(),
   imagePath: text("image_path"),
   beforeImageUrl: text("before_image_url"),
@@ -59,7 +69,7 @@ export const portfolioItems = pgTable("portfolio_items", {
 export const testimonialInvites = pgTable("testimonial_invites", {
   id: text("id").primaryKey(), // token acak 128-bit di URL /testimoni/<id>
   clientName: text("client_name").notNull(),
-  eventType: text("event_type", { enum: ["bridal", "wisuda", "engagement", "photoshoot"] }),
+  eventType: text("event_type").references(() => categoryTable.id, { onDelete: "set null", onUpdate: "cascade" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   usedAt: timestamp("used_at", { withTimezone: true }),
@@ -71,7 +81,9 @@ export const testimonials = pgTable("testimonials", {
     .unique()
     .references(() => testimonialInvites.id, { onDelete: "set null" }),
   clientName: text("client_name").notNull(),
-  eventType: text("event_type", { enum: ["bridal", "wisuda", "engagement", "photoshoot"] }).notNull(),
+  eventType: text("event_type")
+    .notNull()
+    .references(() => categoryTable.id, { onDelete: "restrict", onUpdate: "cascade" }),
   quote: text("quote").notNull(),
   photoUrl: text("photo_url"),
   photoPath: text("photo_path"),
@@ -88,5 +100,19 @@ export const scheduleDays = pgTable("schedule_days", {
   date: date("date", { mode: "string" }).primaryKey(),
   status: text("status", { enum: ["limited", "full"] }).notNull(),
   note: text("note"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}).enableRLS();
+
+// Profil yang bisa diubah admin (satu baris saja, id = 1). Kolom kosong = pakai nilai
+// bawaan di src/data/site.ts & about.ts, jadi website tetap lengkap sebelum diisi.
+export const siteProfile = pgTable("site_profile", {
+  id: integer("id").primaryKey().default(1),
+  whatsappNumber: text("whatsapp_number"),
+  instagramHandle: text("instagram_handle"),
+  tiktokHandle: text("tiktok_handle"),
+  serviceAreas: text("service_areas").array(),
+  responseHours: text("response_hours"),
+  greeting: text("greeting"),
+  bio: text("bio").array(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();

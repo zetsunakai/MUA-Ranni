@@ -1,11 +1,13 @@
 import type { Testimonial } from "@/types";
 
+export type StaticTestimonial = Omit<Testimonial, "eventLabel">;
+
 // DUMMY, hanya dipakai kalau database belum disambungkan (misalnya di laptop tanpa .env.local).
 // Testimoni asli diisi klien lewat link undangan dan disetujui di /admin/testimoni.
 // Selama flag ini true, data dummy tidak pernah tampil di website production.
 export const testimonialsArePlaceholder = true;
 
-export const testimonials: Testimonial[] = [
+export const testimonials: StaticTestimonial[] = [
   {
     id: "t1",
     clientName: "Nadia",

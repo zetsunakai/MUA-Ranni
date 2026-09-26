@@ -43,6 +43,20 @@
       "when": 1790439149650,
       "tag": "0005_hard_donald_blake",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790440816601,
+      "tag": "0006_glossy_thunderbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790442137534,
+      "tag": "0007_marvelous_nitro",
+      "breakpoints": true
     }
   ]
 }

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import BeforeAfterSlider from "@/components/BeforeAfterSlider";
-import { categoryLabels } from "@/data/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 import type { PortfolioItem } from "@/types";
 
@@ -41,7 +40,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
     if (e.key === "ArrowLeft") go(-1);
   };
 
-  const label = item ? `${item.title}, riasan ${categoryLabels[item.category]}` : "";
+  const label = item ? `${item.title}, riasan ${item.categoryLabel}` : "";
 
   return (
     <dialog
@@ -92,7 +91,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
             <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-5 md:w-80 md:flex-none md:p-6">
               <div className="flex items-start justify-between gap-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-strong">
-                  {categoryLabels[item.category]}
+                  {item.categoryLabel}
                 </p>
                 <button type="button" onClick={onClose} aria-label="Tutup" className="-mt-1 -mr-1 rounded-full p-1">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" aria-hidden="true">
@@ -108,7 +107,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
               <a
                 href={whatsappUrl(
                   "lightbox",
-                  `Halo Kak, saya suka hasil makeup "${item.title}" di website. Boleh tanya paket ${categoryLabels[item.category]} dan jadwal kosongnya?`,
+                  `Halo Kak, saya suka hasil makeup "${item.title}" di website. Boleh tanya paket ${item.categoryLabel} dan jadwal kosongnya?`,
                 )}
                 target="_blank"
                 rel="noopener noreferrer"

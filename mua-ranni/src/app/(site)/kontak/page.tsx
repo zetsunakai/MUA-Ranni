@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import { ChatIcon, ClockIcon, InstagramIcon, PinIcon } from "@/components/icons";
 import { bookingInfo } from "@/data/services";
 import { site } from "@/data/site";
+import { getProfile } from "@/lib/profile";
 import { whatsappUrl } from "@/lib/whatsapp";
 
-export const metadata: Metadata = {
-  title: "Kontak",
-  description: `Booking ${site.name} lewat WhatsApp ${site.whatsappDisplay}. Area layanan ${site.serviceAreas.join(", ")}.`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return {
+    title: "Kontak",
+    description: `Booking ${site.name} lewat WhatsApp ${profile.whatsappDisplay}. Area layanan ${profile.serviceAreas.join(", ")}.`,
+  };
+}
 
 const bookingSteps = [
   "Chat WhatsApp: kirim tanggal, jam, lokasi, dan jenis makeup.",
@@ -16,7 +21,8 @@ const bookingSteps = [
   bookingInfo.payment,
 ];
 
-export default function KontakPage() {
+export default async function KontakPage() {
+  const profile = await getProfile();
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <SectionHeading
@@ -38,12 +44,12 @@ export default function KontakPage() {
           </span>
           <span>
             <span className="block text-sm text-white/90">WhatsApp</span>
-            <span className="block text-lg font-semibold">{site.whatsappDisplay}</span>
+            <span className="block text-lg font-semibold">{profile.whatsappDisplay}</span>
           </span>
         </a>
 
         <a
-          href={site.instagramUrl}
+          href={profile.instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-4 rounded-xl border border-line bg-surface p-5 transition-colors hover:border-accent sm:p-6"
@@ -53,7 +59,7 @@ export default function KontakPage() {
           </span>
           <span>
             <span className="block text-sm text-foreground/70">Instagram</span>
-            <span className="block text-lg font-semibold">{site.instagramHandle}</span>
+            <span className="block text-lg font-semibold">@{profile.instagramHandle}</span>
           </span>
         </a>
 
@@ -63,7 +69,7 @@ export default function KontakPage() {
           </span>
           <span>
             <span className="block text-sm text-foreground/70">Area layanan</span>
-            <span className="block font-semibold">{site.serviceAreas.join(", ")}</span>
+            <span className="block font-semibold">{profile.serviceAreas.join(", ")}</span>
           </span>
         </div>
 
@@ -73,7 +79,7 @@ export default function KontakPage() {
           </span>
           <span>
             <span className="block text-sm text-foreground/70">Jam respon chat</span>
-            <span className="block font-semibold">{site.responseHours}</span>
+            <span className="block font-semibold">{profile.responseHours}</span>
           </span>
         </div>
       </div>
@@ -92,6 +98,12 @@ export default function KontakPage() {
             </li>
           ))}
         </ol>
+        <p className="mt-4 text-sm text-foreground/70">
+          Pertanyaan soal DP, cancel, atau persiapan?{" "}
+          <Link href="/faq" className="font-medium text-accent-strong">
+            Lihat FAQ
+          </Link>
+        </p>
       </section>
     </div>
   );

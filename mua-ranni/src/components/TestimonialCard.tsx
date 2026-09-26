@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { categoryLabels } from "@/data/site";
 import type { Testimonial } from "@/types";
 
 export default function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
@@ -23,7 +22,7 @@ export default function TestimonialCard({ testimonial }: { testimonial: Testimon
         <blockquote className="mt-1 flex-1 text-foreground/80">{testimonial.quote}</blockquote>
         <figcaption className="mt-4 text-sm">
           <span className="font-semibold">{testimonial.clientName}</span>
-          <span className="text-foreground/70"> · {categoryLabels[testimonial.eventType]}</span>
+          <span className="text-foreground/70"> · {testimonial.eventLabel}</span>
         </figcaption>
       </div>
     </figure>

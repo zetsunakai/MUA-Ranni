@@ -9,6 +9,7 @@ import { getDb } from "@/db";
 import { testimonialInvites, testimonials } from "@/db/schema";
 import { site } from "@/data/site";
 import { requireAdmin } from "@/lib/auth";
+import { categoryExists } from "@/lib/categories";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const INVITE_DAYS = 60;
@@ -17,7 +18,7 @@ export type InviteState = FormState & { link?: string; clientName?: string };
 
 const inviteSchema = z.object({
   clientName: z.string().trim().min(1, "Nama klien wajib diisi.").max(60, "Maksimal 60 karakter."),
-  eventType: z.enum(["bridal", "wisuda", "engagement", "photoshoot"]).nullable(),
+  eventType: z.string().min(1).nullable(),
 });
 
 export async function createInvite(_prev: InviteState, formData: FormData): Promise<InviteState> {
@@ -30,6 +31,9 @@ export async function createInvite(_prev: InviteState, formData: FormData): Prom
     eventType: formData.get("eventType") || null,
   });
   if (!parsed.success) return { status: "error", message: parsed.error.issues[0].message };
+  if (parsed.data.eventType && !(await categoryExists(parsed.data.eventType))) {
+    return { status: "error", message: "Jenis acara tidak ditemukan." };
+  }
 
   // 16 byte acak = 128 bit: tidak mungkin ditebak, jadi hanya penerima link yang bisa mengisi form.
   const token = randomBytes(16).toString("base64url");

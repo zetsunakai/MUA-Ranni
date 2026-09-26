@@ -6,6 +6,7 @@ import type { FormState } from "@/app/admin/actions";
 import { getDb } from "@/db";
 import { testimonialInvites, testimonials } from "@/db/schema";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { categoryExists } from "@/lib/categories";
 import { checkInvite } from "@/lib/testimonials";
 
 // Server Action PUBLIK (dipanggil klien tanpa login). Pengamannya:
@@ -18,7 +19,7 @@ const LINK_PATTERN = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|id|xyz|io|co
 
 const schema = z.object({
   clientName: z.string().trim().min(2, "Nama minimal 2 huruf.").max(60, "Nama maksimal 60 karakter."),
-  eventType: z.enum(["bridal", "wisuda", "engagement", "photoshoot"], "Pilih jenis acara."),
+  eventType: z.string().min(1, "Pilih jenis acara."),
   quote: z
     .string()
     .trim()
@@ -50,6 +51,8 @@ export async function submitTestimonial(_prev: FormState, formData: FormData): P
   const fieldErrors: Record<string, string> = {};
   if (!parsed.success) {
     for (const issue of parsed.error.issues) fieldErrors[String(issue.path[0])] ??= issue.message;
+  } else if (!(await categoryExists(parsed.data.eventType))) {
+    fieldErrors.eventType = "Pilih jenis acara dari daftar.";
   }
 
   const photo = formData.get("photo");

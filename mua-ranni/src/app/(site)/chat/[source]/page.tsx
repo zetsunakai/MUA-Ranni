@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import WhatsAppRedirect from "@/components/WhatsAppRedirect";
+import { getProfile } from "@/lib/profile";
 import { WHATSAPP_SOURCES } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export function generateStaticParams() {
   return WHATSAPP_SOURCES.map((source) => ({ source }));
 }
 
-export default function ChatPage() {
-  return <WhatsAppRedirect />;
+export default async function ChatPage() {
+  const profile = await getProfile();
+  return <WhatsAppRedirect number={profile.whatsappNumber} />;
 }

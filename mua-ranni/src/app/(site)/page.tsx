@@ -6,10 +6,10 @@ import TestimonialCard from "@/components/TestimonialCard";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import { ArrowRightIcon, CheckIcon, ChatIcon } from "@/components/icons";
 import { about } from "@/data/about";
-import { site } from "@/data/site";
 import { formatRupiah } from "@/lib/format";
 import { getPortfolioItems } from "@/lib/portfolio";
-import { getServiceGroups, lowestPrice } from "@/lib/prices";
+import { getProfile } from "@/lib/profile";
+import { getServiceGroups } from "@/lib/prices";
 import { getPublicTestimonials } from "@/lib/testimonials";
 import { whatsappUrl } from "@/lib/whatsapp";
 
@@ -17,7 +17,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 const HIGHLIGHT_GROUPS = ["reguler-dewasa", "premium-dewasa", "premium-pernikahan"];
 
 export default async function Home() {
-  const [serviceGroups, portfolioItems] = await Promise.all([getServiceGroups(), getPortfolioItems()]);
+  const [serviceGroups, portfolioItems, profile] = await Promise.all([getServiceGroups(), getPortfolioItems(), getProfile()]);
   const featured = portfolioItems.filter((item) => item.featured).slice(0, 6);
   const highlightGroups = serviceGroups.filter((g) => HIGHLIGHT_GROUPS.includes(g.id));
   const testimonials = (await getPublicTestimonials()).slice(0, 3);
@@ -28,15 +28,14 @@ export default async function Home() {
       <section className="mx-auto grid w-full max-w-6xl items-center gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.1fr_1fr] md:gap-12 md:py-16">
         <div className="flex flex-col items-start gap-5">
           <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent-strong">
-            {site.serviceAreas.join(" · ")}
+            {profile.serviceAreas.join(" · ")}
           </span>
           <h1 className="font-heading text-4xl font-semibold leading-tight sm:text-5xl">
             Riasan flawless untuk wisuda, pesta, sampai hari pernikahanmu.
           </h1>
           <p className="max-w-lg text-foreground/75">
-            Makeup artist panggilan ke lokasimu. Harga jelas per orang mulai{" "}
-            {formatRupiah(lowestPrice(serviceGroups))}, sudah termasuk
-            bulu mata dan hijab do.
+            Makeup untuk pernikahan, wisuda, dan setiap momen yang ingin kamu kenang selamanya. Riasan disesuaikan
+            dengan wajah dan busanamu, dikerjakan langsung di lokasimu.
           </p>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <a
@@ -87,11 +86,7 @@ export default async function Home() {
       <section className="bg-accent-soft/40 py-12">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <SectionHeading
-              eyebrow="Layanan & Harga"
-              title="Harga jelas, tanpa tanya-tanya"
-              description="Harga per orang. Semua sudah termasuk bulu mata dan hijab do simple."
-            />
+            <SectionHeading eyebrow="Layanan & Harga" title="Harga jelas, tanpa tanya-tanya" />
             <Link href="/layanan" className="flex items-center gap-1 text-sm font-medium text-accent-strong">
               Lihat price list lengkap <ArrowRightIcon />
             </Link>

@@ -3,11 +3,13 @@ import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
 import PortfolioForm from "@/components/admin/PortfolioForm";
 import { requireAdmin } from "@/lib/auth";
+import { getCategories } from "@/lib/categories";
 
 export const metadata: Metadata = { title: "Tambah foto" };
 
 export default async function NewPortfolioPage() {
   const admin = await requireAdmin();
+  const categories = await getCategories();
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/portofolio" />
@@ -17,7 +19,7 @@ export default async function NewPortfolioPage() {
         </Link>
         <h1 className="mt-2 font-heading text-3xl font-semibold">Tambah foto</h1>
         <div className="mt-6">
-          <PortfolioForm />
+          <PortfolioForm categories={categories} />
         </div>
       </div>
     </>

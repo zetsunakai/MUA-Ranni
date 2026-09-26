@@ -1,4 +1,3 @@
-import { site } from "@/data/site";
 
 export const DEFAULT_WHATSAPP_MESSAGE = "Halo Kak, saya mau tanya jadwal dan paket makeup.";
 
@@ -27,7 +26,7 @@ export function whatsappUrl(source: WhatsAppSource, message: string = DEFAULT_WH
   return `/chat/${source}?text=${encodeURIComponent(message)}`;
 }
 
-// Link wa.me asli, dipakai halaman /chat untuk redirect.
-export function directWhatsappUrl(message: string = DEFAULT_WHATSAPP_MESSAGE): string {
-  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
+// Link wa.me asli, dipakai halaman /chat untuk redirect. Nomor dari profil admin.
+export function directWhatsappUrl(number: string, message: string = DEFAULT_WHATSAPP_MESSAGE): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }

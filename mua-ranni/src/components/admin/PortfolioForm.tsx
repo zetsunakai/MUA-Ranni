@@ -3,15 +3,14 @@
 import { startTransition, useActionState, useState, type FormEvent } from "react";
 import type { FormState } from "@/app/admin/actions";
 import { savePortfolioItem } from "@/app/admin/portofolio/actions";
-import { categories, categoryLabels } from "@/data/site";
 import { compressImage } from "@/lib/compress-image";
-import type { PortfolioItem } from "@/types";
+import type { CategoryOption, PortfolioItem } from "@/types";
 
 const initialState: FormState = { status: "idle", message: "" };
 
-type Props = { item?: PortfolioItem };
+type Props = { item?: PortfolioItem; categories: CategoryOption[] };
 
-export default function PortfolioForm({ item }: Props) {
+export default function PortfolioForm({ item, categories }: Props) {
   const [state, formAction, saving] = useActionState(savePortfolioItem, initialState);
   const [compressing, setCompressing] = useState(false);
   const [clientError, setClientError] = useState("");
@@ -77,8 +76,8 @@ export default function PortfolioForm({ item }: Props) {
             Pilih kategori
           </option>
           {categories.map((c) => (
-            <option key={c} value={c}>
-              {categoryLabels[c]}
+            <option key={c.id} value={c.id}>
+              {c.label}
             </option>
           ))}
         </select>

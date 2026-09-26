@@ -3,10 +3,12 @@ import { logout } from "@/app/admin/actions";
 import { site } from "@/data/site";
 
 const tabs = [
+  { href: "/admin", label: "Ringkasan" },
   { href: "/admin/jadwal", label: "Jadwal" },
-  { href: "/admin/harga", label: "Harga" },
+  { href: "/admin/layanan", label: "Layanan" },
   { href: "/admin/portofolio", label: "Portofolio" },
   { href: "/admin/testimoni", label: "Testimoni" },
+  { href: "/admin/profil", label: "Profil" },
 ] as const;
 
 type Props = { email: string; current: (typeof tabs)[number]["href"] };
@@ -30,13 +32,13 @@ export default function AdminHeader({ email, current }: Props) {
           </form>
         </div>
       </div>
-      <nav aria-label="Menu admin" className="mx-auto flex max-w-3xl gap-1 px-4">
+      <nav aria-label="Menu admin" className="scrollbar-none mx-auto flex max-w-3xl gap-1 overflow-x-auto px-4">
         {tabs.map((tab) => (
           <Link
             key={tab.href}
             href={tab.href}
             aria-current={tab.href === current ? "page" : undefined}
-            className={`border-b-2 px-3 py-2 text-sm font-medium ${
+            className={`shrink-0 border-b-2 px-3 py-2.5 text-sm font-medium whitespace-nowrap ${
               tab.href === current ? "border-accent-strong text-accent-strong" : "border-transparent text-foreground/70"
             }`}
           >

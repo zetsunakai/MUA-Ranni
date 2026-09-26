@@ -3,15 +3,14 @@
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import type { FormState } from "@/app/admin/actions";
 import { submitTestimonial } from "@/app/(site)/testimoni/actions";
-import { categories, categoryLabels } from "@/data/site";
 import { compressImage } from "@/lib/compress-image";
-import type { Category } from "@/types";
+import type { Category, CategoryOption } from "@/types";
 
 const initialState: FormState = { status: "idle", message: "" };
 
-type Props = { token: string; clientName: string; eventType: Category | null };
+type Props = { token: string; clientName: string; eventType: Category | null; categories: CategoryOption[] };
 
-export default function TestimonialForm({ token, clientName, eventType }: Props) {
+export default function TestimonialForm({ token, clientName, eventType, categories }: Props) {
   const [state, formAction, sending] = useActionState(submitTestimonial, initialState);
   const [compressing, setCompressing] = useState(false);
   const [preview, setPreview] = useState<string>();
@@ -69,8 +68,8 @@ export default function TestimonialForm({ token, clientName, eventType }: Props)
             Pilih jenis acara
           </option>
           {categories.map((c) => (
-            <option key={c} value={c}>
-              {categoryLabels[c]}
+            <option key={c.id} value={c.id}>
+              {c.label}
             </option>
           ))}
         </select>

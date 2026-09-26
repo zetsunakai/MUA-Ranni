@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import TestimonialForm from "@/components/TestimonialForm";
 import { site } from "@/data/site";
+import { getCategories } from "@/lib/categories";
 import { checkInvite } from "@/lib/testimonials";
 import { whatsappUrl } from "@/lib/whatsapp";
 
@@ -18,7 +19,7 @@ const reasons = {
 // Halaman dinamis: setiap link undangan dicek ke database saat dibuka.
 export default async function TestimoniPage({ params }: PageProps<"/testimoni/[token]">) {
   const { token } = await params;
-  const check = await checkInvite(token);
+  const [check, categories] = await Promise.all([checkInvite(token), getCategories()]);
 
   return (
     <div className="mx-auto w-full max-w-xl px-4 py-10 sm:py-14">
@@ -33,7 +34,12 @@ export default async function TestimoniPage({ params }: PageProps<"/testimoni/[t
             Ceritakan pengalamanmu dirias {site.name}. Ulasanmu akan tampil di website setelah dicek Ranni.
           </p>
           <div className="mt-8">
-            <TestimonialForm token={check.invite.id} clientName={check.invite.clientName} eventType={check.invite.eventType} />
+            <TestimonialForm
+              token={check.invite.id}
+              clientName={check.invite.clientName}
+              eventType={check.invite.eventType}
+              categories={categories}
+            />
           </div>
         </>
       ) : (

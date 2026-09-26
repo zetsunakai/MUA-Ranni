@@ -1,5 +1,7 @@
 import type { PortfolioItem } from "@/types";
 
+export type StaticPortfolioItem = Omit<PortfolioItem, "categoryLabel">;
+
 // DUMMY: foto dari Unsplash (lisensi gratis), bukan hasil kerja MUA.
 // WAJIB diganti foto asli klien (dengan izin) sebelum launch.
 function unsplash(photoId: string, extraParams = ""): string {
@@ -10,7 +12,7 @@ function unsplash(photoId: string, extraParams = ""): string {
 // Nanti diganti foto sebelum-sesudah asli dengan sudut dan cahaya yang sama.
 const DUMMY_BEFORE = "&sat=-75&bri=-8&con=-30";
 
-export const portfolioItems: PortfolioItem[] = [
+export const portfolioItems: StaticPortfolioItem[] = [
   {
     id: "bridal-sunda-siger",
     title: "Akad Adat Sunda Siger",

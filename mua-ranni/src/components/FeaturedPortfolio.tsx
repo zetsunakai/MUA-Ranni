@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { categoryLabels } from "@/data/site";
 import type { PortfolioItem } from "@/types";
 
 // Versi ringkas galeri untuk Home: tanpa filter dan lightbox,
@@ -14,13 +13,13 @@ export default function FeaturedPortfolio({ items }: { items: PortfolioItem[] })
             <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-accent-soft">
               <Image
                 src={item.imageUrl}
-                alt={`${item.title}, riasan ${categoryLabels[item.category]}`}
+                alt={`${item.title}, riasan ${item.categoryLabel}`}
                 fill
                 sizes="(min-width: 768px) 33vw, 50vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <span className="absolute bottom-2 left-2 rounded-full bg-surface/90 px-2.5 py-1 text-[11px] font-medium">
-                {categoryLabels[item.category]}
+                {item.categoryLabel}
               </span>
             </div>
           </Link>

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import AdminHeader from "@/components/admin/AdminHeader";
 import ConfirmButton from "@/components/admin/ConfirmButton";
 import InviteCreator from "@/components/admin/InviteCreator";
-import { categoryLabels, site } from "@/data/site";
+import { site } from "@/data/site";
+import { getCategories, labelOf } from "@/lib/categories";
 import { requireAdmin } from "@/lib/auth";
 import { getTestimonialAdminData } from "@/lib/testimonials";
 import { deleteInvite, moderateTestimonial } from "./actions";
@@ -13,7 +14,7 @@ const dateFormat = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "sh
 
 export default async function AdminTestimoniPage() {
   const admin = await requireAdmin();
-  const data = await getTestimonialAdminData();
+  const [data, categories] = await Promise.all([getTestimonialAdminData(), getCategories()]);
 
   return (
     <>
@@ -30,7 +31,7 @@ export default async function AdminTestimoniPage() {
           <p className="rounded-lg border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
         ) : (
           <>
-            <InviteCreator />
+            <InviteCreator categories={categories} />
 
             <section>
               <h2 className="font-heading text-xl font-semibold">
@@ -54,7 +55,7 @@ export default async function AdminTestimoniPage() {
                           )}
                           <div className="min-w-0 flex-1">
                             <p className="text-xs text-foreground/70">
-                              {categoryLabels[t.eventType]} · dikirim {dateFormat.format(t.createdAt)}
+                              {labelOf(categories, t.eventType)} · dikirim {dateFormat.format(t.createdAt)}
                             </p>
                             <label className="mt-1 block text-xs text-foreground/70">
                               <span>Nama</span>
@@ -115,7 +116,7 @@ export default async function AdminTestimoniPage() {
                       <p className="text-sm text-foreground/80">“{t.quote}”</p>
                       <p className="mt-2 text-xs">
                         <span className="font-semibold">{t.clientName}</span>
-                        <span className="text-foreground/70"> · {categoryLabels[t.eventType]}{t.photoUrl ? " · dengan foto" : ""}</span>
+                        <span className="text-foreground/70"> · {labelOf(categories, t.eventType)}{t.photoUrl ? " · dengan foto" : ""}</span>
                       </p>
                       <form action={moderateTestimonial} className="mt-3 flex flex-wrap gap-2">
                         <input type="hidden" name="id" value={t.id} />

@@ -2,11 +2,12 @@
 
 import { useActionState, useState } from "react";
 import { createInvite, type InviteState } from "@/app/admin/testimoni/actions";
-import { categories, categoryLabels, site } from "@/data/site";
+import { site } from "@/data/site";
+import type { CategoryOption } from "@/types";
 
 const initialState: InviteState = { status: "idle", message: "" };
 
-export default function InviteCreator() {
+export default function InviteCreator({ categories }: { categories: CategoryOption[] }) {
   const [state, formAction, pending] = useActionState(createInvite, initialState);
   const [copied, setCopied] = useState(false);
 
@@ -45,8 +46,8 @@ export default function InviteCreator() {
           >
             <option value="">—</option>
             {categories.map((c) => (
-              <option key={c} value={c}>
-                {categoryLabels[c]}
+              <option key={c.id} value={c.id}>
+                {c.label}
               </option>
             ))}
           </select>
