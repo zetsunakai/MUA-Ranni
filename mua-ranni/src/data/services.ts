@@ -13,6 +13,7 @@ export const serviceGroups: ServiceGroup[] = [
     includes: REGULER_INCLUDES,
     order: 1,
     items: [
+      { id: "anak-tk", name: "Anak TK", price: 75_000 },
       { id: "anak-tari", name: "Anak Tari", price: 85_000 },
       { id: "wisuda-sd", name: "Wisuda SD", price: 100_000 },
       { id: "wisuda-smp", name: "Wisuda SMP", price: 125_000 },
@@ -57,6 +58,7 @@ export const serviceGroups: ServiceGroup[] = [
       { id: "premium-bridesmaid", name: "Bridesmaid / Pagar Ayu", price: 175_000 },
       { id: "premium-sister", name: "Sister of Groom / Bride", price: 175_000 },
       { id: "premium-photoshoot", name: "Photoshoot", price: 175_000 },
+      { id: "premium-event-party", name: "Acara Event, Party, dan lain-lain", price: 175_000 },
     ],
   },
   {
@@ -72,6 +74,7 @@ export const serviceGroups: ServiceGroup[] = [
       { id: "lamaran", name: "Lamaran", price: 250_000 },
       { id: "siraman", name: "Siraman", price: 250_000 },
       { id: "pengajian", name: "Pengajian Pernikahan", price: 200_000 },
+      { id: "groom", name: "Groom", price: 150_000 },
     ],
   },
 ];

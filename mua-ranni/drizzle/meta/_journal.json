@@ -8,6 +8,20 @@
       "when": 1790336362921,
       "tag": "0000_crazy_mephisto",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790433416933,
+      "tag": "0001_brief_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790433418059,
+      "tag": "0002_portfolio_bucket",
+      "breakpoints": true
     }
   ]
 }

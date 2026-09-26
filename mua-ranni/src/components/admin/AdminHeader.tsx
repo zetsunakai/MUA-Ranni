@@ -2,7 +2,14 @@ import Link from "next/link";
 import { logout } from "@/app/admin/actions";
 import { site } from "@/data/site";
 
-export default function AdminHeader({ email }: { email: string }) {
+const tabs = [
+  { href: "/admin/harga", label: "Harga" },
+  { href: "/admin/portofolio", label: "Portofolio" },
+] as const;
+
+type Props = { email: string; current: (typeof tabs)[number]["href"] };
+
+export default function AdminHeader({ email, current }: Props) {
   return (
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
@@ -21,6 +28,20 @@ export default function AdminHeader({ email }: { email: string }) {
           </form>
         </div>
       </div>
+      <nav aria-label="Menu admin" className="mx-auto flex max-w-3xl gap-1 px-4">
+        {tabs.map((tab) => (
+          <Link
+            key={tab.href}
+            href={tab.href}
+            aria-current={tab.href === current ? "page" : undefined}
+            className={`border-b-2 px-3 py-2 text-sm font-medium ${
+              tab.href === current ? "border-accent-strong text-accent-strong" : "border-transparent text-foreground/70"
+            }`}
+          >
+            {tab.label}
+          </Link>
+        ))}
+      </nav>
     </header>
   );
 }

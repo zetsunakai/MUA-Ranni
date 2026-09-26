@@ -1,4 +1,4 @@
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 // Tabel harga, mengikuti tipe ServiceGroup / ServiceItem / AddOn di src/types.
 // Padanan di Odoo: setiap pgTable = satu models.Model, setiap kolom = satu fields.*.
@@ -34,5 +34,22 @@ export const addOns = pgTable("add_ons", {
   priceTo: integer("price_to"),
   note: text("note"),
   sortOrder: integer("sort_order").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}).enableRLS();
+
+// Portofolio. Foto disimpan di Supabase Storage (bucket "portfolio");
+// kolom *_url = URL publik untuk ditampilkan, *_path = lokasi file di bucket
+// (untuk menghapus file lama). *_path kosong untuk foto dari luar (dummy Unsplash).
+export const portfolioItems = pgTable("portfolio_items", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  category: text("category", { enum: ["bridal", "wisuda", "engagement", "photoshoot"] }).notNull(),
+  imageUrl: text("image_url").notNull(),
+  imagePath: text("image_path"),
+  beforeImageUrl: text("before_image_url"),
+  beforeImagePath: text("before_image_path"),
+  description: text("description"),
+  featured: boolean("featured").notNull().default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();

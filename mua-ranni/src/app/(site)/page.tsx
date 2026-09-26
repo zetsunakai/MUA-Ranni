@@ -6,9 +6,9 @@ import TestimonialCard from "@/components/TestimonialCard";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import { ArrowRightIcon, CheckIcon, ChatIcon } from "@/components/icons";
 import { about } from "@/data/about";
-import { portfolioItems } from "@/data/portfolio";
 import { site } from "@/data/site";
 import { formatRupiah } from "@/lib/format";
+import { getPortfolioItems } from "@/lib/portfolio";
 import { getServiceGroups, lowestPrice } from "@/lib/prices";
 import { getPublicTestimonials } from "@/lib/testimonials";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -17,7 +17,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 const HIGHLIGHT_GROUPS = ["reguler-dewasa", "premium-dewasa", "premium-pernikahan"];
 
 export default async function Home() {
-  const serviceGroups = await getServiceGroups();
+  const [serviceGroups, portfolioItems] = await Promise.all([getServiceGroups(), getPortfolioItems()]);
   const featured = portfolioItems.filter((item) => item.featured).slice(0, 6);
   const highlightGroups = serviceGroups.filter((g) => HIGHLIGHT_GROUPS.includes(g.id));
   const testimonials = getPublicTestimonials().slice(0, 3);

@@ -6,8 +6,9 @@
 
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { portfolioItems as staticPortfolio } from "../data/portfolio";
 import { addOns as staticAddOns, serviceGroups as staticGroups } from "../data/services";
-import { addOns, serviceGroups, serviceItems } from "./schema";
+import { addOns, portfolioItems, serviceGroups, serviceItems } from "./schema";
 
 async function main() {
   const url = process.env.DATABASE_URL;
@@ -44,10 +45,28 @@ async function main() {
         })),
       )
       .onConflictDoNothing();
+
+    // Foto dummy (Unsplash) ikut dimasukkan supaya bisa dihapus satu per satu dari admin.
+    await tx
+      .insert(portfolioItems)
+      .values(
+        staticPortfolio.map((p) => ({
+          id: p.id,
+          title: p.title,
+          category: p.category,
+          imageUrl: p.imageUrl,
+          beforeImageUrl: p.beforeImageUrl ?? null,
+          description: p.description ?? null,
+          featured: p.featured,
+          createdAt: new Date(p.createdAt),
+        })),
+      )
+      .onConflictDoNothing();
   });
 
-  const [{ count }] = await client`select count(*)::int as count from service_items`;
-  console.log(`Seed selesai. service_items sekarang berisi ${count} baris.`);
+  const [{ items, portfolio }] = await client`
+    select (select count(*) from service_items)::int as items, (select count(*) from portfolio_items)::int as portfolio`;
+  console.log(`Seed selesai. service_items: ${items} baris, portfolio_items: ${portfolio} baris.`);
   await client.end();
 }
 
