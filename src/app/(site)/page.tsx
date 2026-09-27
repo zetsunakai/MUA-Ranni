@@ -23,11 +23,9 @@ const steps = [
   { title: "Tinggal tampil", text: "Di hari H, riasan dikerjakan langsung di tempatmu bersiap." },
 ];
 
-// "Depok, Kota Bogor, Bogor" -> "Depok & Bogor" (untuk label singkat).
-function shortAreas(areas: string[]): string {
-  const names = [...new Set(areas.map((a) => a.replace(/^(kota|kabupaten|kab\.)\s+/i, "").trim()))];
-  return names.length === 2 ? names.join(" & ") : names.join(" · ");
-}
+// Label area singkat di hero dan badge "Home service". Sengaja hanya "Bogor"
+// (daftar area lengkap tetap tampil di Tentang, Kontak, FAQ, dan footer).
+const HOME_AREA_LABEL = "Bogor";
 
 export default async function Home() {
   const [serviceGroups, portfolioItems, categories, profile, testimonials] = await Promise.all([
@@ -40,7 +38,6 @@ export default async function Home() {
 
   const highlighted = serviceGroups.filter((g) => HIGHLIGHT_GROUPS.includes(g.id));
   const groups = (highlighted.length ? highlighted : serviceGroups).slice(0, 3);
-  const areas = shortAreas(profile.serviceAreas);
   const secondPhoto = portfolioItems.find((i) => i.featured) ?? portfolioItems[0];
   const trustPoints = ["Datang ke lokasimu", "Bulu mata & hijab do termasuk", profile.responseHours.replace(/\s*WIB$/, "")];
 
@@ -50,7 +47,7 @@ export default async function Home() {
       <section className="mx-auto grid w-full max-w-6xl gap-12 px-5 pt-10 pb-16 sm:px-6 md:grid-cols-[1.1fr_1fr] md:items-start md:gap-10 md:pt-20 md:pb-24">
         <div>
           <Eyebrow>
-            Wisuda · Pesta · Pernikahan<span className="hidden md:inline"> — {areas}</span>
+            Wisuda · Pesta · Pernikahan<span className="hidden md:inline"> — {HOME_AREA_LABEL}</span>
           </Eyebrow>
           <h1 className="mt-6 font-heading text-[56px] leading-[0.95] tracking-tight md:text-8xl">
             Hari istimewamu,
@@ -112,7 +109,7 @@ export default async function Home() {
               <br />
               service
             </span>
-            <span className="mt-2 text-[9px] tracking-[0.25em] uppercase md:text-[10px]">{areas.replace(" & ", " · ")}</span>
+            <span className="mt-2 text-[9px] tracking-[0.25em] uppercase md:text-[10px]">{HOME_AREA_LABEL}</span>
           </div>
         </div>
 
@@ -209,7 +206,7 @@ export default async function Home() {
           <ol className="mt-10 grid md:grid-cols-3 md:gap-12">
             {steps.map((s, i) => (
               <li key={s.title} className="flex gap-6 border-t border-foreground py-6 md:block md:pt-6">
-                <span aria-hidden="true" className="font-heading text-6xl leading-none text-accent-strong md:text-[80px]">
+                <span aria-hidden="true" className="w-10 shrink-0 font-heading text-6xl leading-none text-accent-strong md:w-auto md:text-[80px]">
                   {i + 1}
                 </span>
                 <div className="md:mt-6">

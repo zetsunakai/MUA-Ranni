@@ -12,11 +12,11 @@ function displayWidthPercent(brand: Brand): number {
 
 export default function BrandLogos({ brands }: { brands: Brand[] }) {
   return (
-    <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+    <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">
       {brands.map((brand) => (
         <li
           key={brand.name}
-          className="flex aspect-[3/2] items-center justify-center rounded-xl border border-line bg-white p-3"
+          className="flex aspect-[3/2] items-center justify-center rounded-lg border border-line bg-white p-3"
         >
           <Image
             src={brand.logo}

@@ -10,12 +10,15 @@ export const WHATSAPP_SOURCES = [
   "floating",
   "hero",
   "home-cta",
+  "portfolio-cta",
   "layanan",
   "layanan-cta",
   "lightbox",
   "jadwal",
   "tentang",
+  "tentang-cta",
   "kontak",
+  "faq-cta",
   "footer",
 ] as const;
 

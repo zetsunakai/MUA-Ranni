@@ -19,10 +19,13 @@ type Props = {
 
 const statusLabel: Record<ScheduleStatus | "available", string> = {
   available: "tersedia",
-  limited: "terbatas",
+  limited: "sisa sedikit",
   full: "penuh",
 };
 
+// Tampilan mengikuti lebar kalender itu sendiri (container query `@container`), bukan lebar layar:
+// kotak kecil berisi angka saja kalau sempit (HP, kolom admin), kotak besar dengan
+// keterangan "Penuh"/"Sisa sedikit" kalau lebar (desktop halaman Jadwal).
 export default function MonthCalendar({
   month,
   minMonth,
@@ -38,36 +41,42 @@ export default function MonthCalendar({
   const weeks = monthGrid(month);
 
   return (
-    <div className="rounded-xl border border-line bg-surface p-3 sm:p-5">
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => onMonthChange(addMonths(month, -1))}
-          disabled={month <= minMonth}
-          aria-label="Bulan sebelumnya"
-          className="rounded-full p-2 disabled:opacity-30"
-        >
-          <Chevron direction="left" />
-        </button>
-        <p aria-live="polite" className="font-heading text-2xl">
+    <div className="@container rounded-lg border border-line bg-white p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-between gap-3">
+        <p aria-live="polite" className="font-heading text-[30px] leading-none @md:text-[40px]">
           {formatMonth(month)}
         </p>
-        <button
-          type="button"
-          onClick={() => onMonthChange(addMonths(month, 1))}
-          disabled={month >= maxMonth}
-          aria-label="Bulan berikutnya"
-          className="rounded-full p-2 disabled:opacity-30"
-        >
-          <Chevron direction="right" />
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => onMonthChange(addMonths(month, -1))}
+            disabled={month <= minMonth}
+            aria-label="Bulan sebelumnya"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground transition-colors hover:bg-accent-soft disabled:opacity-30 disabled:hover:bg-transparent @md:h-12 @md:w-12"
+          >
+            <Arrow direction="left" />
+          </button>
+          <button
+            type="button"
+            onClick={() => onMonthChange(addMonths(month, 1))}
+            disabled={month >= maxMonth}
+            aria-label="Bulan berikutnya"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground bg-foreground text-background transition-colors hover:bg-accent-strong hover:border-accent-strong disabled:opacity-30 disabled:hover:bg-foreground @md:h-12 @md:w-12"
+          >
+            <Arrow direction="right" />
+          </button>
+        </div>
       </div>
 
-      <table className="mt-3 w-full table-fixed border-separate border-spacing-1" role="grid">
+      <table className="mt-4 w-full table-fixed border-separate border-spacing-1 @md:mt-6 @md:border-spacing-2" role="grid">
         <thead>
           <tr>
             {WEEKDAY_LABELS.map((d) => (
-              <th key={d} scope="col" className="pb-1 text-xs font-medium text-foreground/70">
+              <th
+                key={d}
+                scope="col"
+                className="pb-1 text-[10px] font-bold tracking-[0.08em] text-muted uppercase @md:text-xs @md:tracking-[0.12em]"
+              >
                 {d}
               </th>
             ))}
@@ -82,6 +91,7 @@ export default function MonthCalendar({
                 const past = date < today;
                 const disabled = past || (status === "full" && !selectableFull);
                 const isSelected = date === selected;
+                const note = isSelected ? "Dipilih" : past ? null : status === "full" ? "Penuh" : status === "limited" ? "Sisa sedikit" : null;
                 return (
                   <td key={date} className="p-0">
                     <button
@@ -90,15 +100,22 @@ export default function MonthCalendar({
                       onClick={() => onSelect(date)}
                       aria-pressed={isSelected}
                       aria-label={`${formatLongDate(date)}, ${past ? "sudah lewat" : statusLabel[status ?? "available"]}`}
-                      className={`relative flex aspect-square w-full flex-col items-center justify-center rounded-lg text-sm tabular-nums transition-colors ${cellClass(
+                      className={`relative flex h-11 w-full flex-col items-center justify-center rounded-md text-sm tabular-nums transition-colors @md:h-[84px] @md:items-start @md:justify-between @md:px-2.5 @md:py-2 @md:text-[17px] @lg:px-3 @lg:py-2.5 ${cellClass(
                         status,
                         past,
                         isSelected,
-                      )} ${date === today ? "font-bold underline underline-offset-4" : ""}`}
+                      )}`}
                     >
-                      {Number(date.slice(8))}
+                      <span className={date === today ? "underline underline-offset-4" : undefined}>
+                        {Number(date.slice(8))}
+                      </span>
+                      {note && (
+                        <span aria-hidden="true" className="hidden text-left text-[11px] leading-tight @md:block">
+                          {note}
+                        </span>
+                      )}
                       {marked?.has(date) && (
-                        <span aria-hidden="true" className="absolute bottom-1 h-1 w-1 rounded-full bg-current" />
+                        <span aria-hidden="true" className="absolute right-1.5 bottom-1.5 h-1.5 w-1.5 rounded-full bg-current" />
                       )}
                     </button>
                   </td>
@@ -109,36 +126,36 @@ export default function MonthCalendar({
         </tbody>
       </table>
 
-      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-foreground/80">
-        <Legend className="border border-line bg-surface">Tersedia</Legend>
-        <Legend className="bg-amber-100 ring-1 ring-amber-300">Terbatas</Legend>
-        <Legend className="bg-foreground/10 line-through">Penuh</Legend>
+      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted @md:mt-4 @md:gap-x-7 @md:text-sm">
+        <Legend className="border border-line bg-background">Tersedia</Legend>
+        <Legend className="bg-limited">Sisa sedikit</Legend>
+        <Legend className="bg-foreground">Penuh</Legend>
       </ul>
     </div>
   );
 }
 
 function cellClass(status: ScheduleStatus | undefined, past: boolean, selected: boolean): string {
-  if (selected) return "bg-accent-strong text-white";
+  if (selected) return "border-2 border-accent-strong bg-white font-bold text-accent-strong";
   if (past) return "text-foreground/30";
-  if (status === "full") return "bg-foreground/10 text-foreground/75 line-through";
-  if (status === "limited") return "bg-amber-100 text-amber-900 ring-1 ring-amber-300 hover:bg-amber-200";
-  return "border border-line hover:border-accent-strong hover:bg-accent-soft/50";
+  if (status === "full") return "bg-foreground text-[#a8998d] enabled:hover:bg-foreground/85";
+  if (status === "limited") return "bg-limited hover:ring-1 hover:ring-accent-strong";
+  return "border border-line bg-background hover:border-accent-strong";
 }
 
 function Legend({ className, children }: { className: string; children: string }) {
   return (
-    <li className="flex items-center gap-1.5">
-      <span aria-hidden="true" className={`inline-block h-3.5 w-3.5 rounded ${className}`} />
+    <li className="flex items-center gap-1.5 @md:gap-2">
+      <span aria-hidden="true" className={`inline-block h-3 w-3 rounded-[3px] @md:h-3.5 @md:w-3.5 ${className}`} />
       {children}
     </li>
   );
 }
 
-function Chevron({ direction }: { direction: "left" | "right" }) {
+function Arrow({ direction }: { direction: "left" | "right" }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d={direction === "left" ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"} />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={direction === "left" ? "M19 12H5M11 6l-6 6 6 6" : "M5 12h14M13 6l6 6-6 6"} />
     </svg>
   );
 }

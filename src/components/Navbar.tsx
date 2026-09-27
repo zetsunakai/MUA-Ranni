@@ -31,14 +31,18 @@ export default function Navbar() {
           <Wordmark />
         </Link>
 
-        {/* Desktop */}
-        <ul className="hidden items-center gap-9 text-[15px] md:flex">
+        {/* Desktop (mulai 1024px; di bawahnya 6 menu tidak muat sebaris) */}
+        <ul className="hidden items-center gap-7 text-[15px] lg:flex xl:gap-9">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                className={isActive(link.href) ? "text-accent-strong" : "transition-colors hover:text-accent-strong"}
+                className={
+                  isActive(link.href)
+                    ? "text-accent-strong underline underline-offset-[6px]"
+                    : "transition-colors hover:text-accent-strong"
+                }
               >
                 {link.label}
               </Link>
@@ -49,7 +53,7 @@ export default function Navbar() {
           href={whatsappUrl("navbar")}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden rounded-full bg-accent-strong px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-foreground md:inline-block"
+          className="hidden rounded-full bg-accent-strong px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-foreground lg:inline-block"
         >
           Chat WhatsApp
         </a>
@@ -61,7 +65,7 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Tutup menu" : "Buka menu"}
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-foreground/80 md:hidden"
+          className="flex h-12 w-12 items-center justify-center rounded-full border border-foreground/80 lg:hidden"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M6 9h12M6 15h12" />}
@@ -71,7 +75,7 @@ export default function Navbar() {
 
       {/* Menu HP */}
       {open && (
-        <div id="mobile-menu" className="border-t border-line bg-background md:hidden">
+        <div id="mobile-menu" className="border-t border-line bg-background lg:hidden">
           <ul className="mx-auto flex max-w-6xl flex-col px-5 py-2">
             {navLinks.map((link) => (
               <li key={link.href}>

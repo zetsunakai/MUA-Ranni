@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import BrandLogos from "@/components/BrandLogos";
-import SectionHeading from "@/components/SectionHeading";
-import WhatsAppCta from "@/components/WhatsAppCta";
-import { PinIcon } from "@/components/icons";
+import { ChatIcon } from "@/components/icons";
 import { about } from "@/data/about";
 import { bookingInfo, brands } from "@/data/services";
 import { site } from "@/data/site";
-import { formatRupiah } from "@/lib/format";
-import { getServiceGroups, lowestPrice } from "@/lib/prices";
 import { getProfile } from "@/lib/profile";
+import { whatsappUrl } from "@/lib/whatsapp";
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
@@ -19,81 +16,136 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// Isi mengikuti paket yang berlaku untuk semua layanan (lihat REGULER/PREMIUM_INCLUDES
+// di data/services.ts) dan layanan home service. Ubah di sini kalau paketnya berubah.
+const approach = [
+  {
+    title: "Menyesuaikan wajah & busana",
+    text: "Riasan dibuat mengikuti karakter wajah dan warna busanamu, bukan satu gaya untuk semua.",
+  },
+  { title: "Datang ke tempatmu", text: "Kamu cukup bersiap di rumah, kos, atau venue." },
+  {
+    title: "Sampai hijab rapi",
+    text: "Bulu mata dan hijab do simple sudah termasuk, jadi tampilan selesai utuh.",
+  },
+];
+
 export default async function TentangPage() {
-  const [serviceGroups, profile] = await Promise.all([getServiceGroups(), getProfile()]);
-  // Sorotan dihitung dari data asli, bukan angka karangan.
-  const allItems = serviceGroups.flatMap((g) => g.items);
-  const highlights = [
-    { value: String(allItems.length), label: "jenis layanan" },
-    { value: String(brands.length), label: "brand produk" },
-    { value: formatRupiah(lowestPrice(serviceGroups)), label: "harga mulai" },
-  ];
+  const profile = await getProfile();
+  const [lead, ...rest] = profile.bio;
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-      <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-accent-soft">
+    <>
+      <section className="mx-auto grid w-full max-w-6xl items-center gap-6 px-5 pt-8 pb-14 sm:px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-16 md:pt-24 md:pb-28 lg:gap-24">
+        {/* Foto berbentuk lengkung, sama seperti di Home */}
+        <div className="relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-lg bg-sand md:aspect-[13/17]">
           <Image
             src={about.photoUrl}
             alt={about.photoAlt}
             fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            loading="eager"
+            sizes="(min-width: 1152px) 460px, (min-width: 768px) 42vw, 100vw"
+            preload
             className="object-cover"
           />
         </div>
 
         <div>
-          <SectionHeading as="h1" eyebrow={`Tentang ${site.name}`} title={profile.greeting} />
-          <div className="mt-4 space-y-4 text-foreground/80">
-            {profile.bio.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-
-          <dl className="mt-8 grid grid-cols-3 gap-3">
-            {highlights.map((h) => (
-              <div key={h.label} className="rounded-xl border border-line bg-surface px-3 py-4 text-center">
-                <dt className="sr-only">{h.label}</dt>
-                <dd className="font-heading text-2xl sm:text-3xl">{h.value}</dd>
-                <dd className="mt-1 text-xs text-foreground/70">{h.label}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-
-      <section className="mt-16">
-        <SectionHeading
-          eyebrow="Product used"
-          title="Brand yang aku pakai"
-          description="Produk lokal dan internasional yang sudah teruji untuk riasan tahan lama."
-        />
-        <div className="mt-6">
-          <BrandLogos brands={brands} />
-        </div>
-      </section>
-
-      <section className="mt-16">
-        <SectionHeading eyebrow="Area layanan" title="Aku datang ke lokasimu" />
-        <ul className="mt-6 flex flex-wrap gap-2">
-          {profile.serviceAreas.map((area) => (
-            <li key={area} className="flex items-center gap-2 rounded-full bg-accent-soft px-4 py-2 text-sm">
-              <PinIcon className="h-4 w-4 text-accent-strong" />
-              {area}
-            </li>
+          <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Tentang</p>
+          <h1 className="mt-4 font-heading text-[60px] leading-[0.95] tracking-tight md:mt-7 md:text-8xl">
+            <Greeting text={profile.greeting} />
+          </h1>
+          {lead && <p className="mt-5 text-[17px] leading-relaxed md:mt-7 md:text-xl">{lead}</p>}
+          {rest.map((paragraph) => (
+            <p key={paragraph} className="mt-4 text-[15px] leading-relaxed text-muted md:mt-5 md:text-[17px]">
+              {paragraph}
+            </p>
           ))}
-        </ul>
-        <p className="mt-3 text-sm text-foreground/70">{bookingInfo.transport}</p>
+          <div className="mt-6 flex flex-col gap-4 md:mt-9 md:flex-row md:items-center">
+            <a
+              href={whatsappUrl("tentang")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-accent-strong px-7 py-4 text-center font-medium text-white transition-colors hover:bg-foreground"
+            >
+              Chat WhatsApp
+            </a>
+            <a
+              href={profile.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden font-medium underline underline-offset-4 hover:text-accent-strong md:inline"
+            >
+              Instagram @{profile.instagramHandle}
+            </a>
+          </div>
+        </div>
       </section>
 
-      <div className="mt-16">
-        <WhatsAppCta
-          source="tentang"
-          title="Yuk, cek jadwal kosong"
-          description="Kirim tanggal, lokasi, dan jenis acaramu lewat WhatsApp."
-        />
-      </div>
-    </div>
+      <section className="bg-accent-soft">
+        <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-6 md:py-28">
+          <h2 className="font-heading text-[40px] leading-none md:text-[64px]">Cara aku merias</h2>
+          <ul className="mt-6 grid gap-6 md:mt-14 md:grid-cols-3 md:gap-12">
+            {approach.map((item) => (
+              <li key={item.title} className="border-t border-foreground pt-4 md:pt-6">
+                <h3 className="font-heading text-[26px] leading-tight md:text-[32px]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted md:mt-3.5 md:text-base">{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="mx-auto grid w-full max-w-6xl gap-12 px-5 py-14 sm:px-6 md:grid-cols-2 md:gap-16 md:py-28 lg:gap-24">
+        <div>
+          <h2 className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Area layanan</h2>
+          <ul className="mt-4 font-heading text-5xl leading-[1.05] md:mt-6 md:text-7xl">
+            {profile.serviceAreas.map((area) => (
+              <li key={area}>{area}</li>
+            ))}
+          </ul>
+          <p className="mt-4 text-sm text-muted md:mt-6 md:text-base">{profile.responseHours}</p>
+          <p className="mt-1 text-sm text-muted md:text-base">{bookingInfo.transport}</p>
+        </div>
+
+        <div>
+          <h2 className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Produk yang dipakai</h2>
+          <div className="mt-4 md:mt-6">
+            <BrandLogos brands={brands} />
+          </div>
+        </div>
+      </section>
+
+      {/* Ajakan chat, menyambung ke footer gelap */}
+      <section className="bg-foreground text-background">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-center md:justify-between md:pt-20">
+          <h2 className="font-heading text-[44px] leading-none md:text-7xl">
+            Yuk, <em>kenalan dulu.</em>
+          </h2>
+          <a
+            href={whatsappUrl("tentang-cta")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
+          >
+            <ChatIcon />
+            Chat WhatsApp
+          </a>
+        </div>
+      </section>
+    </>
+  );
+}
+
+// Sapaan diisi admin (mis. "Halo, aku Ranni"). Kata terakhir dibuat miring seperti di desain,
+// dan diberi titik kalau belum ada tanda baca di akhir.
+function Greeting({ text }: { text: string }) {
+  const trimmed = text.trim();
+  const ending = /[.!?]$/.test(trimmed) ? "" : ".";
+  const cut = trimmed.lastIndexOf(" ");
+  if (cut === -1) return <em>{trimmed + ending}</em>;
+  return (
+    <>
+      {trimmed.slice(0, cut)} <em>{trimmed.slice(cut + 1) + ending}</em>
+    </>
   );
 }

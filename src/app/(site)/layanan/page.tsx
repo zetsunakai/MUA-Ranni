@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import SectionHeading from "@/components/SectionHeading";
-import ServiceGroupCard from "@/components/ServiceGroupCard";
-import WhatsAppCta from "@/components/WhatsAppCta";
+import { ArrowRightIcon, ChatIcon } from "@/components/icons";
 import { bookingInfo, terms } from "@/data/services";
 import { formatRupiah } from "@/lib/format";
 import { getAddOns, getServiceGroups, lowestPrice } from "@/lib/prices";
+import { whatsappUrl } from "@/lib/whatsapp";
+import type { ServiceGroup } from "@/types";
 
 export const metadata: Metadata = {
   title: "Layanan & Harga",
@@ -16,80 +16,164 @@ export const metadata: Metadata = {
 // Setelah admin menyimpan harga baru, revalidatePath("/layanan") membuat ulang halaman ini.
 export default async function LayananPage() {
   const [groups, addOns] = await Promise.all([getServiceGroups(), getAddOns()]);
+  const booking = [
+    { label: "Transport", text: bookingInfo.transport },
+    { label: "DP", text: bookingInfo.deposit },
+    { label: "Pelunasan", text: bookingInfo.payment },
+  ];
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-      <SectionHeading
-        as="h1"
-        eyebrow="Price list 2026"
-        title="Layanan & Harga"
-        description={`Harga per orang, mulai ${formatRupiah(lowestPrice(groups))}. Ketuk salah satu layanan untuk langsung booking lewat WhatsApp.`}
-      />
+    <>
+      <div className="mx-auto w-full max-w-6xl px-5 pt-10 pb-14 sm:px-6 md:pt-24 md:pb-28">
+        <div className="max-w-4xl">
+          <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Price list 2026</p>
+          <h1 className="mt-4 font-heading text-[56px] leading-[0.95] tracking-tight md:mt-5 md:text-8xl">
+            Harga jelas, <em>per&nbsp;orang.</em>
+          </h1>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted md:mt-5 md:text-lg">
+            Mulai {formatRupiah(lowestPrice(groups))} per orang. Ketuk salah satu layanan untuk langsung booking lewat
+            WhatsApp.
+          </p>
+        </div>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-2">
-        {groups.map((group) => (
-          <ServiceGroupCard key={group.id} group={group} />
-        ))}
-      </div>
-
-      <section aria-labelledby="tambahan" className="mt-12">
-        <h2 id="tambahan" className="font-heading text-3xl">
-          Tambahan
-        </h2>
-        <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-          {addOns.map((addOn) => (
-            <li key={addOn.id} className="flex items-center justify-between gap-4 rounded-xl border border-line bg-surface px-5 py-4">
-              <div>
-                <p className="font-medium">{addOn.name}</p>
-                {addOn.note && <p className="text-sm text-foreground/70">{addOn.note}</p>}
-              </div>
-              <p className="font-semibold tabular-nums">
-                {formatRupiah(addOn.priceFrom)}
-                {addOn.priceTo && `–${formatRupiah(addOn.priceTo)}`}
-              </p>
-            </li>
+        <ul className="mt-10 border-t border-foreground md:mt-16">
+          {groups.map((group) => (
+            <GroupBlock key={group.id} group={group} />
           ))}
+
+          {addOns.length > 0 && (
+            <li className="grid gap-5 border-b border-line py-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:py-12">
+              <div>
+                <h2 className="font-heading text-[36px] leading-none md:text-5xl">Tambahan</h2>
+                <p className="mt-3 text-sm text-muted md:text-[15px]">Bisa ditambahkan ke layanan apa pun.</p>
+              </div>
+              <ul className="md:-mt-4">
+                {addOns.map((addOn) => (
+                  <li
+                    key={addOn.id}
+                    className="flex items-center gap-4 border-b border-line py-4 last:border-b-0"
+                  >
+                    <div className="flex-1">
+                      <p className="text-[15px] md:text-[17px]">{addOn.name}</p>
+                      {addOn.note && <p className="text-[13px] text-muted">{addOn.note}</p>}
+                    </div>
+                    <p className="text-right font-heading text-2xl leading-none tabular-nums md:text-[28px]">
+                      {formatRupiah(addOn.priceFrom)}
+                      {addOn.priceTo && `–${formatRupiah(addOn.priceTo)}`}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )}
         </ul>
-      </section>
-
-      <section aria-labelledby="ketentuan" className="mt-12 grid gap-6 md:grid-cols-[1fr_1.4fr]">
-        <div>
-          <h2 id="ketentuan" className="font-heading text-3xl">
-            Booking & pembayaran
-          </h2>
-          <dl className="mt-4 space-y-4 text-sm">
-            <div>
-              <dt className="font-semibold">Transport</dt>
-              <dd className="mt-1 text-foreground/75">{bookingInfo.transport}</dd>
-            </div>
-            <div>
-              <dt className="font-semibold">DP</dt>
-              <dd className="mt-1 text-foreground/75">{bookingInfo.deposit}</dd>
-            </div>
-            <div>
-              <dt className="font-semibold">Pelunasan</dt>
-              <dd className="mt-1 text-foreground/75">{bookingInfo.payment}</dd>
-            </div>
-          </dl>
-        </div>
-        <div className="rounded-xl border border-line bg-surface p-5 sm:p-6">
-          <h3 className="font-semibold">Syarat & ketentuan</h3>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-foreground/75 marker:text-accent">
-            {terms.map((term) => (
-              <li key={term}>{term}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <div className="mt-14">
-        <WhatsAppCta
-          source="layanan-cta"
-          title="Bingung pilih yang mana?"
-          description="Ceritakan acaramu, tanggal, dan lokasinya. Nanti dibantu pilihkan layanan yang paling pas."
-          message="Halo Kak, saya mau konsultasi pilihan makeup untuk acara saya."
-        />
       </div>
-    </div>
+
+      <section aria-labelledby="ketentuan" className="bg-accent-soft">
+        <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-6 md:py-28">
+          <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Sebelum booking</p>
+          <h2 id="ketentuan" className="mt-4 font-heading text-[40px] leading-none md:text-[64px]">
+            Booking &amp; <em>pembayaran.</em>
+          </h2>
+
+          <div className="mt-8 grid gap-10 md:mt-14 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
+            <dl className="grid gap-6">
+              {booking.map((b) => (
+                <div key={b.label} className="border-t border-foreground pt-4">
+                  <dt className="font-heading text-[26px] leading-tight md:text-[32px]">{b.label}</dt>
+                  <dd className="mt-2 text-sm leading-relaxed text-muted md:text-base">{b.text}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <div className="border-t border-foreground pt-4">
+              <h3 className="font-heading text-[26px] leading-tight md:text-[32px]">Syarat &amp; ketentuan</h3>
+              <ol className="mt-4">
+                {terms.map((term, i) => (
+                  <li key={term} className="flex gap-4 border-b border-line py-3 text-sm leading-relaxed last:border-b-0 md:text-[15px]">
+                    <span aria-hidden="true" className="w-5 shrink-0 font-heading text-xl leading-none text-accent-strong">
+                      {i + 1}
+                    </span>
+                    <span className="text-muted">{term}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ajakan chat, menyambung ke footer gelap */}
+      <section className="bg-foreground text-background">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between md:pt-20">
+          <div>
+            <h2 className="font-heading text-[44px] leading-none md:text-7xl">
+              Bingung pilih <em>yang mana?</em>
+            </h2>
+            <p className="mt-5 max-w-md text-[15px] text-background/80 md:text-[17px]">
+              Ceritakan acaramu, tanggal, dan lokasinya. Nanti dibantu pilihkan layanan yang paling pas.
+            </p>
+          </div>
+          <a
+            href={whatsappUrl("layanan-cta", "Halo Kak, saya mau konsultasi pilihan makeup untuk acara saya.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
+          >
+            <ChatIcon />
+            Chat WhatsApp
+          </a>
+        </div>
+      </section>
+    </>
+  );
+}
+
+// Satu grup harga: nama & isi paket di kiri, daftar layanan di kanan.
+// Setiap baris layanan adalah link WhatsApp dengan pesan yang sudah menyebut
+// nama layanan dan harganya, jadi klien tidak perlu mengetik ulang.
+function GroupBlock({ group }: { group: ServiceGroup }) {
+  const premium = group.tier === "premium";
+
+  return (
+    <li
+      id={group.id}
+      className="grid scroll-mt-24 gap-5 border-b border-line py-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:py-12"
+    >
+      <div>
+        <span
+          className={`inline-block rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.15em] uppercase ${
+            premium ? "bg-accent-strong text-white" : "border border-foreground/40"
+          }`}
+        >
+          {premium ? "Premium" : "Reguler"}
+        </span>
+        <h2 className="mt-4 font-heading text-[36px] leading-none md:text-5xl">{group.name}</h2>
+        <p className="mt-3 text-sm text-muted md:text-[15px]">Termasuk: {group.includes.join(" · ")}</p>
+      </div>
+
+      <ul className="md:-mt-4">
+        {group.items.map((item) => (
+          <li key={item.id} className="border-b border-line last:border-b-0">
+            <a
+              href={whatsappUrl(
+                "layanan",
+                `Halo Kak, saya mau booking makeup ${group.name} - ${item.name} (${formatRupiah(item.price)}) untuk tanggal ... di ...`,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Booking ${item.name}, ${formatRupiah(item.price)}, lewat WhatsApp`}
+              className="group flex items-center gap-4 py-4 transition-colors hover:text-accent-strong"
+            >
+              <span className="flex-1 text-[15px] md:text-[17px]">{item.name}</span>
+              <span className="font-heading text-2xl leading-none tabular-nums md:text-[28px]">
+                {formatRupiah(item.price)}
+              </span>
+              <ArrowRightIcon className="h-4 w-4 shrink-0 text-accent-strong transition-transform group-hover:translate-x-0.5" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </li>
   );
 }

@@ -1,7 +1,7 @@
 // Server Component: tidak ada state atau event handler, jadi tidak perlu "use client".
 
 import Link from "next/link";
-import { extraLinks, navLinks, site } from "@/data/site";
+import { navLinks, site } from "@/data/site";
 import { getProfile } from "@/lib/profile";
 import { whatsappUrl } from "@/lib/whatsapp";
 
@@ -22,7 +22,7 @@ export default async function Footer() {
         </div>
 
         <FooterColumn title="Menu" className="hidden md:block">
-          {[...navLinks, ...extraLinks].map((link) => (
+          {navLinks.map((link) => (
             <li key={link.href}>
               <Link href={link.href} className="hover:text-accent-soft hover:underline">
                 {link.label}

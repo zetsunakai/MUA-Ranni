@@ -22,8 +22,9 @@ export default function CategoryFilter({ value, onChange, counts, categories }: 
     <div
       role="group"
       aria-label="Filter kategori"
-      // -mx-4 px-4: chip bisa di-scroll sampai tepi layar HP tanpa terpotong padding.
-      className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0"
+      // HP: satu baris yang bisa di-scroll sampai tepi layar (-mx-5 px-5).
+      // Desktop: rata kanan dan boleh turun baris, sejajar judul halaman.
+      className="scrollbar-none -mx-5 flex gap-2 overflow-x-auto px-5 sm:-mx-6 sm:px-6 md:mx-0 md:max-w-[460px] md:shrink-0 md:flex-wrap md:justify-end md:gap-2.5 md:px-0"
     >
       {options.map((option) => {
         const active = option.value === value;
@@ -34,16 +35,13 @@ export default function CategoryFilter({ value, onChange, counts, categories }: 
             onClick={() => onChange(option.value)}
             aria-pressed={active}
             aria-label={`${option.label} (${counts[option.value]} foto)`}
-            className={`shrink-0 rounded-full border px-4 py-2 text-sm transition-colors ${
+            className={`shrink-0 rounded-full border px-[18px] py-3 text-sm transition-colors md:px-[22px] md:text-[15px] ${
               active
-                ? "border-accent-strong bg-accent-strong text-white"
-                : "border-line bg-surface hover:border-accent"
+                ? "border-foreground bg-foreground text-background"
+                : "border-sand hover:border-foreground"
             }`}
           >
             {option.label}
-            <span aria-hidden="true" className={active ? "ml-1.5 text-white/90" : "ml-1.5 text-foreground/70"}>
-              {counts[option.value]}
-            </span>
           </button>
         );
       })}

@@ -10,21 +10,19 @@ export const site = {
   instagramHandle: "@rannitary_makeup",
   instagramUrl: "https://instagram.com/rannitary_makeup",
   tiktokUrl: "https://tiktok.com/@rannitary_makeup",
-  serviceAreas: ["Depok", "Kota Bogor", "Bogor"],
+  serviceAreas: ["Kab. Bogor", "Kota Bogor", "Depok"],
   responseHours: "Setiap hari, 08.00–22.00 WIB",
 };
 
-// Menu utama sesuai desain. Kontak tidak di navbar (tombol WhatsApp sudah ada),
-// tapi tetap ada di footer dan sitemap lewat extraLinks.
+// Menu utama (navbar, menu HP, footer, dan sitemap).
 export const navLinks: NavLink[] = [
   { href: "/portfolio", label: "Portofolio" },
   { href: "/layanan", label: "Layanan & Harga" },
   { href: "/jadwal", label: "Jadwal" },
   { href: "/tentang", label: "Tentang" },
   { href: "/faq", label: "FAQ" },
+  { href: "/kontak", label: "Kontak" },
 ];
-
-export const extraLinks: NavLink[] = [{ href: "/kontak", label: "Kontak" }];
 
 // Jenis acara di band gelap Home.
 export const eventHighlights = ["Wisuda", "Pesta", "Akad", "Lamaran", "Prewedding", "Bridesmaid"];

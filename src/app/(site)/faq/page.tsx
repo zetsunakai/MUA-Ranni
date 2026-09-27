@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import SectionHeading from "@/components/SectionHeading";
-import WhatsAppCta from "@/components/WhatsAppCta";
+import { ChatIcon } from "@/components/icons";
 import { bookingInfo, brands, terms } from "@/data/services";
 import { formatRupiah } from "@/lib/format";
 import { getAddOns, getServiceGroups } from "@/lib/prices";
 import { getProfile } from "@/lib/profile";
+import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -58,39 +58,73 @@ export default async function FaqPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <SectionHeading as="h1" eyebrow="FAQ" title="Pertanyaan yang sering ditanyakan" />
 
-      <div className="mt-8 divide-y divide-line rounded-xl border border-line bg-surface">
-        {faqs.map((f) => (
-          <details key={f.q} className="group px-4 sm:px-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium [&::-webkit-details-marker]:hidden">
-              {f.q}
-              <span aria-hidden="true" className="text-xl leading-none text-accent-strong transition-transform group-open:rotate-45">
-                +
-              </span>
-            </summary>
-            <p className="pb-4 text-foreground/80">{f.a}</p>
-          </details>
-        ))}
+      <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-10 pb-14 sm:px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:pt-24 md:pb-28">
+        {/* Judul ikut menempel saat daftar pertanyaan di-scroll (desktop) */}
+        <div className="md:sticky md:top-32 md:self-start">
+          <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">FAQ</p>
+          <h1 className="mt-4 font-heading text-[56px] leading-[0.95] tracking-tight md:mt-5 md:text-8xl">
+            Yang sering <em>ditanyakan.</em>
+          </h1>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted md:mt-5 md:text-lg">
+            Detail harga ada di{" "}
+            <Link href="/layanan" className="font-medium text-accent-strong underline underline-offset-4">
+              Layanan &amp; Harga
+            </Link>
+            , tanggal kosong di{" "}
+            <Link href="/jadwal" className="font-medium text-accent-strong underline underline-offset-4">
+              Jadwal
+            </Link>
+            .
+          </p>
+        </div>
+
+        <div className="border-t border-foreground">
+          {faqs.map((f) => (
+            <details key={f.q} className="group border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 md:py-6 [&::-webkit-details-marker]:hidden">
+                <span className="font-heading text-[24px] leading-tight transition-colors group-hover:text-accent-strong md:text-[30px]">
+                  {f.q}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-foreground transition-[transform,background-color,color] group-open:rotate-45 group-open:bg-foreground group-open:text-background"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </span>
+              </summary>
+              <p className="-mt-1 pr-14 pb-6 text-[15px] leading-relaxed text-muted md:text-[17px]">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
 
-      <p className="mt-6 text-sm text-foreground/70">
-        Detail harga ada di{" "}
-        <Link href="/layanan" className="font-medium text-accent-strong">
-          Layanan & Harga
-        </Link>
-        , tanggal kosong di{" "}
-        <Link href="/jadwal" className="font-medium text-accent-strong">
-          Jadwal
-        </Link>
-        .
-      </p>
-
-      <div className="mt-10">
-        <WhatsAppCta source="kontak" title="Masih ada pertanyaan?" description="Tanya langsung lewat WhatsApp, dibalas secepatnya." />
-      </div>
-    </div>
+      {/* Ajakan chat, menyambung ke footer gelap */}
+      <section className="bg-foreground text-background">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between md:pt-20">
+          <div>
+            <h2 className="font-heading text-[44px] leading-none md:text-7xl">
+              Masih ada <em>pertanyaan?</em>
+            </h2>
+            <p className="mt-5 max-w-md text-[15px] text-background/80 md:text-[17px]">
+              Tanya langsung lewat WhatsApp, dibalas secepatnya.
+            </p>
+          </div>
+          <a
+            href={whatsappUrl("faq-cta", "Halo Kak, saya mau tanya soal makeup.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
+          >
+            <ChatIcon />
+            Chat WhatsApp
+          </a>
+        </div>
+      </section>
+    </>
   );
 }
