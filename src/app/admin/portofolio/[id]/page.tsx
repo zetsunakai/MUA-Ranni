@@ -25,7 +25,7 @@ export default async function EditPortfolioPage({ params }: PageProps<"/admin/po
           ← Kembali
         </Link>
         <div className="mt-2 flex items-start justify-between gap-3">
-          <h1 className="font-heading text-3xl font-semibold">Edit foto</h1>
+          <h1 className="font-heading text-4xl">Edit foto</h1>
           <DeletePortfolioButton id={item.id} title={item.title} />
         </div>
         <div className="mt-6">

@@ -18,7 +18,7 @@ export default async function AdminJadwalPage() {
       <AdminHeader email={admin.email} current="/admin/jadwal" />
       <div className="mx-auto w-full max-w-4xl space-y-8 px-4 py-6">
         <div>
-          <h1 className="font-heading text-3xl font-semibold">Jadwal</h1>
+          <h1 className="font-heading text-4xl">Jadwal</h1>
           <p className="mt-1 text-sm text-foreground/70">
             Pengunjung hanya melihat status tanggal (tersedia / terbatas / penuh), tidak melihat catatan.
           </p>
@@ -35,7 +35,7 @@ export default async function AdminJadwalPage() {
             />
 
             <section>
-              <h2 className="font-heading text-xl font-semibold">
+              <h2 className="font-heading text-2xl">
                 Tanggal terisi ke depan <span className="text-foreground/70">({upcoming.length})</span>
               </h2>
               {upcoming.length === 0 ? (

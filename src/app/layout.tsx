@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Sans, Instrument_Serif } from "next/font/google";
 import SiteAnalytics from "@/components/SiteAnalytics";
 import { site } from "@/data/site";
 import { getProfile } from "@/lib/profile";
 import "./globals.css";
 
-// Keduanya variable font, jadi tidak perlu set weight.
-// `variable` membuat CSS variable yang dipakai di @theme (globals.css).
-const inter = Inter({
-  variable: "--font-inter",
+// DM Sans: variable font (semua ketebalan). Instrument Serif: hanya 400, tapi punya italic
+// yang dipakai untuk kata penekanan di judul. `variable` dipakai di @theme (globals.css).
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
   subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="id" className={`${inter.variable} ${playfair.variable} h-full antialiased`}>
+    <html lang="id" className={`${dmSans.variable} ${instrumentSerif.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">
         {/* Navbar, footer, dan tombol WA ada di app/(site)/layout.tsx,
             jadi tidak ikut tampil di halaman admin. */}

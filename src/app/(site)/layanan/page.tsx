@@ -33,7 +33,7 @@ export default async function LayananPage() {
       </div>
 
       <section aria-labelledby="tambahan" className="mt-12">
-        <h2 id="tambahan" className="font-heading text-2xl font-semibold">
+        <h2 id="tambahan" className="font-heading text-3xl">
           Tambahan
         </h2>
         <ul className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -54,7 +54,7 @@ export default async function LayananPage() {
 
       <section aria-labelledby="ketentuan" className="mt-12 grid gap-6 md:grid-cols-[1fr_1.4fr]">
         <div>
-          <h2 id="ketentuan" className="font-heading text-2xl font-semibold">
+          <h2 id="ketentuan" className="font-heading text-3xl">
             Booking & pembayaran
           </h2>
           <dl className="mt-4 space-y-4 text-sm">

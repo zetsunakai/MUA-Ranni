@@ -173,7 +173,7 @@ function ThankYou({ message }: { message: string }) {
 
   return (
     <div ref={ref} tabIndex={-1} role="status" className="rounded-xl bg-accent-soft p-6 text-center outline-none">
-      <p className="font-heading text-2xl font-semibold">Terima kasih! 💕</p>
+      <p className="font-heading text-3xl">Terima kasih! 💕</p>
       <p className="mt-2 text-foreground/80">{message}</p>
     </div>
   );

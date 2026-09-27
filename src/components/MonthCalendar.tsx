@@ -49,7 +49,7 @@ export default function MonthCalendar({
         >
           <Chevron direction="left" />
         </button>
-        <p aria-live="polite" className="font-heading text-xl font-semibold">
+        <p aria-live="polite" className="font-heading text-2xl">
           {formatMonth(month)}
         </p>
         <button

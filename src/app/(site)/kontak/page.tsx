@@ -85,7 +85,7 @@ export default async function KontakPage() {
       </div>
 
       <section aria-labelledby="cara-booking" className="mt-12">
-        <h2 id="cara-booking" className="font-heading text-2xl font-semibold">
+        <h2 id="cara-booking" className="font-heading text-3xl">
           Cara booking
         </h2>
         <ol className="mt-4 grid gap-3 md:grid-cols-3">

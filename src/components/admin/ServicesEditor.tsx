@@ -71,7 +71,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
                   name={`group:${group.id}:name`}
                   defaultValue={group.name}
                   aria-label="Nama grup"
-                  className={`${inputClass(errors[`group:${group.id}:name`])} font-heading text-lg font-semibold`}
+                  className={`${inputClass(errors[`group:${group.id}:name`])} font-heading text-xl`}
                 />
               </Field>
               <select
@@ -154,7 +154,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
       ))}
 
       <section className="rounded-xl border border-dashed border-line bg-surface p-3 sm:p-5">
-        <h2 className="font-heading text-lg font-semibold">Tambah grup</h2>
+        <h2 className="font-heading text-xl">Tambah grup</h2>
         <AddRow
           placeholder="contoh: Paket Keluarga"
           withTier
@@ -165,7 +165,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
       </section>
 
       <section className="rounded-xl border border-line bg-surface p-3 sm:p-5">
-        <h2 className="font-heading text-xl font-semibold">Layanan tambahan</h2>
+        <h2 className="font-heading text-2xl">Layanan tambahan</h2>
         <ul className="mt-2 divide-y divide-line">
           {addOns.map((addOn, ai) => (
             <li key={addOn.id} className="flex items-start gap-2 py-3">

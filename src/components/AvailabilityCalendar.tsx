@@ -37,7 +37,7 @@ export default function AvailabilityCalendar({ statuses, monthsAhead, renderedTo
         {selected ? (
           <>
             <p className="text-sm text-foreground/75">Tanggal dipilih</p>
-            <p className="font-heading text-2xl font-semibold">{formatLongDate(selected)}</p>
+            <p className="font-heading text-3xl">{formatLongDate(selected)}</p>
             <p className="mt-2 text-sm text-foreground/80">
               {status === "limited"
                 ? "Slot di tanggal ini tinggal sedikit. Chat dulu untuk cek jam yang masih kosong."
@@ -58,7 +58,7 @@ export default function AvailabilityCalendar({ statuses, monthsAhead, renderedTo
           </>
         ) : (
           <>
-            <p className="font-heading text-xl font-semibold">Pilih tanggal acaramu</p>
+            <p className="font-heading text-2xl">Pilih tanggal acaramu</p>
             <p className="mt-2 text-sm text-foreground/80">
               Ketuk tanggal di kalender untuk booking lewat WhatsApp. Tanggal yang dicoret sudah penuh.
             </p>

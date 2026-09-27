@@ -11,7 +11,7 @@ type Props = {
 export default function WhatsAppCta({ source, title, description, message }: Props) {
   return (
     <div className="rounded-xl bg-accent-soft px-5 py-8 text-center sm:px-10">
-      <h2 className="font-heading text-2xl font-semibold sm:text-3xl">{title}</h2>
+      <h2 className="font-heading text-3xl sm:text-4xl">{title}</h2>
       <p className="mx-auto mt-2 max-w-xl text-foreground/75">{description}</p>
       <a
         href={whatsappUrl(source, message)}

@@ -15,7 +15,7 @@ export default async function LayananAdminPage() {
     <>
       <AdminHeader email={admin.email} current="/admin/layanan" />
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
-        <h1 className="font-heading text-3xl font-semibold">Layanan & Harga</h1>
+        <h1 className="font-heading text-4xl">Layanan & Harga</h1>
         <p className="mt-1 text-sm text-foreground/70">
           Ubah nama, bonus, dan harga lalu tekan <b>Simpan</b>. Tombol tambah, hapus, dan ▲▼ langsung tersimpan.
         </p>

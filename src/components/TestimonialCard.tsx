@@ -16,7 +16,7 @@ export default function TestimonialCard({ testimonial }: { testimonial: Testimon
         </div>
       )}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <span aria-hidden="true" className="font-heading text-5xl leading-none text-accent">
+        <span aria-hidden="true" className="font-heading text-6xl leading-none text-accent">
           “
         </span>
         <blockquote className="mt-1 flex-1 text-foreground/80">{testimonial.quote}</blockquote>

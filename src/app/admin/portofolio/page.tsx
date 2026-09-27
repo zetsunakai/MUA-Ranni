@@ -25,7 +25,7 @@ export default async function AdminPortfolioPage({ searchParams }: PageProps<"/a
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
         <div className="flex items-end justify-between gap-3">
           <div>
-            <h1 className="font-heading text-3xl font-semibold">Portofolio</h1>
+            <h1 className="font-heading text-4xl">Portofolio</h1>
             <p className="mt-1 text-sm text-foreground/70">
               {items.length} foto · {featuredCount} tampil di Home
             </p>

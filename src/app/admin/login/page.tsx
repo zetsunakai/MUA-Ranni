@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-16">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-strong">Admin</p>
-      <h1 className="mt-2 font-heading text-3xl font-semibold">{site.name}</h1>
+      <h1 className="mt-2 font-heading text-4xl">{site.name}</h1>
       <p className="mt-2 text-sm text-foreground/70">Masuk untuk mengubah harga di website.</p>
 
       <div className="mt-8">

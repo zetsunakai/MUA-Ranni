@@ -48,7 +48,7 @@ export default function ScheduleEditor({ days, today, monthsAhead }: Props) {
           // key: form di-reset ke nilai tanggal yang baru dipilih.
           <form key={`${selected}-${current?.status}-${current?.note}`} action={formAction} className="space-y-4">
             <input type="hidden" name="date" value={selected} />
-            <p className="font-heading text-xl font-semibold">{formatLongDate(selected)}</p>
+            <p className="font-heading text-2xl">{formatLongDate(selected)}</p>
 
             <fieldset>
               <legend className="text-sm font-medium">Status</legend>
@@ -102,7 +102,7 @@ export default function ScheduleEditor({ days, today, monthsAhead }: Props) {
           </form>
         ) : (
           <>
-            <p className="font-heading text-xl font-semibold">Pilih tanggal</p>
+            <p className="font-heading text-2xl">Pilih tanggal</p>
             <p className="mt-2 text-sm text-foreground/80">
               Ketuk tanggal untuk menandai Terbatas atau Penuh, dan tambahkan catatan (nama klien, jam, lokasi).
               Tanggal bertitik punya catatan.

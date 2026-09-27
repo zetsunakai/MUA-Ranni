@@ -21,7 +21,7 @@ export default async function AdminTestimoniPage() {
       <AdminHeader email={admin.email} current="/admin/testimoni" />
       <div className="mx-auto w-full max-w-3xl space-y-8 px-4 py-6">
         <div>
-          <h1 className="font-heading text-3xl font-semibold">Testimoni</h1>
+          <h1 className="font-heading text-4xl">Testimoni</h1>
           <p className="mt-1 text-sm text-foreground/70">
             Hanya testimoni yang disetujui yang tampil di Home.
           </p>
@@ -34,7 +34,7 @@ export default async function AdminTestimoniPage() {
             <InviteCreator categories={categories} />
 
             <section>
-              <h2 className="font-heading text-xl font-semibold">
+              <h2 className="font-heading text-2xl">
                 Menunggu persetujuan <span className="text-foreground/70">({data.pending.length})</span>
               </h2>
               {data.pending.length === 0 ? (
@@ -104,7 +104,7 @@ export default async function AdminTestimoniPage() {
             </section>
 
             <section>
-              <h2 className="font-heading text-xl font-semibold">
+              <h2 className="font-heading text-2xl">
                 Tampil di website <span className="text-foreground/70">({data.approved.length})</span>
               </h2>
               {data.approved.length === 0 ? (
@@ -140,7 +140,7 @@ export default async function AdminTestimoniPage() {
 
             {data.openInvites.length > 0 && (
               <section>
-                <h2 className="font-heading text-xl font-semibold">
+                <h2 className="font-heading text-2xl">
                   Link belum diisi <span className="text-foreground/70">({data.openInvites.length})</span>
                 </h2>
                 <ul className="mt-3 divide-y divide-line rounded-xl border border-line bg-surface">

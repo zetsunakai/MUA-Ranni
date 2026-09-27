@@ -15,7 +15,7 @@ export default function ServiceGroupCard({ group }: { group: ServiceGroup }) {
       }`}
     >
       <div className="flex items-center justify-between gap-3">
-        <h2 className="font-heading text-2xl font-semibold">{group.name}</h2>
+        <h2 className="font-heading text-3xl">{group.name}</h2>
         <span
           className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
             premium ? "bg-accent-strong text-white" : "bg-accent-soft text-accent-strong"

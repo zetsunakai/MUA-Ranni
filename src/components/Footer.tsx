@@ -14,54 +14,53 @@ export default async function Footer() {
   ];
 
   return (
-    <footer className="mt-auto border-t border-line bg-accent-soft/40">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-3">
-        <div>
-          <p className="font-heading text-2xl font-semibold">{site.name}</p>
-          <p className="mt-2 text-sm text-foreground/75">{site.tagline}</p>
+    <footer className="mt-auto bg-foreground text-background">
+      <div className="mx-auto grid max-w-6xl gap-10 border-t border-background/15 px-5 py-12 sm:px-6 md:grid-cols-4 md:gap-8">
+        <div className="hidden md:block">
+          <p className="font-heading text-3xl">{site.name}</p>
+          <p className="mt-2 text-sm leading-relaxed text-background/75">{site.tagline}</p>
         </div>
 
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider">Menu</h2>
-          <ul className="mt-3 space-y-2 text-sm">
-            {[...navLinks, ...extraLinks].map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="text-foreground/75 hover:text-accent-strong">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <FooterColumn title="Menu" className="hidden md:block">
+          {[...navLinks, ...extraLinks].map((link) => (
+            <li key={link.href}>
+              <Link href={link.href} className="hover:text-accent-soft hover:underline">
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </FooterColumn>
 
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider">Kontak</h2>
-          <ul className="mt-3 space-y-2 text-sm">
-            {socials.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground/75 hover:text-accent-strong"
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-4 text-sm text-foreground/75">
-            Area layanan: {profile.serviceAreas.join(", ")}
-          </p>
-          <p className="mt-1 text-sm text-foreground/75">{profile.responseHours}</p>
-        </div>
+        <FooterColumn title="Kontak">
+          {socials.map((s) => (
+            <li key={s.label}>
+              <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-accent-soft hover:underline">
+                {s.label}
+              </a>
+            </li>
+          ))}
+        </FooterColumn>
+
+        <FooterColumn title="Area & jam">
+          <li>{profile.serviceAreas.join(" · ")}</li>
+          <li>{profile.responseHours}</li>
+        </FooterColumn>
       </div>
 
-      <div className="border-t border-line">
-        <p className="mx-auto max-w-6xl px-4 pt-4 pb-24 text-xs text-foreground/70 sm:px-6 sm:pb-4">
+      <div className="mx-auto max-w-6xl px-5 pt-2 pb-24 sm:px-6 sm:pb-10">
+        <p className="text-xs text-background/70">
           © {new Date().getFullYear()} {site.name}. Semua foto digunakan dengan izin klien.
         </p>
       </div>
     </footer>
+  );
+}
+
+function FooterColumn({ title, className = "", children }: { title: string; className?: string; children: React.ReactNode }) {
+  return (
+    <div className={className}>
+      <h2 className="text-[11px] font-medium uppercase tracking-[0.25em] text-background/70">{title}</h2>
+      <ul className="mt-4 space-y-2 text-[15px]">{children}</ul>
+    </div>
   );
 }

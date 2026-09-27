@@ -18,7 +18,7 @@ export default function AdminHeader({ email, current }: Props) {
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
         <div className="min-w-0">
-          <p className="font-heading text-lg font-semibold leading-tight">{site.name}</p>
+          <p className="font-heading text-xl leading-tight">{site.name}</p>
           <p className="truncate text-xs text-foreground/70">Admin · {email}</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">

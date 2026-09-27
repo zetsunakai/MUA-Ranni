@@ -99,7 +99,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
                   </svg>
                 </button>
               </div>
-              <h2 className="font-heading text-2xl font-semibold leading-tight">{item.title}</h2>
+              <h2 className="font-heading text-3xl leading-tight">{item.title}</h2>
               {item.description && <p className="text-sm text-foreground/75">{item.description}</p>}
               {item.beforeImageUrl && (
                 <p className="text-xs text-foreground/70">Geser garis di foto untuk melihat sebelum dan sesudah.</p>

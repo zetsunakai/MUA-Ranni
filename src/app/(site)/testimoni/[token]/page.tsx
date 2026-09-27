@@ -24,7 +24,7 @@ export default async function TestimoniPage({ params }: PageProps<"/testimoni/[t
   return (
     <div className="mx-auto w-full max-w-xl px-4 py-10 sm:py-14">
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-strong">Testimoni</p>
-      <h1 className="mt-2 font-heading text-3xl font-semibold sm:text-4xl">
+      <h1 className="mt-2 font-heading text-4xl sm:text-5xl">
         {check.ok ? `Halo ${check.invite.clientName}, gimana hasil makeup-nya?` : "Link tidak bisa dipakai"}
       </h1>
 

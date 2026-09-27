@@ -14,16 +14,20 @@ export const site = {
   responseHours: "Setiap hari, 08.00–22.00 WIB",
 };
 
-// Link tambahan di footer dan sitemap (tidak di navbar supaya menu tetap ringkas).
-export const extraLinks: NavLink[] = [{ href: "/faq", label: "FAQ" }];
-
+// Menu utama sesuai desain. Kontak tidak di navbar (tombol WhatsApp sudah ada),
+// tapi tetap ada di footer dan sitemap lewat extraLinks.
 export const navLinks: NavLink[] = [
   { href: "/portfolio", label: "Portofolio" },
   { href: "/layanan", label: "Layanan & Harga" },
   { href: "/jadwal", label: "Jadwal" },
   { href: "/tentang", label: "Tentang" },
-  { href: "/kontak", label: "Kontak" },
+  { href: "/faq", label: "FAQ" },
 ];
+
+export const extraLinks: NavLink[] = [{ href: "/kontak", label: "Kontak" }];
+
+// Jenis acara di band gelap Home.
+export const eventHighlights = ["Wisuda", "Pesta", "Akad", "Lamaran", "Prewedding", "Bridesmaid"];
 
 // Kategori bawaan. Kategori sebenarnya dikelola admin di database (tabel categories);
 // daftar ini hanya dipakai kalau database belum disambungkan.

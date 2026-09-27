@@ -17,7 +17,7 @@ export default async function NewPortfolioPage() {
         <Link href="/admin/portofolio" className="text-sm text-accent-strong">
           ← Kembali
         </Link>
-        <h1 className="mt-2 font-heading text-3xl font-semibold">Tambah foto</h1>
+        <h1 className="mt-2 font-heading text-4xl">Tambah foto</h1>
         <div className="mt-6">
           <PortfolioForm categories={categories} />
         </div>

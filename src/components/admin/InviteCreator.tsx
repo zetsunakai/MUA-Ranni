@@ -17,7 +17,7 @@ export default function InviteCreator({ categories }: { categories: CategoryOpti
 
   return (
     <div className="rounded-xl border border-line bg-surface p-4 sm:p-5">
-      <h2 className="font-heading text-xl font-semibold">Minta testimoni</h2>
+      <h2 className="font-heading text-2xl">Minta testimoni</h2>
       <p className="mt-0.5 text-xs text-foreground/70">Buat link khusus untuk satu klien, lalu kirim lewat WhatsApp.</p>
 
       <form action={formAction} className="mt-4 grid gap-3 sm:grid-cols-[1fr_11rem_auto] sm:items-end">

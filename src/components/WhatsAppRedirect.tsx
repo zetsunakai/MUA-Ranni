@@ -44,7 +44,7 @@ export default function WhatsAppRedirect({ number }: { number: string }) {
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-4 px-4 py-20 text-center">
-      <p className="font-heading text-2xl font-semibold">Membuka WhatsApp…</p>
+      <p className="font-heading text-3xl">Membuka WhatsApp…</p>
       <p className="text-foreground/70">Kalau tidak terbuka otomatis, ketuk tombol di bawah.</p>
       <a
         href={directWhatsappUrl(number)}

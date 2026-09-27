@@ -15,7 +15,7 @@ export default async function ProfilPage() {
     <>
       <AdminHeader email={admin.email} current="/admin/profil" />
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
-        <h1 className="font-heading text-3xl font-semibold">Profil</h1>
+        <h1 className="font-heading text-4xl">Profil</h1>
         <p className="mt-1 text-sm text-foreground/70">Kontak, area layanan, dan bio yang tampil di website.</p>
         {getDb() ? (
           <div className="mt-6">

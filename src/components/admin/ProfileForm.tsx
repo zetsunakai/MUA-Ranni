@@ -80,7 +80,7 @@ function inputClass(error?: string) {
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="space-y-4 rounded-xl border border-line bg-surface p-4 sm:p-5">
-      <h2 className="font-heading text-xl font-semibold">{title}</h2>
+      <h2 className="font-heading text-2xl">{title}</h2>
       {children}
     </section>
   );
