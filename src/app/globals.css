@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Design tokens dari "Desain Alternatif" (Instrument Serif + DM Sans, krem & terakota).
+ * Design tokens dari "Desain Alternatif" (Newsreader + DM Sans, krem & terakota).
  * Di Tailwind v4 token ditulis di @theme, tidak ada tailwind.config.
  * Setiap --color-* otomatis jadi utility: bg-background, text-foreground, border-line, dst.
  */
@@ -22,7 +22,7 @@
 /* Font dimuat oleh next/font di layout.tsx sebagai CSS variable. */
 @theme inline {
   --font-sans: var(--font-dm-sans);
-  --font-heading: var(--font-instrument-serif); /* hanya 1 ketebalan (400), jangan pakai font-semibold */
+  --font-heading: var(--font-newsreader);
 }
 
 body {

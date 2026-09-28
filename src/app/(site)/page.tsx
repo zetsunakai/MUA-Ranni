@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import PortfolioBento from "@/components/home/PortfolioBento";
-import TestimonialSlider from "@/components/home/TestimonialSlider";
+import TestimonialMarquee from "@/components/home/TestimonialMarquee";
 import { ChatIcon } from "@/components/icons";
 import { about } from "@/data/about";
 import { eventHighlights } from "@/data/site";
@@ -221,10 +221,13 @@ export default async function Home() {
 
       {/* 04 Testimoni: muncul otomatis begitu ada testimoni yang disetujui */}
       {testimonials.length > 0 && (
-        <section className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-6 md:py-24">
-          <Eyebrow>04 — Kata klien</Eyebrow>
+        <section className="py-16 md:py-24">
+          <div className="mx-auto w-full max-w-6xl px-5 sm:px-6">
+            <Eyebrow>04 — Kata klien</Eyebrow>
+          </div>
+          {/* Selebar layar, tidak dibatasi max-w supaya kartu bergerak dari tepi ke tepi. */}
           <div className="mt-8">
-            <TestimonialSlider testimonials={testimonials} />
+            <TestimonialMarquee testimonials={testimonials} />
           </div>
         </section>
       )}
