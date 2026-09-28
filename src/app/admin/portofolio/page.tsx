@@ -31,6 +31,9 @@ export default async function AdminPortfolioPage({ searchParams }: PageProps<"/a
             </p>
           </div>
           <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-center">
+            <Link href="/admin/portofolio/urutan" className="rounded-full border border-line px-4 py-2.5 text-sm">
+              Atur urutan
+            </Link>
             <Link href="/admin/portofolio/kategori" className="rounded-full border border-line px-4 py-2.5 text-sm">
               Kelola kategori
             </Link>

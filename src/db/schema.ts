@@ -60,6 +60,9 @@ export const portfolioItems = pgTable("portfolio_items", {
   beforeImagePath: text("before_image_path"),
   description: text("description"),
   featured: boolean("featured").notNull().default(false),
+  // Urutan tampil (kecil = di depan), diatur admin di /admin/portofolio/urutan.
+  // Foto baru diberi nilai terkecil supaya muncul paling depan.
+  sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();

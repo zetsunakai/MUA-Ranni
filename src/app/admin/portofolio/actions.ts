@@ -1,6 +1,6 @@
 "use server";
 
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, min, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -34,7 +34,7 @@ function fileError(file: File): string | null {
 }
 
 function revalidatePortfolio() {
-  for (const path of ["/", "/portfolio", "/admin/portofolio"]) revalidatePath(path);
+  for (const path of ["/", "/portfolio", "/admin/portofolio", "/admin/portofolio/urutan"]) revalidatePath(path);
 }
 
 export async function savePortfolioItem(_prev: FormState, formData: FormData): Promise<FormState> {
@@ -120,7 +120,11 @@ export async function savePortfolioItem(_prev: FormState, formData: FormData): P
     ].filter((p): p is string => Boolean(p));
     if (stale.length) await bucket.remove(stale);
   } else {
-    await db.insert(portfolioItems).values({ id, ...values, imageUrl: main!.url, imagePath: main!.path });
+    // Foto baru langsung di urutan paling depan.
+    const [{ first }] = await db.select({ first: min(portfolioItems.sortOrder) }).from(portfolioItems);
+    await db
+      .insert(portfolioItems)
+      .values({ id, ...values, imageUrl: main!.url, imagePath: main!.path, sortOrder: (first ?? 1) - 1 });
   }
 
   revalidatePortfolio();
@@ -142,4 +146,36 @@ export async function deletePortfolioItem(formData: FormData): Promise<void> {
 
   revalidatePortfolio();
   redirect("/admin/portofolio?disimpan=hapus");
+}
+
+const orderSchema = z.array(z.string().min(1)).min(1).max(1000);
+
+// Simpan urutan baru sekaligus. `ids` = semua id foto, urut dari yang tampil paling depan.
+export async function reorderPortfolio(ids: string[]): Promise<{ ok: boolean; message: string }> {
+  await requireAdmin();
+  const db = getDb();
+  if (!db) return { ok: false, message: "Database belum disambungkan." };
+  const parsed = orderSchema.safeParse(ids);
+  if (!parsed.success) return { ok: false, message: "Urutan tidak valid." };
+
+  // Daftar harus persis sama dengan isi database: kalau ada foto yang ditambah/dihapus
+  // di tab lain sejak halaman dibuka, jangan simpan urutan yang sudah basi.
+  const current = await db.select({ id: portfolioItems.id }).from(portfolioItems);
+  const known = new Set(current.map((r) => r.id));
+  if (new Set(parsed.data).size !== parsed.data.length || parsed.data.length !== known.size || parsed.data.some((id) => !known.has(id))) {
+    return { ok: false, message: "Daftar foto sudah berubah. Muat ulang halaman lalu atur lagi." };
+  }
+
+  // Satu query untuk semua foto: CASE id WHEN ... THEN posisi.
+  const positions = sql.join(
+    parsed.data.map((id, i) => sql`when ${id} then ${i + 1}::int`),
+    sql` `,
+  );
+  await db
+    .update(portfolioItems)
+    .set({ sortOrder: sql`case ${portfolioItems.id} ${positions} end` })
+    .where(inArray(portfolioItems.id, parsed.data));
+
+  revalidatePortfolio();
+  return { ok: true, message: "Urutan disimpan dan sudah tampil di website." };
 }

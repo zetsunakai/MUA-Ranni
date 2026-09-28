@@ -1,6 +1,6 @@
 import "server-only";
 
-import { desc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { cache } from "react";
 import { portfolioItems as staticPortfolio } from "@/data/portfolio";
 import { getDb } from "@/db";
@@ -27,7 +27,7 @@ function toItem(row: Row, categories: CategoryOption[]): PortfolioItem {
   };
 }
 
-// Terbaru di atas.
+// Sesuai urutan yang diatur admin (sort_order), lalu terbaru di atas kalau nilainya sama.
 export const getPortfolioItems = cache(async (): Promise<PortfolioItem[]> => {
   const [db, categories] = [getDb(), await getCategories()];
   if (!db) {
@@ -35,7 +35,10 @@ export const getPortfolioItems = cache(async (): Promise<PortfolioItem[]> => {
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .map((p) => ({ ...p, categoryLabel: labelOf(categories, p.category) }));
   }
-  const rows = await db.select().from(portfolioItems).orderBy(desc(portfolioItems.createdAt));
+  const rows = await db
+    .select()
+    .from(portfolioItems)
+    .orderBy(asc(portfolioItems.sortOrder), desc(portfolioItems.createdAt));
   return rows.map((row) => toItem(row, categories));
 });
 
