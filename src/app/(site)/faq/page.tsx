@@ -10,6 +10,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "FAQ",
   description: "Jawaban pertanyaan yang sering ditanyakan: cara booking, DP, transport, cancel, reschedule, dan persiapan sebelum dirias.",
+  alternates: { canonical: "/faq" },
 };
 
 // Semua jawaban dirangkai dari data asli (price list, syarat & ketentuan, profil admin),

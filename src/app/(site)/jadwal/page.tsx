@@ -8,6 +8,7 @@ import { getPublicSchedule, SCHEDULE_MONTHS_AHEAD } from "@/lib/schedule";
 export const metadata: Metadata = {
   title: "Jadwal",
   description: "Cek tanggal yang masih kosong dan booking makeup langsung lewat WhatsApp.",
+  alternates: { canonical: "/jadwal" },
 };
 
 // Statis; dibuat ulang saat admin mengubah jadwal (revalidatePath) atau paling lambat tiap jam.

@@ -11,6 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Tentang",
     description: `Kenalan dengan ${site.name}: makeup artist wisuda, pesta, dan acara pernikahan di ${profile.serviceAreas.join(", ")}.`,
+    alternates: { canonical: "/tentang" },
   };
 }
 

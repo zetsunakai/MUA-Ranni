@@ -7,6 +7,7 @@ import { getPortfolioItems } from "@/lib/portfolio";
 export const metadata: Metadata = {
   title: "Portofolio",
   description: "Hasil riasan bridal, wisuda, engagement, dan photoshoot. Filter per kategori dan lihat sebelum-sesudah.",
+  alternates: { canonical: "/portfolio" },
 };
 
 // Server Component: data dibaca dari database saat build (statis), lalu diteruskan ke

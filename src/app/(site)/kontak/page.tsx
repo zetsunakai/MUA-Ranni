@@ -11,6 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Kontak",
     description: `Booking ${site.name} lewat WhatsApp ${profile.whatsappDisplay}. Area layanan ${profile.serviceAreas.join(", ")}.`,
+    alternates: { canonical: "/kontak" },
   };
 }
 

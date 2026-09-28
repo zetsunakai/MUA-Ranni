@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -13,6 +14,10 @@ import { getServiceGroups } from "@/lib/prices";
 import { getProfile } from "@/lib/profile";
 import { getPublicTestimonials } from "@/lib/testimonials";
 import { whatsappUrl } from "@/lib/whatsapp";
+
+// Judul & deskripsi Home diambil dari layout.tsx. Canonical ditulis per halaman (bukan di layout),
+// supaya halaman lain tidak ikut menunjuk ke Home. Dengan metadataBase jadi https://mua-rannilstry.web.id
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 // Grup yang diringkas di Home. Kalau grup ini dihapus/diganti admin, pakai 3 grup pertama.
 const HIGHLIGHT_GROUPS = ["reguler-dewasa", "premium-dewasa", "premium-pernikahan"];

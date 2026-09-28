@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Layanan & Harga",
   description:
     "Price list 2026 makeup wisuda, pagar ayu, pesta, lamaran, siraman, pengajian, dan akad. Harga per orang, termasuk bulu mata dan hijab do.",
+  alternates: { canonical: "/layanan" },
 };
 
 // Harga dibaca dari database saat build, lalu halaman disimpan sebagai HTML statis.
