@@ -6,17 +6,12 @@ export const DEFAULT_WHATSAPP_MESSAGE = "Halo Kak, saya mau tanya jadwal dan pak
 // ke WhatsApp. Jumlah kunjungan /chat/hero = jumlah klik tombol WA di hero, dst.
 // (Custom event Vercel hanya ada di paket Pro, jadi pakai cara ini di paket Hobby.)
 export const WHATSAPP_SOURCES = [
-  "navbar",
   "floating",
   "hero",
   "home-cta",
-  "portfolio-cta",
   "layanan",
-  "layanan-cta",
   "lightbox",
   "jadwal",
-  "tentang",
-  "tentang-cta",
   "kontak",
   "faq-cta",
   "footer",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRightIcon, ChatIcon } from "@/components/icons";
+import { ArrowRightIcon } from "@/components/icons";
 import { bookingInfo, terms } from "@/data/services";
 import { formatRupiah } from "@/lib/format";
 import { getAddOns, getServiceGroups, lowestPrice } from "@/lib/prices";
@@ -103,28 +103,6 @@ export default async function LayananPage() {
         </div>
       </section>
 
-      {/* Ajakan chat, menyambung ke footer gelap */}
-      <section className="bg-foreground text-background">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between md:pt-20">
-          <div>
-            <h2 className="font-heading text-[44px] leading-none md:text-7xl">
-              Bingung pilih <em>yang mana?</em>
-            </h2>
-            <p className="mt-5 max-w-md text-[15px] text-background/80 md:text-[17px]">
-              Ceritakan acaramu, tanggal, dan lokasinya. Nanti dibantu pilihkan layanan yang paling pas.
-            </p>
-          </div>
-          <a
-            href={whatsappUrl("layanan-cta", "Halo Kak, saya mau konsultasi pilihan makeup untuk acara saya.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
-          >
-            <ChatIcon />
-            Chat WhatsApp
-          </a>
-        </div>
-      </section>
     </>
   );
 }

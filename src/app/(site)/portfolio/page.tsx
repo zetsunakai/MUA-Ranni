@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import BeforeAfterSlider from "@/components/BeforeAfterSlider";
-import { ChatIcon } from "@/components/icons";
 import PortfolioGallery from "@/components/PortfolioGallery";
 import { getCategories } from "@/lib/categories";
 import { getPortfolioItems } from "@/lib/portfolio";
-import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Portofolio",
@@ -66,23 +64,6 @@ export default async function PortfolioPage() {
         </section>
       )}
 
-      {/* Ajakan chat, menyambung ke footer gelap */}
-      <section className="bg-foreground text-background">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-center md:justify-between md:pt-20">
-          <h2 className="font-heading text-[44px] leading-none md:text-7xl">
-            Suka hasilnya? <em>Cek jadwalmu.</em>
-          </h2>
-          <a
-            href={whatsappUrl("portfolio-cta")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
-          >
-            <ChatIcon />
-            Chat WhatsApp
-          </a>
-        </div>
-      </section>
     </>
   );
 }

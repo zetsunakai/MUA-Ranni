@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navLinks } from "@/data/site";
-import { whatsappUrl } from "@/lib/whatsapp";
 
 // Logo teks dua baris sesuai desain: "Ranni Tary" (serif) + "MAKEUP ARTIST" (huruf kecil berjarak).
 function Wordmark() {
@@ -49,14 +48,6 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-        <a
-          href={whatsappUrl("navbar")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden rounded-full bg-accent-strong px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-foreground lg:inline-block"
-        >
-          Chat WhatsApp
-        </a>
 
         {/* Tombol menu HP: lingkaran bergaris sesuai desain */}
         <button
@@ -90,16 +81,6 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="px-5 pt-3 pb-5">
-            <a
-              href={whatsappUrl("navbar")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block rounded-full bg-accent-strong py-3.5 text-center font-medium text-white"
-            >
-              Chat WhatsApp
-            </a>
-          </div>
         </div>
       )}
     </header>

@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import BrandLogos from "@/components/BrandLogos";
-import { ChatIcon } from "@/components/icons";
 import { about } from "@/data/about";
 import { bookingInfo, brands } from "@/data/services";
 import { site } from "@/data/site";
 import { getProfile } from "@/lib/profile";
-import { whatsappUrl } from "@/lib/whatsapp";
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
@@ -60,24 +58,14 @@ export default async function TentangPage() {
               {paragraph}
             </p>
           ))}
-          <div className="mt-6 flex flex-col gap-4 md:mt-9 md:flex-row md:items-center">
-            <a
-              href={whatsappUrl("tentang")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full bg-accent-strong px-7 py-4 text-center font-medium text-white transition-colors hover:bg-foreground"
-            >
-              Chat WhatsApp
-            </a>
-            <a
-              href={profile.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden font-medium underline underline-offset-4 hover:text-accent-strong md:inline"
-            >
-              Instagram @{profile.instagramHandle}
-            </a>
-          </div>
+          <a
+            href={profile.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block font-medium underline underline-offset-4 hover:text-accent-strong md:mt-9"
+          >
+            Instagram @{profile.instagramHandle}
+          </a>
         </div>
       </section>
 
@@ -115,23 +103,6 @@ export default async function TentangPage() {
         </div>
       </section>
 
-      {/* Ajakan chat, menyambung ke footer gelap */}
-      <section className="bg-foreground text-background">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-center md:justify-between md:pt-20">
-          <h2 className="font-heading text-[44px] leading-none md:text-7xl">
-            Yuk, <em>kenalan dulu.</em>
-          </h2>
-          <a
-            href={whatsappUrl("tentang-cta")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
-          >
-            <ChatIcon />
-            Chat WhatsApp
-          </a>
-        </div>
-      </section>
     </>
   );
 }
