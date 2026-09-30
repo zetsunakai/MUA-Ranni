@@ -12,6 +12,12 @@ export const site = {
   tiktokUrl: "https://tiktok.com/@rannitary_makeup",
   serviceAreas: ["Kab. Bogor", "Kota Bogor", "Depok"],
   responseHours: "Setiap hari, 08.00–22.00 WIB",
+  location: {
+    name: "Tonjong",
+    address: "Tonjong, Kec. Tajur Halang, Kabupaten Bogor, Jawa Barat",
+    mapsUrl: "https://maps.app.goo.gl/NpXh22dCKaCcuP766",
+    embedUrl: "https://www.google.com/maps?q=Tonjong%2C%20Tajur%20Halang%2C%20Bogor&z=14&output=embed",
+  },
 };
 
 // Menu utama (navbar, menu HP, footer, dan sitemap).

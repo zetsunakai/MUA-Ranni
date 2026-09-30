@@ -41,7 +41,30 @@ export default async function Footer() {
           ))}
         </FooterColumn>
 
-        <FooterColumn title="Area & jam">
+        <FooterColumn title="Lokasi & layanan" className="min-w-0">
+          <li>{site.location.address}</li>
+          <li className="overflow-hidden rounded-lg border border-background/15 bg-sand">
+            <iframe
+              src={site.location.embedUrl}
+              title={`Peta area ${site.location.address}`}
+              width="600"
+              height="180"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="block h-[180px] w-full border-0"
+            />
+          </li>
+          <li>
+            <a
+              href={site.location.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center hover:text-accent-soft hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+            >
+              Buka Google Maps →
+            </a>
+          </li>
           <li>{profile.serviceAreas.join(" · ")}</li>
           <li>{profile.responseHours}</li>
         </FooterColumn>

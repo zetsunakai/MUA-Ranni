@@ -3,6 +3,7 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { PAST_BOOKING_DATE_MESSAGE, todayInJakarta } from "@/lib/dates";
+import { isGoogleMapsUrl } from "@/lib/maps";
 import { bookingMessage, isWhatsAppSource, whatsappUrl } from "@/lib/whatsapp";
 import type { CategoryOption } from "@/types";
 
@@ -14,10 +15,13 @@ type Props = {
 const fieldClass =
   "w-full rounded-md border border-field bg-white px-3.5 py-3.5 text-base text-foreground placeholder:text-muted/80 md:px-4";
 const STORAGE_KEY = "mua-ranni-booking-form";
-const FORM_FIELDS = ["name", "eventType", "serviceGroup", "serviceItem", "date", "time", "location", "people", "hairdo"] as const;
+const FORM_FIELDS = ["name", "eventType", "serviceGroup", "serviceItem", "date", "time", "location", "mapsUrl", "people", "hairdo"] as const;
+const EMPTY_SERVICE_GROUPS: Props["serviceGroups"] = [];
 
-export default function BookingForm({ eventTypes, serviceGroups }: Props) {
+export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_GROUPS }: Props) {
   const [dateError, setDateError] = useState("");
+  const [mapsError, setMapsError] = useState("");
+  const mapsInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const groupSelectRef = useRef<HTMLSelectElement>(null);
   const itemSelectRef = useRef<HTMLSelectElement>(null);
@@ -43,7 +47,7 @@ export default function BookingForm({ eventTypes, serviceGroups }: Props) {
       const saved = parsed && typeof parsed === "object" ? parsed as Record<string, unknown> : {};
       const params = new URLSearchParams(window.location.search);
 
-      for (const name of ["name", "eventType", "date", "time", "location", "people", "hairdo"] as const) {
+      for (const name of ["name", "eventType", "date", "time", "location", "mapsUrl", "people", "hairdo"] as const) {
         const queryValue = name === "name" ? undefined : params.get(name)?.trim();
         const savedValue = saved[name];
         const value = queryValue || (typeof savedValue === "string" ? savedValue : "");
@@ -103,6 +107,13 @@ export default function BookingForm({ eventTypes, serviceGroups }: Props) {
       return;
     }
     setDateError("");
+    const mapsUrl = String(fields.get("mapsUrl") ?? "").trim();
+    if (mapsUrl && !isGoogleMapsUrl(mapsUrl)) {
+      setMapsError("Gunakan link lokasi dari Google Maps, misalnya https://maps.app.goo.gl/…");
+      mapsInputRef.current?.focus();
+      return;
+    }
+    setMapsError("");
     const sourceFromUrl = new URLSearchParams(window.location.search).get("source") ?? undefined;
     const activeSource = isWhatsAppSource(sourceFromUrl) ? sourceFromUrl : "kontak";
     const message = bookingMessage({
@@ -115,6 +126,7 @@ export default function BookingForm({ eventTypes, serviceGroups }: Props) {
       date,
       time: String(fields.get("time") ?? ""),
       location: String(fields.get("location") ?? ""),
+      mapsUrl,
       people: String(fields.get("people") ?? ""),
       hairdo: String(fields.get("hairdo") ?? ""),
       note: new URLSearchParams(window.location.search).get("note") ?? "",
@@ -152,10 +164,15 @@ export default function BookingForm({ eventTypes, serviceGroups }: Props) {
 
       <label className="flex flex-col gap-1.5 text-[13px] font-medium md:gap-2 md:text-sm">
         Paket
-        <select ref={groupSelectRef} name="serviceGroup" defaultValue="" className={fieldClass}>
-          <option value="">Pilih paket</option>
+        <select ref={groupSelectRef} name="serviceGroup" defaultValue="" disabled={serviceGroups.length === 0} className={fieldClass}>
+          <option value="">{serviceGroups.length > 0 ? "Pilih paket" : "Paket belum tersedia"}</option>
           {serviceGroups.map((group) => <option key={group.id} value={group.id}>{group.name}</option>)}
         </select>
+        {serviceGroups.length === 0 && (
+          <span className="text-xs font-normal leading-relaxed text-muted">
+            Muat ulang halaman untuk melihat pilihan paket, atau lanjutkan ke WhatsApp untuk konsultasi.
+          </span>
+        )}
       </label>
 
       <label className="flex flex-col gap-1.5 text-[13px] font-medium md:gap-2 md:text-sm">
@@ -200,8 +217,40 @@ export default function BookingForm({ eventTypes, serviceGroups }: Props) {
           <option value="Belum tahu, ingin konsultasi">Belum tahu, ingin konsultasi</option>
         </select>
       </label>
-      <div className="sm:col-span-2">
+      <div className="min-w-0">
         <Field label="Alamat" name="location" defaultValue="" autoComplete="street-address" placeholder="Alamat lengkap lokasi makeup" />
+      </div>
+
+      <div className="min-w-0">
+        <label htmlFor="booking-maps" className="flex flex-col gap-1.5 text-[13px] font-medium md:gap-2 md:text-sm">
+          Link lokasi Google Maps (opsional)
+          <input
+            ref={mapsInputRef}
+            id="booking-maps"
+            name="mapsUrl"
+            type="url"
+            inputMode="url"
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="https://maps.app.goo.gl/…"
+            aria-describedby={`booking-maps-hint${mapsError ? " booking-maps-error" : ""}`}
+            aria-invalid={mapsError ? true : undefined}
+            onChange={() => setMapsError("")}
+            className={fieldClass}
+          />
+        </label>
+        <p id="booking-maps-hint" className="mt-2 text-xs leading-relaxed text-muted">
+          Pilih lokasi makeup di Google Maps, ketuk Bagikan, lalu salin dan tempel linknya di sini. Tambahkan nomor rumah atau patokan di kolom alamat.
+        </p>
+        {mapsError && <p id="booking-maps-error" role="alert" className="mt-1.5 text-sm text-red-700">{mapsError}</p>}
+        <a
+          href="https://www.google.com/maps"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex min-h-11 items-center text-sm font-medium text-accent-strong underline underline-offset-4"
+        >
+          Buka Google Maps →
+        </a>
       </div>
 
       <button

@@ -25,6 +25,7 @@ export type BookingContext = {
   date?: string;
   time?: string;
   location?: string;
+  mapsUrl?: string;
   people?: string;
   hairdo?: string;
   note?: string;
@@ -46,20 +47,29 @@ export function bookingFormUrl(source: WhatsAppSource, context: BookingContext =
 }
 
 export function bookingMessage(input: { name: string } & BookingContext): string {
+  const mapsUrl = input.mapsUrl?.trim();
+  const note = input.note?.trim();
+
   return [
     "Halo Kak Ranni, saya ingin tanya/booking makeup.",
     "",
+    "*Detail booking*",
     `Nama: ${input.name.trim()}`,
     `Jenis acara: ${input.eventType?.trim() || "-"}`,
     `Paket/layanan: ${input.service?.trim() || "-"}`,
-    `Tanggal: ${input.date?.trim() || "-"}`,
-    `Jam: ${input.time?.trim() || "-"}`,
-    `Alamat: ${input.location?.trim() || "-"}`,
+    `Tanggal acara: ${input.date?.trim() || "-"}`,
+    `Jam makeup: ${input.time?.trim() || "-"}`,
     `Jumlah orang: ${input.people?.trim() || "-"}`,
     `Hijab do/Hair do: ${input.hairdo?.trim() || "-"}`,
-    `Catatan: ${input.note?.trim() || "-"}`,
     "",
-    "7175262261 - BCA a.n Ranni Lestary",
+    "*Lokasi makeup*",
+    `Alamat: ${input.location?.trim() || "-"}`,
+    ...(mapsUrl ? ["Link Google Maps:", mapsUrl] : []),
+    ...(note ? ["", "*Catatan*", note] : []),
+    "",
+    "*Info rekening*",
+    "BCA: 7175262261",
+    "a.n. Ranni Lestary",
   ].join("\n");
 }
 
