@@ -4,6 +4,8 @@
 
 export type ScheduleStatus = "limited" | "full";
 
+export const PAST_BOOKING_DATE_MESSAGE = "Tanggal booking tidak bisa dilakukan pada masa lampau";
+
 export function todayInJakarta(): string {
   // Locale en-CA menghasilkan format YYYY-MM-DD.
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" }).format(new Date());

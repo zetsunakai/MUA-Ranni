@@ -3,7 +3,7 @@ import TestimonialForm from "@/components/TestimonialForm";
 import { site } from "@/data/site";
 import { getCategories } from "@/lib/categories";
 import { checkInvite } from "@/lib/testimonials";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { bookingFormUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Tulis testimoni",
@@ -46,9 +46,7 @@ export default async function TestimoniPage({ params }: PageProps<"/testimoni/[t
         <div className="mt-4 space-y-5">
           <p className="text-foreground/75">{reasons[check.reason]}</p>
           <a
-            href={whatsappUrl("kontak", "Halo Kak, saya mau kirim testimoni tapi link-nya tidak bisa dibuka.")}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={bookingFormUrl("kontak", { note: "Saya mau mengirim testimoni, tetapi tautannya tidak bisa dibuka." })}
             className="inline-block rounded-full bg-accent-strong px-6 py-3 font-medium text-white"
           >
             Chat Ranni

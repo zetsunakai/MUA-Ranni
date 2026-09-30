@@ -3,7 +3,7 @@ import { ArrowRightIcon } from "@/components/icons";
 import { bookingInfo, terms } from "@/data/services";
 import { formatRupiah } from "@/lib/format";
 import { getAddOns, getServiceGroups, lowestPrice } from "@/lib/prices";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { bookingFormUrl } from "@/lib/whatsapp";
 import type { ServiceGroup } from "@/types";
 
 export const metadata: Metadata = {
@@ -135,12 +135,7 @@ function GroupBlock({ group }: { group: ServiceGroup }) {
         {group.items.map((item) => (
           <li key={item.id} className="border-b border-line last:border-b-0">
             <a
-              href={whatsappUrl(
-                "layanan",
-                `Halo Kak, saya mau booking makeup ${group.name} - ${item.name} (${formatRupiah(item.price)}) untuk tanggal ... di ...`,
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={bookingFormUrl("layanan", { service: `${group.name} — ${item.name} (${formatRupiah(item.price)})` })}
               aria-label={`Booking ${item.name}, ${formatRupiah(item.price)}, lewat WhatsApp`}
               className="group flex items-center gap-4 py-4 transition-colors hover:text-accent-strong"
             >

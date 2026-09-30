@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import AvailabilityCalendar from "@/components/AvailabilityCalendar";
 import { bookingInfo } from "@/data/services";
-import { getCategories } from "@/lib/categories";
 import { todayInJakarta } from "@/lib/dates";
 import { getPublicSchedule, SCHEDULE_MONTHS_AHEAD } from "@/lib/schedule";
 
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 
 // Statis; dibuat ulang saat admin mengubah jadwal (revalidatePath) atau paling lambat tiap jam.
 export default async function JadwalPage() {
-  const [statuses, categories] = await Promise.all([getPublicSchedule(), getCategories()]);
+  const statuses = await getPublicSchedule();
 
   return (
     <div className="mx-auto w-full max-w-6xl px-5 pt-10 pb-14 sm:px-6 md:pt-24 md:pb-28">
@@ -33,7 +32,6 @@ export default async function JadwalPage() {
           statuses={statuses}
           monthsAhead={SCHEDULE_MONTHS_AHEAD}
           renderedToday={todayInJakarta()}
-          eventTypes={categories}
           footnote={`Tanggal yang tampil tersedia tetap dikonfirmasi lewat WhatsApp sebelum dianggap terkunci. ${bookingInfo.deposit}`}
         />
       </div>

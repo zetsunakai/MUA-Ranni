@@ -13,7 +13,7 @@ import { getPortfolioItems } from "@/lib/portfolio";
 import { getServiceGroups } from "@/lib/prices";
 import { getProfile } from "@/lib/profile";
 import { getPublicTestimonials } from "@/lib/testimonials";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { bookingFormUrl } from "@/lib/whatsapp";
 
 // Judul & deskripsi Home diambil dari layout.tsx. Canonical ditulis per halaman (bukan di layout),
 // supaya halaman lain tidak ikut menunjuk ke Home. Dengan metadataBase jadi https://mua-rannilstry.web.id
@@ -67,9 +67,7 @@ export default async function Home() {
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
-              href={whatsappUrl("hero")}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={bookingFormUrl("hero")}
               className="rounded-full bg-accent-strong px-7 py-4 text-center font-medium text-white transition-colors hover:bg-foreground"
             >
               Chat WhatsApp
@@ -249,9 +247,7 @@ export default async function Home() {
             </p>
           </div>
           <a
-            href={whatsappUrl("home-cta")}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={bookingFormUrl("home-cta")}
             className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
           >
             <ChatIcon />
@@ -274,9 +270,7 @@ function SectionTitle({ children }: { children: ReactNode }) {
 function PickLink({ group }: { group: string }) {
   return (
     <a
-      href={whatsappUrl("layanan", `Halo Kak, saya mau tanya paket ${group}. Acaranya tanggal ... di ...`)}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={bookingFormUrl("layanan", { service: group })}
       className="mt-2 inline-block text-sm font-medium text-accent-strong underline underline-offset-4"
     >
       Pilih paket →

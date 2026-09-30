@@ -5,7 +5,7 @@ import { bookingInfo, brands, terms } from "@/data/services";
 import { formatRupiah } from "@/lib/format";
 import { getAddOns, getServiceGroups } from "@/lib/prices";
 import { getProfile } from "@/lib/profile";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { bookingFormUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -32,7 +32,7 @@ export default async function FaqPage() {
   const faqs: { q: string; a: string }[] = [
     {
       q: "Bagaimana cara booking?",
-      a: `Cek dulu tanggal kosong di halaman Jadwal, lalu chat WhatsApp dengan tanggal, jam, lokasi, dan jenis makeup. ${bookingInfo.deposit}`,
+      a: `Cek dulu tanggal kosong di halaman Jadwal, lalu isi formulir booking untuk mengirim detail acara lewat WhatsApp. ${bookingInfo.deposit}`,
     },
     { q: "Berapa DP-nya dan kapan pelunasan?", a: `${bookingInfo.deposit} ${bookingInfo.payment}` },
     {
@@ -116,9 +116,7 @@ export default async function FaqPage() {
             </p>
           </div>
           <a
-            href={whatsappUrl("faq-cta", "Halo Kak, saya mau tanya soal makeup.")}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={bookingFormUrl("faq-cta", { note: "Saya mau tanya soal makeup." })}
             className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
           >
             <ChatIcon />

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import BeforeAfterSlider from "@/components/BeforeAfterSlider";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { bookingFormUrl } from "@/lib/whatsapp";
 import type { PortfolioItem } from "@/types";
 
 type Props = {
@@ -105,12 +105,10 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
                 <p className="text-xs text-foreground/70">Geser garis di foto untuk melihat sebelum dan sesudah.</p>
               )}
               <a
-                href={whatsappUrl(
-                  "lightbox",
-                  `Halo Kak, saya suka hasil makeup "${item.title}" di website. Boleh tanya paket ${item.categoryLabel} dan jadwal kosongnya?`,
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={bookingFormUrl("lightbox", {
+                  eventType: item.categoryLabel,
+                  note: `Saya tertarik dengan look "${item.title}".`,
+                })}
                 className="mt-auto rounded-full bg-accent-strong py-3 text-center font-medium text-white transition-colors hover:bg-foreground"
               >
                 Tanya look ini via WhatsApp

@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { navLinks, site } from "@/data/site";
 import { getProfile } from "@/lib/profile";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { bookingFormUrl } from "@/lib/whatsapp";
 
 export default async function Footer() {
   const profile = await getProfile();
   const socials = [
-    { href: whatsappUrl("footer"), label: `WhatsApp ${profile.whatsappDisplay}` },
+    { href: bookingFormUrl("footer"), label: `WhatsApp ${profile.whatsappDisplay}` },
     { href: profile.instagramUrl, label: `Instagram @${profile.instagramHandle}` },
     ...(profile.tiktokUrl ? [{ href: profile.tiktokUrl, label: "TikTok" }] : []),
   ];
@@ -34,7 +34,7 @@ export default async function Footer() {
         <FooterColumn title="Kontak">
           {socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-accent-soft hover:underline">
+              <a href={s.href} target={s.href.startsWith("/") ? undefined : "_blank"} rel={s.href.startsWith("/") ? undefined : "noopener noreferrer"} className="hover:text-accent-soft hover:underline">
                 {s.label}
               </a>
             </li>

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRightIcon, ChatIcon } from "@/components/icons";
+import { ArrowRightIcon } from "@/components/icons";
+import BookingForm from "@/components/BookingForm";
 import { bookingInfo } from "@/data/services";
 import { site } from "@/data/site";
+import { getCategories } from "@/lib/categories";
+import { getServiceGroups } from "@/lib/prices";
 import { getProfile } from "@/lib/profile";
-import { whatsappUrl } from "@/lib/whatsapp";
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
@@ -16,17 +18,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const bookingSteps = [
-  { title: "Chat WhatsApp", text: "Kirim tanggal, jam, lokasi, dan jenis makeup." },
+  { title: "Isi formulir", text: "Lengkapi detail acara, lalu periksa pesan yang disiapkan di WhatsApp." },
   { title: "Bayar DP", text: bookingInfo.deposit },
   { title: "Pelunasan", text: bookingInfo.payment },
 ];
 
 export default async function KontakPage() {
-  const profile = await getProfile();
+  const [profile, categories, groups] = await Promise.all([getProfile(), getCategories(), getServiceGroups()]);
+  const serviceGroups = groups.map((group) => ({
+    id: group.id,
+    name: group.name,
+    items: group.items.map((item) => ({ id: item.id, name: item.name })),
+  }));
 
   // Baris kontak: yang punya href bisa diketuk, sisanya informasi saja.
   const contacts: { label: string; value: string; href?: string }[] = [
-    { label: "WhatsApp", value: profile.whatsappDisplay, href: whatsappUrl("kontak") },
+    { label: "WhatsApp", value: profile.whatsappDisplay, href: "#form-booking" },
     { label: "Instagram", value: `@${profile.instagramHandle}`, href: profile.instagramUrl },
     ...(profile.tiktokUrl && profile.tiktokHandle
       ? [{ label: "TikTok", value: `@${profile.tiktokHandle}`, href: profile.tiktokUrl }]
@@ -41,20 +48,11 @@ export default async function KontakPage() {
         <div className="md:sticky md:top-32 md:self-start">
           <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Kontak</p>
           <h1 className="mt-4 font-heading text-[56px] leading-[0.95] tracking-tight md:mt-5 md:text-8xl">
-            Booking lewat <em>WhatsApp.</em>
+            Mulai booking <em>di sini.</em>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-muted md:mt-5 md:text-lg">
-            Cara tercepat adalah lewat WhatsApp. Sertakan tanggal dan lokasi acara supaya bisa langsung dicek jadwalnya.
+            Isi detail acara di formulir. Pesan yang rapi akan disiapkan untuk kamu kirim lewat WhatsApp.
           </p>
-          <a
-            href={whatsappUrl("kontak")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 flex items-center justify-center gap-2 rounded-full bg-accent-strong px-7 py-4 font-medium text-white transition-colors hover:bg-foreground md:mt-8 md:inline-flex"
-          >
-            <ChatIcon />
-            Chat WhatsApp
-          </a>
         </div>
 
         <dl className="border-t border-foreground">
@@ -65,8 +63,8 @@ export default async function KontakPage() {
                 {c.href ? (
                   <a
                     href={c.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={c.href.startsWith("/") || c.href.startsWith("#") ? undefined : "_blank"}
+                    rel={c.href.startsWith("/") || c.href.startsWith("#") ? undefined : "noopener noreferrer"}
                     className="group flex items-center justify-between gap-4 font-heading text-[28px] leading-tight transition-colors hover:text-accent-strong md:text-[40px]"
                   >
                     <span className="min-w-0 [overflow-wrap:anywhere]">{c.value}</span>
@@ -80,6 +78,10 @@ export default async function KontakPage() {
           ))}
         </dl>
       </div>
+
+      <section className="mx-auto w-full max-w-6xl px-5 pb-14 sm:px-6 md:pb-28">
+        <BookingForm eventTypes={categories} serviceGroups={serviceGroups} />
+      </section>
 
       <section aria-labelledby="cara-booking" className="bg-accent-soft">
         <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-6 md:py-28">

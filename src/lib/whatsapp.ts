@@ -19,8 +19,52 @@ export const WHATSAPP_SOURCES = [
 
 export type WhatsAppSource = (typeof WHATSAPP_SOURCES)[number];
 
+export type BookingContext = {
+  eventType?: string;
+  service?: string;
+  date?: string;
+  time?: string;
+  location?: string;
+  people?: string;
+  hairdo?: string;
+  note?: string;
+};
+
+export function isWhatsAppSource(value: string | undefined): value is WhatsAppSource {
+  return Boolean(value && WHATSAPP_SOURCES.includes(value as WhatsAppSource));
+}
+
+// Semua CTA publik mengarah ke satu formulir. Konteks pilihan dari halaman asal
+// dibawa sebagai nilai awal supaya calon klien tidak perlu mengisinya lagi.
+export function bookingFormUrl(source: WhatsAppSource, context: BookingContext = {}): string {
+  const params = new URLSearchParams({ source });
+  for (const [key, value] of Object.entries(context)) {
+    const trimmed = value?.trim();
+    if (trimmed) params.set(key, trimmed);
+  }
+  return `/kontak?${params.toString()}#form-booking`;
+}
+
+export function bookingMessage(input: { name: string } & BookingContext): string {
+  return [
+    "Halo Kak Ranni, saya ingin tanya/booking makeup.",
+    "",
+    `Nama: ${input.name.trim()}`,
+    `Jenis acara: ${input.eventType?.trim() || "-"}`,
+    `Paket/layanan: ${input.service?.trim() || "-"}`,
+    `Tanggal: ${input.date?.trim() || "-"}`,
+    `Jam: ${input.time?.trim() || "-"}`,
+    `Alamat: ${input.location?.trim() || "-"}`,
+    `Jumlah orang: ${input.people?.trim() || "-"}`,
+    `Hijab do/Hair do: ${input.hairdo?.trim() || "-"}`,
+    `Catatan: ${input.note?.trim() || "-"}`,
+    "",
+    "7175262261 - BCA a.n Ranni Lestary",
+  ].join("\n");
+}
+
 // Link untuk tombol di website: lewat halaman perantara supaya kliknya terhitung.
-export function whatsappUrl(source: WhatsAppSource, message: string = DEFAULT_WHATSAPP_MESSAGE): string {
+export function whatsappUrl(source: WhatsAppSource, message: string): string {
   return `/chat/${source}?text=${encodeURIComponent(message)}`;
 }
 
