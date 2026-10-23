@@ -25,7 +25,7 @@ function parsePrice(value: FormDataEntryValue | null): number | null {
 }
 
 function revalidateServices() {
-  for (const path of ["/", "/layanan", "/tentang", "/faq", "/admin", "/admin/layanan"]) revalidatePath(path);
+  for (const path of ["/", "/layanan", "/kontak", "/tentang", "/faq", "/admin", "/admin/layanan"]) revalidatePath(path);
 }
 
 // ---------- Simpan semua teks & harga (tombol Simpan) ----------

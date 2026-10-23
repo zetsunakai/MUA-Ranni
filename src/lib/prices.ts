@@ -45,6 +45,7 @@ export const getAddOns = cache(async (): Promise<AddOn[]> => {
   }));
 });
 
-export function lowestPrice(groups: ServiceGroup[]): number {
-  return Math.min(...groups.flatMap((g) => g.items.map((i) => i.price)));
+export function lowestPrice(groups: ServiceGroup[]): number | null {
+  const prices = groups.flatMap(g => g.items.map(i => i.price)).filter(Number.isFinite);
+  return prices.length ? Math.min(...prices) : null;
 }

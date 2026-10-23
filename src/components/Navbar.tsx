@@ -38,7 +38,7 @@ export default function Navbar() {
         </button>
       </nav>
       {open && (
-        <div id="mobile-menu" className="absolute inset-x-0 border-y border-line bg-background lg:hidden">
+        <div id="mobile-menu" className="absolute inset-x-0 max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain border-y border-line bg-background lg:hidden">
           <ul className="editorial-container py-3">
             {navLinks.map((link) => (
               <li key={link.href}>

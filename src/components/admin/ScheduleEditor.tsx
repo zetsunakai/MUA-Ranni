@@ -7,7 +7,7 @@ import MonthCalendar from "@/components/MonthCalendar";
 import { addMonths, formatLongDate, type ScheduleStatus } from "@/lib/dates";
 
 type Day = { date: string; status: ScheduleStatus; note: string | null };
-type Props = { days: Day[]; today: string; monthsAhead: number };
+type Props = { days: Day[]; today: string; monthsAhead: number; initialDate?: string | null };
 
 const initialState: FormState = { status: "idle", message: "" };
 
@@ -17,11 +17,11 @@ const options = [
   { value: "full", label: "Penuh", hint: "Tidak bisa terima lagi" },
 ] as const;
 
-export default function ScheduleEditor({ days, today, monthsAhead }: Props) {
+export default function ScheduleEditor({ days, today, monthsAhead, initialDate = null }: Props) {
   const [state, formAction, saving] = useActionState(setScheduleDay, initialState);
   const minMonth = today.slice(0, 7);
-  const [month, setMonth] = useState(minMonth);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [month, setMonth] = useState(initialDate?.slice(0, 7) ?? minMonth);
+  const [selected, setSelected] = useState<string | null>(initialDate);
 
   const byDate = new Map(days.map((d) => [d.date, d]));
   const statuses = Object.fromEntries(days.map((d) => [d.date, d.status]));

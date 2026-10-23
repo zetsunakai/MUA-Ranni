@@ -8,9 +8,10 @@ import { getAddOns, getServiceGroups, lowestPrice } from "@/lib/prices";
 export default async function ServicesContent({ embedded = false }: { embedded?: boolean }) {
   const [groups, addOns] = await Promise.all([getServiceGroups(), getAddOns()]);
   const Heading = embedded ? "h2" : "h1";
+  const from = lowestPrice(groups);
   const booking = [{ label: "Transport", text: bookingInfo.transport }, { label: "DP", text: bookingInfo.deposit }, { label: "Pelunasan", text: bookingInfo.payment }];
   return <section id="layanan-harga" aria-labelledby="layanan-harga-heading" className="scroll-mt-28">
-    <section className="editorial-container centered-opening"><p className="editorial-label">Price list 2026</p><Heading id="layanan-harga-heading" className="editorial-display">Harga jelas, <em>per orang.</em></Heading><p className="editorial-description">Mulai {formatRupiah(lowestPrice(groups))} per orang. Ketuk salah satu layanan untuk langsung booking lewat WhatsApp.</p>
+    <section className="editorial-container centered-opening"><p className="editorial-label">Price list 2026</p><Heading id="layanan-harga-heading" className="editorial-display">Harga jelas, <em>per orang.</em></Heading><p className="editorial-description">{from === null ? "Layanan dan harga sedang diperbarui. Silakan hubungi WhatsApp untuk informasi layanan." : <>Mulai {formatRupiah(from)} per orang. Ketuk salah satu layanan untuk langsung booking lewat WhatsApp.</>}</p>
       <div className="booking-policy"><span aria-hidden="true">✧</span><div><p className="editorial-label">Sebelum booking</p><p>{bookingInfo.deposit}</p></div><span className="editorial-label">DP</span></div>
     </section>
     <section className="editorial-container editorial-section pt-0!">

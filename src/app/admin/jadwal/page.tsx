@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import AdminHeader from "@/components/admin/AdminHeader";
 import ScheduleEditor from "@/components/admin/ScheduleEditor";
 import { requireAdmin } from "@/lib/auth";
-import { formatLongDate, todayInJakarta } from "@/lib/dates";
+import { formatLongDate, selectableDate, todayInJakarta } from "@/lib/dates";
 import { getAdminSchedule, SCHEDULE_MONTHS_AHEAD } from "@/lib/schedule";
 
 export const metadata: Metadata = { title: "Jadwal" };
 
-export default async function AdminJadwalPage() {
+export default async function AdminJadwalPage({ searchParams }: PageProps<"/admin/jadwal">) {
   const admin = await requireAdmin();
-  const days = await getAdminSchedule();
+  const [days, params] = await Promise.all([getAdminSchedule(), searchParams]);
   const today = todayInJakarta();
+  const initialDate = selectableDate(params.date, today, SCHEDULE_MONTHS_AHEAD);
   const upcoming = (days ?? []).filter((d) => d.date >= today);
 
   return (
@@ -29,6 +30,8 @@ export default async function AdminJadwalPage() {
         ) : (
           <>
             <ScheduleEditor
+              key={initialDate ?? "schedule"}
+              initialDate={initialDate}
               days={days.map((d) => ({ date: d.date, status: d.status, note: d.note }))}
               today={today}
               monthsAhead={SCHEDULE_MONTHS_AHEAD}

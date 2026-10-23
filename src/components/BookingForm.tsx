@@ -25,7 +25,8 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
   const formRef = useRef<HTMLFormElement>(null);
   const groupSelectRef = useRef<HTMLSelectElement>(null);
   const itemSelectRef = useRef<HTMLSelectElement>(null);
-  const pendingItemRef = useRef("");
+  const pendingItemRef = useRef<string | null>(null);
+  const restoringRef = useRef(false);
   const subscribeToGroup = useCallback((callback: () => void) => {
     const select = groupSelectRef.current;
     select?.addEventListener("change", callback);
@@ -41,6 +42,7 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
     const dateField = form.elements.namedItem("date");
     if (dateField instanceof HTMLInputElement) dateField.min = todayInJakarta();
 
+    restoringRef.current = true;
     try {
       const raw = window.sessionStorage.getItem(STORAGE_KEY);
       const parsed: unknown = raw ? JSON.parse(raw) : {};
@@ -69,29 +71,51 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
       const matchedItem = matchedGroup && serviceText
         ? matchedGroup.items.find((item) => serviceText.startsWith(`${matchedGroup.name} — ${item.name}`))
         : matchedGroup?.items.find((item) => item.id === savedItemId);
-      const serviceWasRequested = params.has("service");
-      const restoredGroupId = matchedGroup?.id ?? (serviceWasRequested ? "" : savedGroupId);
-      pendingItemRef.current = matchedItem?.id ?? (restoredGroupId === savedGroupId ? savedItemId : "");
+      const restoredGroupId = matchedGroup?.id ?? "";
+      pendingItemRef.current = matchedItem?.id ?? (
+        restoredGroupId === savedGroupId && matchedGroup?.items.some(item => item.id === savedItemId) ? savedItemId : ""
+      );
       if (groupSelectRef.current) {
         groupSelectRef.current.value = restoredGroupId;
         groupSelectRef.current.dispatchEvent(new Event("change", { bubbles: true }));
       }
+      // The group may already be mounted when fresh server props arrive.
+      const itemSelect = itemSelectRef.current;
+      if (pendingItemRef.current !== null && itemSelect?.dataset.group === restoredGroupId) {
+        itemSelect.value = pendingItemRef.current;
+        pendingItemRef.current = null;
+        restoringRef.current = false;
+        itemSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      if (!restoredGroupId) {
+        pendingItemRef.current = null;
+        restoringRef.current = false;
+      }
     } catch {
+      pendingItemRef.current = null;
+      restoringRef.current = false;
       // Storage may be unavailable in restricted browser contexts; the form still works.
     }
   }, [serviceGroups]);
 
   useEffect(() => {
-    if (!itemSelectRef.current || !selectedGroupId) return;
+    if (!itemSelectRef.current || !selectedGroupId || pendingItemRef.current === null) return;
     itemSelectRef.current.value = pendingItemRef.current;
-    pendingItemRef.current = "";
+    pendingItemRef.current = null;
+    restoringRef.current = false;
     itemSelectRef.current.dispatchEvent(new Event("change", { bubbles: true }));
   }, [selectedGroupId]);
 
   function saveForm(event: ChangeEvent<HTMLFormElement>) {
+    // Restoring the group dispatches a change before its dependent service
+    // select has mounted. Do not overwrite the saved service during that step.
+    if (restoringRef.current) return;
     try {
       const formData = new FormData(event.currentTarget);
       const values = Object.fromEntries(FORM_FIELDS.map((name) => [name, String(formData.get(name) ?? "")]));
+      if (event.target instanceof HTMLSelectElement && event.target.name === "serviceGroup") {
+        values.serviceItem = "";
+      }
       window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(values));
     } catch {
       // Storage may be unavailable in restricted browser contexts; the form still works.
@@ -182,6 +206,7 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
         <select
           key={selectedGroupId}
           ref={itemSelectRef}
+          data-group={selectedGroupId}
           name="serviceItem"
           defaultValue=""
           disabled={!selectedGroup}

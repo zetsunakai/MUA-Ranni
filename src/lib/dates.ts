@@ -64,3 +64,12 @@ export function monthGrid(month: string): (string | null)[][] {
 }
 
 export const WEEKDAY_LABELS = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+
+// Accept only real calendar dates that the schedule editor can select.
+export function selectableDate(value: unknown, today: string, monthsAhead: number): string | null {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value) return null;
+  if (value < today || value.slice(0, 7) > addMonths(today.slice(0, 7), monthsAhead)) return null;
+  return value;
+}
