@@ -22,8 +22,8 @@ export const site = {
 
 // Menu utama (navbar, menu HP, footer, dan sitemap).
 export const navLinks: NavLink[] = [
-  { href: "/portfolio", label: "Portofolio" },
   { href: "/layanan", label: "Layanan & Harga" },
+  { href: "/portfolio", label: "Portofolio" },
   { href: "/jadwal", label: "Jadwal" },
   { href: "/tentang", label: "Tentang" },
   { href: "/faq", label: "FAQ" },

@@ -3,6 +3,7 @@ import "server-only";
 import { asc, desc, eq } from "drizzle-orm";
 import { cache } from "react";
 import { portfolioItems as staticPortfolio } from "@/data/portfolio";
+import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
 import { portfolioItems } from "@/db/schema";
 import { getCategories, labelOf } from "@/lib/categories";
@@ -35,10 +36,10 @@ export const getPortfolioItems = cache(async (): Promise<PortfolioItem[]> => {
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .map((p) => ({ ...p, categoryLabel: labelOf(categories, p.category) }));
   }
-  const rows = await db
+  const rows = await readWithRetry(() => db
     .select()
     .from(portfolioItems)
-    .orderBy(asc(portfolioItems.sortOrder), desc(portfolioItems.createdAt));
+    .orderBy(asc(portfolioItems.sortOrder), desc(portfolioItems.createdAt)));
   return rows.map((row) => toItem(row, categories));
 });
 
@@ -48,6 +49,6 @@ export async function getPortfolioItem(id: string): Promise<PortfolioItem | null
     const p = staticPortfolio.find((x) => x.id === id);
     return p ? { ...p, categoryLabel: labelOf(categories, p.category) } : null;
   }
-  const [row] = await db.select().from(portfolioItems).where(eq(portfolioItems.id, id));
+  const [row] = await readWithRetry(() => db.select().from(portfolioItems).where(eq(portfolioItems.id, id)));
   return row ? toItem(row, categories) : null;
 }

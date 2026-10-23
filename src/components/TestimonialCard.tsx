@@ -3,7 +3,7 @@ import type { Testimonial } from "@/types";
 
 export default function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <figure className="flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface">
+    <figure className="flex h-full flex-col overflow-hidden rounded-none border border-line bg-surface">
       {testimonial.photoUrl && (
         <div className="relative aspect-[4/3] bg-accent-soft">
           <Image

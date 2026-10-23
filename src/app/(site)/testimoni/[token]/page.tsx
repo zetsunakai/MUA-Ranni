@@ -47,7 +47,7 @@ export default async function TestimoniPage({ params }: PageProps<"/testimoni/[t
           <p className="text-foreground/75">{reasons[check.reason]}</p>
           <a
             href={bookingFormUrl("kontak", { note: "Saya mau mengirim testimoni, tetapi tautannya tidak bisa dibuka." })}
-            className="inline-block rounded-full bg-accent-strong px-6 py-3 font-medium text-white"
+            className="inline-block rounded-none bg-foreground px-6 py-3 font-medium text-white"
           >
             Chat Ranni
           </a>

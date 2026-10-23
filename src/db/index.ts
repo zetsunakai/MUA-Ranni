@@ -4,30 +4,36 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "./schema";
 
-// DATABASE_URL = connection string "Transaction pooler" dari Supabase (port 6543).
-//
-// Driver: node-postgres (pg), BUKAN postgres.js. postgres.js menumpuk (pipelining)
-// beberapa query di satu koneksi saat semua koneksi sibuk, dan Supabase transaction
-// pooler kadang kehilangan jawabannya -> query menggantung. Ini membuat `next build`
-// di Vercel (1 worker, 36 halaman sekaligus) timeout. pg menjalankan satu query per
-// koneksi dan sisanya antre di pool, jadi aman untuk transaction pooler.
-function createDb(url: string) {
+// pg-pool removes clients that report query errors. Bound both connection
+// acquisition and query execution so an unresponsive socket cannot occupy a
+// pool slot indefinitely and make every following request time out.
+function createDatabase(url: string) {
   const pool = new Pool({
     connectionString: url,
     max: 5,
     idleTimeoutMillis: 10_000,
-    connectionTimeoutMillis: 15_000,
+    connectionTimeoutMillis: 5_000,
+    query_timeout: 8_000,
   });
-  return drizzle(pool, { schema });
+  // Idle clients can emit errors between queries. pg-pool already removes
+  // them; the listener prevents an unhandled EventEmitter error crashing Next.
+  pool.on("error", (error) => {
+    console.warn("[database] Idle connection closed", { code: (error as Error & { code?: string }).code ?? "CONNECTION_CLOSED" });
+  });
+  return { url, pool, db: drizzle(pool, { schema }) };
 }
 
-// Di mode dev, file ini dimuat ulang setiap ada perubahan kode; simpan koneksi di
-// globalThis supaya tidak membuka koneksi baru terus-menerus.
-const globalForDb = globalThis as unknown as { db?: ReturnType<typeof createDb> };
+// Store the pool alongside Drizzle across HMR. A changed connection string
+// must acquire a new pool rather than reuse the previous environment's clients.
+const globalForDb = globalThis as unknown as { database?: ReturnType<typeof createDatabase> };
 
 export function getDb() {
   const url = process.env.DATABASE_URL;
   if (!url) return null;
-  globalForDb.db ??= createDb(url);
-  return globalForDb.db;
+  if (!globalForDb.database || globalForDb.database.url !== url) {
+    const previous = globalForDb.database;
+    globalForDb.database = createDatabase(url);
+    if (previous) void previous.pool.end().catch(() => undefined);
+  }
+  return globalForDb.database.db;
 }

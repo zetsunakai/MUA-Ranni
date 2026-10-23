@@ -12,7 +12,7 @@ import type { CategoryOption, PortfolioItem } from "@/types";
 type Props = {
   items: PortfolioItem[];
   categories: CategoryOption[];
-  // Judul halaman, ditaruh sebaris dengan filter di desktop.
+  // Judul halaman, diikuti baris filter kategori.
   heading: ReactNode;
 };
 
@@ -36,18 +36,18 @@ export default function PortfolioGallery({ items, categories, heading }: Props) 
 
   return (
     <>
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-16">
+      <div className="flex flex-col gap-8">
         {/* Dibungkus sendiri: elemen dari Server Component yang dirender berdampingan
             dengan elemen lain memicu peringatan "key" React di mode dev. */}
-        <div className="max-w-3xl">{heading}</div>
+        <div className="portfolio-intro">{heading}</div>
         <CategoryFilter value={filter} onChange={changeFilter} counts={counts} categories={categories} />
       </div>
 
-      {/* Masonry dengan CSS columns: foto disusun per kolom dengan tinggi yang bervariasi. */}
-      <ul className="mt-6 columns-2 gap-3 md:mt-14 md:columns-3 md:gap-6">
+      {/* Grid per baris menjaga urutan foto; ukuran dan offset mengikuti komposisi lookbook. */}
+      <ul className="lookbook-grid">
         {visibleItems.map((item, index) => (
-          <li key={item.id} className="mb-[18px] break-inside-avoid md:mb-7">
-            <GalleryCard item={item} index={index} onOpen={() => setOpenIndex(index)} eager={index < 4} />
+          <li key={item.id} className="lookbook-entry">
+            <GalleryCard item={item} onOpen={() => setOpenIndex(index)} eager={index < 4} />
           </li>
         ))}
       </ul>
@@ -57,7 +57,7 @@ export default function PortfolioGallery({ items, categories, heading }: Props) 
           <button
             type="button"
             onClick={() => setShown((n) => n + PAGE_SIZE)}
-            className="w-full rounded-full border border-foreground px-8 py-4 font-medium transition-colors hover:bg-foreground hover:text-background md:w-auto"
+            className="w-full rounded-none border border-foreground px-8 py-4 font-medium transition-colors hover:bg-foreground hover:text-background md:w-auto"
           >
             Muat lebih banyak
           </button>

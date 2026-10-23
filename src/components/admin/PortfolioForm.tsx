@@ -100,7 +100,7 @@ export default function PortfolioForm({ item, categories }: Props) {
         <FieldError message={errors.description} />
       </div>
 
-      <label className="flex items-start gap-3 rounded-xl border border-line bg-surface p-4">
+      <label className="flex items-start gap-3 rounded-none border border-line bg-surface p-4">
         <input type="checkbox" name="featured" defaultChecked={item?.featured} className="mt-0.5 h-5 w-5 accent-accent-strong" />
         <span>
           <span className="block text-sm font-medium">Tampilkan di Home</span>
@@ -108,7 +108,7 @@ export default function PortfolioForm({ item, categories }: Props) {
         </span>
       </label>
 
-      <details className="rounded-xl border border-line bg-surface p-4" open={Boolean(item?.beforeImageUrl)}>
+      <details className="rounded-none border border-line bg-surface p-4" open={Boolean(item?.beforeImageUrl)}>
         <summary className="cursor-pointer text-sm font-medium">Foto sebelum makeup (opsional)</summary>
         <div className="mt-4 space-y-3">
           <PhotoField
@@ -127,7 +127,7 @@ export default function PortfolioForm({ item, categories }: Props) {
         </div>
       </details>
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-line bg-surface/95 backdrop-blur">
+      <div className="admin-savebar fixed inset-x-0 bottom-0 border-t border-line bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <p aria-live="polite" className={`flex-1 text-sm ${state.status === "error" || clientError ? "text-red-700" : "text-foreground/80"}`}>
             {compressing ? "Mengecilkan foto…" : saving ? "Menyimpan…" : clientError || state.message}
@@ -135,7 +135,7 @@ export default function PortfolioForm({ item, categories }: Props) {
           <button
             type="submit"
             disabled={busy}
-            className="rounded-full bg-accent-strong px-6 py-3 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
+            className="rounded-none bg-foreground px-6 py-3 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
           >
             Simpan
           </button>
@@ -146,7 +146,7 @@ export default function PortfolioForm({ item, categories }: Props) {
 }
 
 function inputClass(error?: string) {
-  return `mt-1 w-full rounded-lg border bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong ${
+  return `mt-1 w-full rounded-none border bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong ${
     error ? "border-red-600" : "border-line"
   }`;
 }
@@ -172,11 +172,11 @@ function PhotoField({ name, label, hint, currentUrl, error, required }: PhotoFie
       <p className="text-sm font-medium">{label}</p>
       <p className="text-xs text-foreground/70">{hint}</p>
       <label
-        className={`mt-2 flex cursor-pointer items-center gap-4 rounded-xl border border-dashed bg-surface p-3 ${
+        className={`mt-2 flex cursor-pointer items-center gap-4 rounded-none border border-dashed bg-surface p-3 ${
           error ? "border-red-600" : "border-line"
         }`}
       >
-        <span className="relative flex h-28 w-21 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-accent-soft text-xs text-foreground/70">
+        <span className="relative flex h-28 w-21 shrink-0 items-center justify-center overflow-hidden rounded-none bg-accent-soft text-xs text-foreground/70">
           {preview ? (
             // Pratinjau lokal (blob:) atau URL foto lama; next/image tidak perlu untuk pratinjau.
             // eslint-disable-next-line @next/next/no-img-element

@@ -43,7 +43,7 @@ export default function ScheduleEditor({ days, today, monthsAhead }: Props) {
         selectableFull
       />
 
-      <div className="rounded-xl border border-line bg-surface p-4 sm:p-5">
+      <div className="rounded-none border border-line bg-surface p-4 sm:p-5">
         {selected ? (
           // key: form di-reset ke nilai tanggal yang baru dipilih.
           <form key={`${selected}-${current?.status}-${current?.note}`} action={formAction} className="space-y-4">
@@ -56,7 +56,7 @@ export default function ScheduleEditor({ days, today, monthsAhead }: Props) {
                 {options.map((o) => (
                   <label
                     key={o.value}
-                    className="flex cursor-pointer items-center gap-3 rounded-lg border border-line px-3 py-2.5 has-[:checked]:border-accent-strong has-[:checked]:bg-accent-soft/60"
+                    className="flex cursor-pointer items-center gap-3 rounded-none border border-line px-3 py-2.5 has-[:checked]:border-accent-strong has-[:checked]:bg-accent-soft/60"
                   >
                     <input
                       type="radio"
@@ -85,14 +85,14 @@ export default function ScheduleEditor({ days, today, monthsAhead }: Props) {
                 maxLength={200}
                 defaultValue={current?.note ?? ""}
                 placeholder="contoh: Akad Nadia, 06.00, Depok"
-                className="mt-1 w-full rounded-lg border border-line bg-background px-3 py-2 text-base outline-none focus:border-accent-strong"
+                className="mt-1 w-full rounded-none border border-line bg-background px-3 py-2 text-base outline-none focus:border-accent-strong"
               />
             </div>
 
             <button
               type="submit"
               disabled={saving}
-              className="w-full rounded-full bg-accent-strong py-3 font-medium text-white hover:bg-foreground disabled:opacity-60"
+              className="w-full rounded-none bg-foreground py-3 font-medium text-white hover:bg-foreground disabled:opacity-60"
             >
               {saving ? "Menyimpan…" : "Simpan"}
             </button>

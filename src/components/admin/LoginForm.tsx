@@ -21,7 +21,7 @@ export default function LoginForm() {
           autoComplete="email"
           defaultValue={state.email}
           required
-          className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong"
+          className="mt-1 w-full rounded-none border border-line bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong"
         />
       </div>
       <div>
@@ -34,7 +34,7 @@ export default function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong"
+          className="mt-1 w-full rounded-none border border-line bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong"
         />
       </div>
 
@@ -45,7 +45,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-accent-strong py-3 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
+        className="w-full rounded-none bg-foreground py-3 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
       >
         {pending ? "Masuk…" : "Masuk"}
       </button>

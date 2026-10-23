@@ -52,7 +52,7 @@ export default function WhatsAppRedirect({ number }: { number: string }) {
           e.preventDefault();
           window.location.replace(targetUrl(number));
         }}
-        className="rounded-full bg-accent-strong px-6 py-3 font-medium text-white"
+        className="rounded-none bg-foreground px-6 py-3 font-medium text-white"
       >
         Buka WhatsApp
       </a>

@@ -99,5 +99,6 @@ export async function moderateTestimonial(formData: FormData): Promise<void> {
   }
 
   revalidatePath("/");
+  revalidatePath("/portfolio");
   revalidatePath("/admin/testimoni");
 }

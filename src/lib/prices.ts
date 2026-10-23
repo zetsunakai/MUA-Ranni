@@ -3,6 +3,7 @@ import "server-only";
 import { asc } from "drizzle-orm";
 import { cache } from "react";
 import { addOns as staticAddOns, serviceGroups as staticGroups } from "@/data/services";
+import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
 import { addOns, serviceGroups, serviceItems } from "@/db/schema";
 import type { AddOn, ServiceGroup } from "@/types";
@@ -16,8 +17,8 @@ export const getServiceGroups = cache(async (): Promise<ServiceGroup[]> => {
   if (!db) return staticGroups;
 
   const [groups, items] = await Promise.all([
-    db.select().from(serviceGroups).orderBy(asc(serviceGroups.sortOrder)),
-    db.select().from(serviceItems).orderBy(asc(serviceItems.sortOrder)),
+    readWithRetry(() => db.select().from(serviceGroups).orderBy(asc(serviceGroups.sortOrder))),
+    readWithRetry(() => db.select().from(serviceItems).orderBy(asc(serviceItems.sortOrder))),
   ]);
 
   return groups.map((g) => ({
@@ -34,7 +35,7 @@ export const getAddOns = cache(async (): Promise<AddOn[]> => {
   const db = getDb();
   if (!db) return staticAddOns;
 
-  const rows = await db.select().from(addOns).orderBy(asc(addOns.sortOrder));
+  const rows = await readWithRetry(() => db.select().from(addOns).orderBy(asc(addOns.sortOrder)));
   return rows.map((a) => ({
     id: a.id,
     name: a.name,

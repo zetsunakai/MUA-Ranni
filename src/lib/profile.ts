@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { cache } from "react";
 import { about } from "@/data/about";
 import { site } from "@/data/site";
+import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
 import { siteProfile } from "@/db/schema";
 import { displayWhatsapp } from "@/lib/profile-format";
@@ -34,7 +35,7 @@ const defaults = {
 // Profil yang ditampilkan di website: isi dari admin, atau nilai bawaan kalau kosong.
 export const getProfile = cache(async (): Promise<Profile> => {
   const db = getDb();
-  const [row] = db ? await db.select().from(siteProfile).where(eq(siteProfile.id, 1)) : [];
+  const [row] = db ? await readWithRetry(() => db.select().from(siteProfile).where(eq(siteProfile.id, 1))) : [];
 
   const whatsappNumber = row?.whatsappNumber || defaults.whatsappNumber;
   const instagramHandle = row?.instagramHandle || defaults.instagramHandle;

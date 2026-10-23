@@ -3,6 +3,7 @@ import "server-only";
 import { asc, sql } from "drizzle-orm";
 import { cache } from "react";
 import { defaultCategories } from "@/data/site";
+import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
 import { categoryTable, portfolioItems, testimonials } from "@/db/schema";
 import type { CategoryOption } from "@/types";
@@ -11,10 +12,10 @@ import type { CategoryOption } from "@/types";
 export const getCategories = cache(async (): Promise<CategoryOption[]> => {
   const db = getDb();
   if (!db) return defaultCategories;
-  return db
+  return readWithRetry(() => db
     .select({ id: categoryTable.id, label: categoryTable.label })
     .from(categoryTable)
-    .orderBy(asc(categoryTable.sortOrder));
+    .orderBy(asc(categoryTable.sortOrder)));
 });
 
 export function labelOf(categories: CategoryOption[], id: string): string {

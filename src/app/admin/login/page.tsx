@@ -16,7 +16,7 @@ export default function LoginPage() {
         {isSupabaseConfigured() ? (
           <LoginForm />
         ) : (
-          <p className="rounded-lg border border-line bg-surface p-4 text-sm">
+          <p className="rounded-none border border-line bg-surface p-4 text-sm">
             Supabase belum disambungkan. Isi <code>NEXT_PUBLIC_SUPABASE_URL</code> dan{" "}
             <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code> di environment variables.
           </p>

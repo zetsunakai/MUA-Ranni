@@ -14,7 +14,7 @@ export default async function ProfilPage() {
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/profil" />
-      <div className="mx-auto w-full max-w-3xl px-4 py-6">
+      <div className="admin-content mx-auto w-full max-w-6xl px-4 py-6">
         <h1 className="font-heading text-4xl">Profil</h1>
         <p className="mt-1 text-sm text-foreground/70">Kontak, area layanan, dan bio yang tampil di website.</p>
         {getDb() ? (
@@ -22,7 +22,7 @@ export default async function ProfilPage() {
             <ProfileForm profile={profile} />
           </div>
         ) : (
-          <p className="mt-6 rounded-lg border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
+          <p className="mt-6 rounded-none border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
         )}
       </div>
     </>

@@ -1,40 +1,16 @@
 import type { Metadata } from "next";
 import AvailabilityCalendar from "@/components/AvailabilityCalendar";
+import { BookingCTA } from "@/components/editorial/Editorial";
 import { bookingInfo } from "@/data/services";
 import { todayInJakarta } from "@/lib/dates";
 import { getPublicSchedule, SCHEDULE_MONTHS_AHEAD } from "@/lib/schedule";
 
-export const metadata: Metadata = {
-  title: "Jadwal",
-  description: "Cek tanggal yang masih kosong dan booking makeup langsung lewat WhatsApp.",
-  alternates: { canonical: "/jadwal" },
-};
-
-// Statis; dibuat ulang saat admin mengubah jadwal (revalidatePath) atau paling lambat tiap jam.
+export const metadata: Metadata = { title: "Jadwal", description: "Cek tanggal yang masih kosong dan booking makeup langsung lewat WhatsApp.", alternates: { canonical: "/jadwal" } };
 export default async function JadwalPage() {
   const statuses = await getPublicSchedule();
-
-  return (
-    <div className="mx-auto w-full max-w-6xl px-5 pt-10 pb-14 sm:px-6 md:pt-24 md:pb-28">
-      <div className="max-w-4xl">
-        <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">Jadwal</p>
-        <h1 className="mt-4 font-heading text-[56px] leading-[0.95] tracking-tight md:mt-5 md:text-8xl">
-          Cek tanggalmu, <em>kunci lebih awal.</em>
-        </h1>
-        <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-muted md:mt-5 md:text-lg">
-          Musim wisuda dan nikah cepat penuh. Lihat tanggal yang masih tersedia, lalu kirim detail acaramu lewat
-          WhatsApp.
-        </p>
-      </div>
-
-      <div className="mt-6 md:mt-16">
-        <AvailabilityCalendar
-          statuses={statuses}
-          monthsAhead={SCHEDULE_MONTHS_AHEAD}
-          renderedToday={todayInJakarta()}
-          footnote={`Tanggal yang tampil tersedia tetap dikonfirmasi lewat WhatsApp sebelum dianggap terkunci. ${bookingInfo.deposit}`}
-        />
-      </div>
-    </div>
-  );
+  return <>
+    <section className="contact-opening product-band"><div className="editorial-container"><div><p className="editorial-label">Jadwal</p><h1 className="editorial-display">Cek tanggalmu,<br /><em>kunci lebih awal.</em></h1><p className="editorial-description mt-6">Musim wisuda dan nikah cepat penuh. Lihat tanggal yang masih tersedia, lalu kirim detail acaramu lewat WhatsApp.</p></div><div className="response-card"><p className="editorial-label">Sebelum booking</p><p className="font-heading">Kunci tanggal</p><p className="editorial-description mt-4">{bookingInfo.deposit}</p></div></div></section>
+    <section className="editorial-container editorial-section"><AvailabilityCalendar statuses={statuses} monthsAhead={SCHEDULE_MONTHS_AHEAD} renderedToday={todayInJakarta()} footnote={`Tanggal yang tampil tersedia tetap dikonfirmasi lewat WhatsApp sebelum dianggap terkunci. ${bookingInfo.deposit}`} /></section>
+    <BookingCTA compact />
+  </>;
 }

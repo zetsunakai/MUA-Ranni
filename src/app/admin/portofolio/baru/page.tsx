@@ -13,7 +13,7 @@ export default async function NewPortfolioPage() {
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/portofolio" />
-      <div className="mx-auto w-full max-w-3xl px-4 py-6">
+      <div className="admin-content mx-auto w-full max-w-6xl px-4 py-6">
         <Link href="/admin/portofolio" className="text-sm text-accent-strong">
           ← Kembali
         </Link>

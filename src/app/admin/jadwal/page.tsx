@@ -16,7 +16,7 @@ export default async function AdminJadwalPage() {
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/jadwal" />
-      <div className="mx-auto w-full max-w-4xl space-y-8 px-4 py-6">
+      <div className="admin-content mx-auto w-full max-w-6xl space-y-8 px-4 py-6">
         <div>
           <h1 className="font-heading text-4xl">Jadwal</h1>
           <p className="mt-1 text-sm text-foreground/70">
@@ -25,7 +25,7 @@ export default async function AdminJadwalPage() {
         </div>
 
         {!days ? (
-          <p className="rounded-lg border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
+          <p className="rounded-none border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
         ) : (
           <>
             <ScheduleEditor
@@ -41,7 +41,7 @@ export default async function AdminJadwalPage() {
               {upcoming.length === 0 ? (
                 <p className="mt-2 text-sm text-foreground/70">Belum ada tanggal yang ditandai.</p>
               ) : (
-                <ul className="mt-3 divide-y divide-line rounded-xl border border-line bg-surface">
+                <ul className="mt-3 divide-y divide-line rounded-none border border-line bg-surface">
                   {upcoming.map((d) => (
                     <li key={d.date} className="flex items-start gap-3 px-4 py-3">
                       <span

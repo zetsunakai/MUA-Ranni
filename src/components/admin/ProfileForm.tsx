@@ -53,7 +53,7 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
         </Field>
       </Section>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur">
+      <div className="admin-savebar fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <p aria-live="polite" className={`flex-1 text-sm ${state.status === "error" ? "text-red-700" : "text-foreground/80"}`}>
             {saving ? "Menyimpan…" : state.message}
@@ -61,7 +61,7 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
           <button
             type="submit"
             disabled={saving}
-            className="h-11 rounded-full bg-accent-strong px-6 font-medium text-white hover:bg-foreground disabled:opacity-60"
+            className="h-11 rounded-none bg-foreground px-6 font-medium text-white hover:bg-foreground disabled:opacity-60"
           >
             Simpan
           </button>
@@ -72,14 +72,14 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
 }
 
 function inputClass(error?: string) {
-  return `mt-1 min-h-11 w-full rounded-lg border bg-background px-3 text-base outline-none focus:border-accent-strong ${
+  return `mt-1 min-h-11 w-full rounded-none border bg-background px-3 text-base outline-none focus:border-accent-strong ${
     error ? "border-red-600" : "border-line"
   }`;
 }
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="space-y-4 rounded-xl border border-line bg-surface p-4 sm:p-5">
+    <section className="space-y-4 rounded-none border border-line bg-surface p-4 sm:p-5">
       <h2 className="font-heading text-2xl">{title}</h2>
       {children}
     </section>

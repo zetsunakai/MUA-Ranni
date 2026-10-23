@@ -62,14 +62,12 @@ export default async function FaqPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-10 pb-14 sm:px-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:pt-24 md:pb-28">
-        {/* Judul ikut menempel saat daftar pertanyaan di-scroll (desktop) */}
-        <div className="md:sticky md:top-32 md:self-start">
+      <section className="contact-opening product-band"><div className="editorial-container"><div>
           <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">FAQ</p>
-          <h1 className="mt-4 font-heading text-[56px] leading-[0.95] tracking-tight md:mt-5 md:text-8xl">
+          <h1 className="mt-4 font-heading text-[44px] leading-[1.12] tracking-[-0.025em] md:mt-5 md:text-[64px]">
             Yang sering <em>ditanyakan.</em>
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted md:mt-5 md:text-lg">
+          <p className="mt-4 text-[15px] leading-[1.9] text-muted md:mt-5 md:text-base">
             Detail harga ada di{" "}
             <Link href="/layanan" className="font-medium text-accent-strong underline underline-offset-4">
               Layanan &amp; Harga
@@ -80,8 +78,9 @@ export default async function FaqPage() {
             </Link>
             .
           </p>
-        </div>
-
+      </div><div className="response-card"><p className="editorial-label">Jam respon chat</p><p className="font-heading">{profile.responseHours}</p><Link href={bookingFormUrl("faq-cta")} className="editorial-text-link">Chat WhatsApp →</Link></div></div></section>
+      <div className="editorial-container faq-spread editorial-section">
+        <aside><p className="editorial-label">FAQ</p><h2 className="editorial-title">Sebelum booking</h2><p className="editorial-description mt-6">{bookingInfo.deposit}</p><p className="editorial-description mt-4">{bookingInfo.payment}</p><Link href="/kontak" className="editorial-text-link">Mulai booking di sini. →</Link></aside>
         <div className="border-t border-foreground">
           {faqs.map((f) => (
             <details key={f.q} className="group border-b border-line">
@@ -104,7 +103,7 @@ export default async function FaqPage() {
         </div>
       </div>
 
-      {/* Ajakan chat, menyambung ke footer gelap */}
+      {/* Ajakan chat, sebelum footer */}
       <section className="bg-foreground text-background">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between md:pt-20">
           <div>
@@ -115,13 +114,13 @@ export default async function FaqPage() {
               Tanya langsung lewat WhatsApp, dibalas secepatnya.
             </p>
           </div>
-          <a
+          <Link
             href={bookingFormUrl("faq-cta", { note: "Saya mau tanya soal makeup." })}
-            className="flex items-center justify-center gap-2 rounded-full bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
+            className="flex items-center justify-center gap-2 rounded-none bg-background px-8 py-4 font-medium text-foreground transition-colors hover:bg-accent-soft md:shrink-0"
           >
             <ChatIcon />
             Chat WhatsApp
-          </a>
+          </Link>
         </div>
       </section>
     </>

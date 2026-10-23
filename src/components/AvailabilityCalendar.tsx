@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState, useSyncExternalStore } from "react";
 import MonthCalendar from "@/components/MonthCalendar";
 import { addMonths, PAST_BOOKING_DATE_MESSAGE, todayInJakarta, type ScheduleStatus } from "@/lib/dates";
@@ -36,7 +37,7 @@ export default function AvailabilityCalendar({ statuses, monthsAhead, renderedTo
 
   const limited = selected && statuses[selected] === "limited";
   const fieldClass =
-    "w-full rounded-md border border-field bg-white px-3.5 py-3.5 text-base text-foreground placeholder:text-muted/80 md:px-4";
+    "w-full min-w-0 rounded-none border-0 border-b border-field bg-transparent px-0 py-3.5 text-base text-foreground placeholder:text-muted/80 focus:border-foreground focus:outline-none";
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-12">
@@ -53,7 +54,7 @@ export default function AvailabilityCalendar({ statuses, monthsAhead, renderedTo
 
       <div
         aria-labelledby={`${id}-title`}
-        className="flex flex-col gap-5 rounded-lg bg-accent-soft p-5 sm:p-8 lg:p-10"
+        className="flex flex-col gap-5 border border-line bg-surface p-5 sm:p-8 lg:p-10"
       >
         <h2 id={`${id}-title`} className="font-heading text-[32px] leading-none md:text-4xl">
           Kunci tanggal
@@ -102,12 +103,12 @@ export default function AvailabilityCalendar({ statuses, monthsAhead, renderedTo
           />
         </div>
 
-        <a
+        <Link
           href={bookingFormUrl("jadwal", { date: dateText, time })}
-          className="mt-1 rounded-full bg-accent-strong px-6 py-4 text-center font-medium text-white transition-colors hover:bg-foreground md:py-[18px]"
+          className="mt-1 rounded-none bg-foreground px-6 py-4 text-center font-medium text-white transition-colors hover:bg-foreground md:py-[18px]"
         >
           Lanjut isi formulir booking
-        </a>
+        </Link>
 
         <p className="text-xs leading-relaxed text-muted md:text-[13px]">{footnote}</p>
       </div>

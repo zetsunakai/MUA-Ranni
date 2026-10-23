@@ -19,7 +19,7 @@ export default async function AdminTestimoniPage() {
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/testimoni" />
-      <div className="mx-auto w-full max-w-3xl space-y-8 px-4 py-6">
+      <div className="admin-content mx-auto w-full max-w-6xl space-y-8 px-4 py-6">
         <div>
           <h1 className="font-heading text-4xl">Testimoni</h1>
           <p className="mt-1 text-sm text-foreground/70">
@@ -28,11 +28,15 @@ export default async function AdminTestimoniPage() {
         </div>
 
         {!data ? (
-          <p className="rounded-lg border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
+          <p className="rounded-none border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
         ) : (
           <>
-            <InviteCreator categories={categories} />
-
+            <div className="review-metrics">{[
+              { label: "Menunggu persetujuan", value: data.pending.length },
+              { label: "Tampil di website", value: data.approved.length },
+              { label: "Link belum diisi", value: data.openInvites.length },
+            ].map((metric, i) => <div key={metric.label}><span className="editorial-label">0{i + 1}</span><h2 className="font-heading text-2xl">{metric.label}</h2><strong className="font-heading text-4xl">{metric.value}</strong></div>)}</div>
+            <div className="reviews-spread"><div className="review-main">
             <section>
               <h2 className="font-heading text-2xl">
                 Menunggu persetujuan <span className="text-foreground/70">({data.pending.length})</span>
@@ -42,7 +46,7 @@ export default async function AdminTestimoniPage() {
               ) : (
                 <ul className="mt-3 space-y-3">
                   {data.pending.map((t) => (
-                    <li key={t.id} className="rounded-xl border border-accent bg-surface p-4">
+                    <li key={t.id} className="rounded-none border border-accent bg-surface p-4">
                       <form action={moderateTestimonial} className="space-y-3">
                         <input type="hidden" name="id" value={t.id} />
                         <div className="flex items-start gap-3">
@@ -50,7 +54,7 @@ export default async function AdminTestimoniPage() {
                             <a href={t.photoUrl} target="_blank" rel="noopener noreferrer" className="shrink-0">
                               {/* Foto dari klien, belum tentu disetujui; tidak lewat next/image. */}
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={t.photoUrl} alt={`Foto dari ${t.clientName}`} className="h-24 w-20 rounded-lg object-cover" />
+                              <img src={t.photoUrl} alt={`Foto dari ${t.clientName}`} className="h-24 w-20 rounded-none object-cover" />
                             </a>
                           )}
                           <div className="min-w-0 flex-1">
@@ -63,7 +67,7 @@ export default async function AdminTestimoniPage() {
                                 name="clientName"
                                 defaultValue={t.clientName}
                                 maxLength={60}
-                                className="mt-0.5 w-full rounded-lg border border-line bg-background px-2 py-1.5 text-base text-foreground outline-none focus:border-accent-strong"
+                                className="mt-0.5 w-full rounded-none border border-line bg-background px-2 py-1.5 text-base text-foreground outline-none focus:border-accent-strong"
                               />
                             </label>
                           </div>
@@ -75,7 +79,7 @@ export default async function AdminTestimoniPage() {
                             defaultValue={t.quote}
                             maxLength={500}
                             rows={4}
-                            className="mt-0.5 w-full rounded-lg border border-line bg-background px-2 py-1.5 text-base text-foreground outline-none focus:border-accent-strong"
+                            className="mt-0.5 w-full rounded-none border border-line bg-background px-2 py-1.5 text-base text-foreground outline-none focus:border-accent-strong"
                           />
                         </label>
                         <div className="flex flex-wrap gap-2">
@@ -83,7 +87,7 @@ export default async function AdminTestimoniPage() {
                             name="intent"
                             value="approve"
                             pendingLabel="Menyimpan…"
-                            className="rounded-full bg-accent-strong px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
+                            className="rounded-none bg-foreground px-5 py-2 text-sm font-medium text-white disabled:opacity-60"
                           >
                             Setujui & tampilkan
                           </ConfirmButton>
@@ -91,7 +95,7 @@ export default async function AdminTestimoniPage() {
                             name="intent"
                             value="delete"
                             confirmMessage={`Tolak dan hapus testimoni dari ${t.clientName}? Tidak bisa dikembalikan.`}
-                            className="rounded-full border border-red-300 px-5 py-2 text-sm text-red-700 disabled:opacity-60"
+                            className="rounded-none border border-red-300 px-5 py-2 text-sm text-red-700 disabled:opacity-60"
                           >
                             Tolak
                           </ConfirmButton>
@@ -112,7 +116,7 @@ export default async function AdminTestimoniPage() {
               ) : (
                 <ul className="mt-3 space-y-3">
                   {data.approved.map((t) => (
-                    <li key={t.id} className="rounded-xl border border-line bg-surface p-4">
+                    <li key={t.id} className="rounded-none border border-line bg-surface p-4">
                       <p className="text-sm text-foreground/80">“{t.quote}”</p>
                       <p className="mt-2 text-xs">
                         <span className="font-semibold">{t.clientName}</span>
@@ -120,14 +124,14 @@ export default async function AdminTestimoniPage() {
                       </p>
                       <form action={moderateTestimonial} className="mt-3 flex flex-wrap gap-2">
                         <input type="hidden" name="id" value={t.id} />
-                        <ConfirmButton name="intent" value="hide" pendingLabel="Menyembunyikan…" className="rounded-full border border-line px-4 py-1.5 text-sm">
+                        <ConfirmButton name="intent" value="hide" pendingLabel="Menyembunyikan…" className="rounded-none border border-line px-4 py-1.5 text-sm">
                           Sembunyikan
                         </ConfirmButton>
                         <ConfirmButton
                           name="intent"
                           value="delete"
                           confirmMessage={`Hapus testimoni dari ${t.clientName} secara permanen?`}
-                          className="rounded-full border border-red-300 px-4 py-1.5 text-sm text-red-700"
+                          className="rounded-none border border-red-300 px-4 py-1.5 text-sm text-red-700"
                         >
                           Hapus
                         </ConfirmButton>
@@ -138,12 +142,14 @@ export default async function AdminTestimoniPage() {
               )}
             </section>
 
+
+            </div><aside className="review-sidebar"><InviteCreator categories={categories} />
             {data.openInvites.length > 0 && (
               <section>
                 <h2 className="font-heading text-2xl">
                   Link belum diisi <span className="text-foreground/70">({data.openInvites.length})</span>
                 </h2>
-                <ul className="mt-3 divide-y divide-line rounded-xl border border-line bg-surface">
+                <ul className="mt-3 divide-y divide-line rounded-none border border-line bg-surface">
                   {data.openInvites.map((inv) => (
                     <li key={inv.id} className="flex items-center gap-3 px-4 py-3">
                       <div className="min-w-0 flex-1">
@@ -167,6 +173,7 @@ export default async function AdminTestimoniPage() {
                 </ul>
               </section>
             )}
+            </aside></div>
           </>
         )}
       </div>

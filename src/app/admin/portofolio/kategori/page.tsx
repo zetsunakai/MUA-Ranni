@@ -16,7 +16,7 @@ export default async function KategoriPage() {
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/portofolio" />
-      <div className="mx-auto w-full max-w-3xl space-y-6 px-4 py-6">
+      <div className="admin-content mx-auto w-full max-w-6xl space-y-6 px-4 py-6">
         <div>
           <Link href="/admin/portofolio" className="text-sm text-accent-strong">
             ← Kembali ke portofolio
@@ -29,12 +29,12 @@ export default async function KategoriPage() {
         </div>
 
         {!categories ? (
-          <p className="rounded-lg border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
+          <p className="rounded-none border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
         ) : (
           <>
             <AddCategoryForm />
 
-            <ul className="divide-y divide-line rounded-xl border border-line bg-surface">
+            <ul className="divide-y divide-line rounded-none border border-line bg-surface">
               {categories.map((c, i) => {
                 const used = c.photos + c.testimonials;
                 return (
@@ -48,9 +48,9 @@ export default async function KategoriPage() {
                         minLength={2}
                         maxLength={30}
                         aria-label={`Nama kategori ${c.label}`}
-                        className="h-11 min-w-0 flex-1 rounded-lg border border-line bg-background px-3 text-base outline-none focus:border-accent-strong"
+                        className="h-11 min-w-0 flex-1 rounded-none border border-line bg-background px-3 text-base outline-none focus:border-accent-strong"
                       />
-                      <ConfirmButton pendingLabel="…" className="h-11 shrink-0 rounded-full border border-line px-4 text-sm">
+                      <ConfirmButton pendingLabel="…" className="h-11 shrink-0 rounded-none border border-line px-4 text-sm">
                         Simpan
                       </ConfirmButton>
                     </form>

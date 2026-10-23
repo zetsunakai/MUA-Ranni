@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import BeforeAfterSlider from "@/components/BeforeAfterSlider";
@@ -56,7 +57,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
           className="flex h-full items-center justify-center p-0 md:p-8"
           onClick={(e) => e.target === e.currentTarget && onClose()}
         >
-          <div className="flex h-full w-full max-w-6xl flex-col overflow-hidden bg-surface md:h-auto md:max-h-full md:flex-row md:rounded-xl">
+          <div className="flex h-full w-full max-w-6xl flex-col overflow-hidden bg-surface md:h-auto md:max-h-full md:flex-row md:rounded-none">
             <div className="relative h-[62dvh] shrink-0 bg-foreground md:h-[85dvh] md:flex-1">
               {item.beforeImageUrl ? (
                 <BeforeAfterSlider
@@ -104,15 +105,15 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Props) {
               {item.beforeImageUrl && (
                 <p className="text-xs text-foreground/70">Geser garis di foto untuk melihat sebelum dan sesudah.</p>
               )}
-              <a
+              <Link
                 href={bookingFormUrl("lightbox", {
                   eventType: item.categoryLabel,
                   note: `Saya tertarik dengan look "${item.title}".`,
                 })}
-                className="mt-auto rounded-full bg-accent-strong py-3 text-center font-medium text-white transition-colors hover:bg-foreground"
+                className="mt-auto rounded-none bg-foreground py-3 text-center font-medium text-white transition-colors hover:bg-foreground"
               >
                 Tanya look ini via WhatsApp
-              </a>
+              </Link>
               <p className="text-center text-xs text-foreground/70">
                 {index! + 1} / {items.length}
               </p>

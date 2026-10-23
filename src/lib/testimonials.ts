@@ -3,6 +3,7 @@ import "server-only";
 import { and, desc, eq, gt, isNull } from "drizzle-orm";
 import { cache } from "react";
 import { testimonials as staticTestimonials, testimonialsArePlaceholder } from "@/data/testimonials";
+import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
 import { testimonialInvites, testimonials } from "@/db/schema";
 import { getCategories, labelOf } from "@/lib/categories";
@@ -32,11 +33,11 @@ export const getPublicTestimonials = cache(async (): Promise<Testimonial[]> => {
     if (testimonialsArePlaceholder && isProduction) return [];
     return staticTestimonials.map((t) => ({ ...t, eventLabel: labelOf(categories, t.eventType) }));
   }
-  const rows = await db
+  const rows = await readWithRetry(() => db
     .select()
     .from(testimonials)
     .where(eq(testimonials.status, "approved"))
-    .orderBy(desc(testimonials.approvedAt));
+    .orderBy(desc(testimonials.approvedAt)));
   return rows.map((row) => toTestimonial(row, categories));
 });
 
@@ -48,7 +49,7 @@ export type InviteCheck =
 export async function checkInvite(token: string): Promise<InviteCheck> {
   const db = getDb();
   if (!db || !/^[A-Za-z0-9_-]{16,64}$/.test(token)) return { ok: false, reason: "not-found" };
-  const [invite] = await db.select().from(testimonialInvites).where(eq(testimonialInvites.id, token));
+  const [invite] = await readWithRetry(() => db.select().from(testimonialInvites).where(eq(testimonialInvites.id, token)));
   if (!invite) return { ok: false, reason: "not-found" };
   if (invite.usedAt) return { ok: false, reason: "used" };
   if (invite.expiresAt < new Date()) return { ok: false, reason: "expired" };

@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    // Reuse fully prefetched public pages for ten minutes. Private dynamic
+    // admin pages stay uncached; Server Action revalidation clears stale routes.
+    staleTimes: { dynamic: 0, static: 600 },
     // Batas upload lewat Server Action (bawaan 1 MB). Foto sudah dikompres di browser
     // jadi biasanya < 500 KB; 4 MB untuk jaga-jaga, di bawah batas Vercel 4,5 MB.
     serverActions: { bodySizeLimit: "4mb" },

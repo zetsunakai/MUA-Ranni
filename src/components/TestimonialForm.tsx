@@ -97,8 +97,8 @@ export default function TestimonialForm({ token, clientName, eventType, categori
         <p className="text-sm font-medium">
           Foto <span className="font-normal text-foreground/70">(opsional)</span>
         </p>
-        <label className="mt-1 flex cursor-pointer items-center gap-4 rounded-xl border border-dashed border-line bg-surface p-3">
-          <span className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-accent-soft text-xs text-foreground/70">
+        <label className="mt-1 flex cursor-pointer items-center gap-4 rounded-none border border-dashed border-line bg-surface p-3">
+          <span className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-none bg-accent-soft text-xs text-foreground/70">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {preview ? <img src={preview} alt="" className="h-full w-full object-cover" /> : "Foto"}
           </span>
@@ -120,7 +120,7 @@ export default function TestimonialForm({ token, clientName, eventType, categori
         <FieldError message={errors.photo} />
       </div>
 
-      <div className="space-y-3 rounded-xl border border-line bg-surface p-4 text-sm">
+      <div className="space-y-3 rounded-none border border-line bg-surface p-4 text-sm">
         <label className="flex items-start gap-3">
           <input type="checkbox" name="consent" required className="mt-0.5 h-5 w-5 shrink-0 accent-accent-strong" />
           <span>Saya mengizinkan nama dan ulasan ini ditampilkan di website dan media sosial Ranni.</span>
@@ -144,7 +144,7 @@ export default function TestimonialForm({ token, clientName, eventType, categori
       <button
         type="submit"
         disabled={sending || compressing}
-        className="w-full rounded-full bg-accent-strong py-3 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
+        className="w-full rounded-none bg-foreground py-3 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
       >
         {compressing ? "Mengecilkan foto…" : sending ? "Mengirim…" : "Kirim testimoni"}
       </button>
@@ -153,7 +153,7 @@ export default function TestimonialForm({ token, clientName, eventType, categori
 }
 
 function inputClass(error?: string) {
-  return `mt-1 w-full rounded-lg border bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong ${
+  return `mt-1 w-full rounded-none border bg-surface px-3 py-3 text-base outline-none focus:border-accent-strong ${
     error ? "border-red-600" : "border-line"
   }`;
 }
@@ -172,7 +172,7 @@ function ThankYou({ message }: { message: string }) {
   }, []);
 
   return (
-    <div ref={ref} tabIndex={-1} role="status" className="rounded-xl bg-accent-soft p-6 text-center outline-none">
+    <div ref={ref} tabIndex={-1} role="status" className="rounded-none bg-accent-soft p-6 text-center outline-none">
       <p className="font-heading text-3xl">Terima kasih! 💕</p>
       <p className="mt-2 text-foreground/80">{message}</p>
     </div>

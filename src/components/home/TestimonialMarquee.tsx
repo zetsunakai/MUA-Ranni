@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import type { Testimonial } from "@/types";
 
 // Minimal kartu dalam satu putaran, supaya jalurnya selalu lebih lebar dari layar
-// walau testimoninya baru sedikit (kartu 280–360px × 6 > 1440px).
+// walau testimoninya baru sedikit.
 const MIN_CARDS_PER_LOOP = 6;
 // Kecepatan jalan otomatis (px per detik): cukup pelan supaya kutipan sempat dibaca.
 const SPEED = 30;
@@ -16,25 +16,26 @@ const FRICTION = 4;
 
 function Card({ testimonial: t }: { testimonial: Testimonial }) {
   return (
-    <figure className="flex w-[280px] shrink-0 flex-col self-start rounded-xl border border-line bg-surface p-6 md:w-[360px] md:p-8">
+    <figure className={`testimonial-marquee-card ${t.photoUrl ? "testimonial-marquee-card-with-photo" : ""}`}>
       {t.photoUrl && (
-        <div className="relative mb-5 h-[75px] w-[60px] overflow-hidden rounded-t-full rounded-b bg-sand">
-          <Image
-            src={t.photoUrl}
-            alt={`Foto dari ${t.clientName}`}
-            fill
-            sizes="60px"
-            draggable={false}
-            // Langsung dimuat (bukan lazy): kartu cepat berganti saat digeser, dan fotonya kecil.
-            loading="eager"
-            className="object-cover"
-          />
+        <div className="testimonial-marquee-photo">
+          <div className="relative aspect-[4/5] bg-sand">
+            <Image
+              src={t.photoUrl}
+              alt={`Hasil makeup ${t.clientName}`}
+              fill
+              sizes="(min-width: 768px) 180px, 160px"
+              draggable={false}
+              loading="eager"
+              className="object-cover"
+            />
+          </div>
         </div>
       )}
-      <blockquote className="font-heading text-xl leading-snug italic md:text-2xl">“{t.quote}”</blockquote>
-      <figcaption className="mt-5 text-sm text-muted">
-        {t.clientName} · {t.eventLabel}
-      </figcaption>
+      <div className="min-w-0">
+        <blockquote className="font-heading text-xl leading-relaxed italic md:text-2xl">“{t.quote}”</blockquote>
+        <figcaption className="editorial-label mt-6">{t.clientName} · {t.eventLabel}</figcaption>
+      </div>
     </figure>
   );
 }
@@ -136,8 +137,9 @@ export default function TestimonialMarquee({ testimonials }: { testimonials: Tes
       lastInteraction = performance.now();
       render();
     };
-    const onEnter = (e: PointerEvent) => e.pointerType === "mouse" && (hovering = true);
-    const onLeave = (e: PointerEvent) => e.pointerType === "mouse" && (hovering = false);
+    const canHover = matchMedia("(hover: hover)").matches;
+    const onEnter = () => { if (canHover) hovering = true; };
+    const onLeave = () => { hovering = false; };
 
     // Hanya jalan otomatis saat bagian testimoni terlihat, supaya hemat baterai.
     const observer = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting));
@@ -147,8 +149,8 @@ export default function TestimonialMarquee({ testimonials }: { testimonials: Tes
     viewport.addEventListener("pointerup", onPointerUp);
     viewport.addEventListener("pointercancel", onPointerCancel);
     viewport.addEventListener("wheel", onWheel, { passive: false });
-    viewport.addEventListener("pointerenter", onEnter);
-    viewport.addEventListener("pointerleave", onLeave);
+    viewport.addEventListener("mouseenter", onEnter);
+    viewport.addEventListener("mouseleave", onLeave);
     frame = requestAnimationFrame(tick);
 
     return () => {
@@ -159,8 +161,8 @@ export default function TestimonialMarquee({ testimonials }: { testimonials: Tes
       viewport.removeEventListener("pointerup", onPointerUp);
       viewport.removeEventListener("pointercancel", onPointerCancel);
       viewport.removeEventListener("wheel", onWheel);
-      viewport.removeEventListener("pointerenter", onEnter);
-      viewport.removeEventListener("pointerleave", onLeave);
+      viewport.removeEventListener("mouseenter", onEnter);
+      viewport.removeEventListener("mouseleave", onLeave);
     };
   }, []);
 

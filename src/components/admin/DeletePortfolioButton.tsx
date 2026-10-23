@@ -22,7 +22,7 @@ export default function DeletePortfolioButton({ id, title }: { id: string; title
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className="rounded-full border border-red-300 px-4 py-2 text-sm text-red-700 disabled:opacity-60">
+    <button type="submit" disabled={pending} className="rounded-none border border-red-300 px-4 py-2 text-sm text-red-700 disabled:opacity-60">
       {pending ? "Menghapus…" : "Hapus foto ini"}
     </button>
   );

@@ -24,7 +24,7 @@ export default function CategoryFilter({ value, onChange, counts, categories }: 
       aria-label="Filter kategori"
       // HP: satu baris yang bisa di-scroll sampai tepi layar (-mx-5 px-5).
       // Desktop: rata kanan dan boleh turun baris, sejajar judul halaman.
-      className="scrollbar-none -mx-5 flex gap-2 overflow-x-auto px-5 sm:-mx-6 sm:px-6 md:mx-0 md:max-w-[460px] md:shrink-0 md:flex-wrap md:justify-end md:gap-2.5 md:px-0"
+      className="scrollbar-none -mx-5 flex gap-2 overflow-x-auto px-5 sm:-mx-6 sm:px-6 md:mx-0 md:flex-wrap md:gap-2.5 md:px-0"
     >
       {options.map((option) => {
         const active = option.value === value;
@@ -35,7 +35,7 @@ export default function CategoryFilter({ value, onChange, counts, categories }: 
             onClick={() => onChange(option.value)}
             aria-pressed={active}
             aria-label={`${option.label} (${counts[option.value]} foto)`}
-            className={`shrink-0 rounded-full border px-[18px] py-3 text-sm transition-colors md:px-[22px] md:text-[15px] ${
+            className={`shrink-0 rounded-none border px-[18px] py-3 text-[10px] tracking-[0.14em] uppercase transition-colors md:px-[22px] md:text-[11px] ${
               active
                 ? "border-foreground bg-foreground text-background"
                 : "border-sand hover:border-foreground"

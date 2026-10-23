@@ -15,7 +15,7 @@ export default async function UrutanPortfolioPage() {
   return (
     <>
       <AdminHeader email={admin.email} current="/admin/portofolio" />
-      <div className="mx-auto w-full max-w-3xl space-y-6 px-4 py-6">
+      <div className="admin-content mx-auto w-full max-w-6xl space-y-6 px-4 py-6">
         <div>
           <Link href="/admin/portofolio" className="text-sm text-accent-strong">
             ← Kembali ke portofolio
@@ -28,7 +28,7 @@ export default async function UrutanPortfolioPage() {
         </div>
 
         {!getDb() ? (
-          <p className="rounded-lg border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
+          <p className="rounded-none border border-line bg-surface p-4 text-sm">Database belum disambungkan.</p>
         ) : (
           <PortfolioOrderEditor
             items={items.map(({ id, title, categoryLabel, imageUrl, featured }) => ({

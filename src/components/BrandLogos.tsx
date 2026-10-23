@@ -16,7 +16,7 @@ export default function BrandLogos({ brands }: { brands: Brand[] }) {
       {brands.map((brand) => (
         <li
           key={brand.name}
-          className="flex aspect-[3/2] items-center justify-center rounded-lg border border-line bg-white p-3"
+          className="flex aspect-[3/2] items-center justify-center rounded-none border border-line bg-white p-3"
         >
           <Image
             src={brand.logo}
@@ -25,7 +25,7 @@ export default function BrandLogos({ brands }: { brands: Brand[] }) {
             height={brand.height}
             // File logo sudah kecil (1–5 KB), jadi tidak perlu dioptimasi ulang.
             unoptimized
-            className="h-auto max-h-full rounded-sm object-contain"
+            className="h-auto max-h-full rounded-none object-contain"
             style={{ width: `${displayWidthPercent(brand)}%` }}
           />
         </li>

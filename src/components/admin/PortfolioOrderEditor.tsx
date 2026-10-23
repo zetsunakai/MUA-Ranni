@@ -55,10 +55,10 @@ export default function PortfolioOrderEditor({ items: initial }: { items: Item[]
 
   return (
     <div className="pb-28">
-      <ol className="divide-y divide-line rounded-xl border border-line bg-surface">
+      <ol className="divide-y divide-line rounded-none border border-line bg-surface">
         {items.map((item, i) => (
           <li key={item.id} className="flex gap-3 px-3 py-3">
-            <div className="relative h-20 w-15 shrink-0 overflow-hidden rounded-lg bg-accent-soft">
+            <div className="relative h-20 w-15 shrink-0 overflow-hidden rounded-none bg-accent-soft">
               <Image src={item.imageUrl} alt="" fill sizes="60px" className="object-cover" />
             </div>
             <div className="min-w-0 flex-1">
@@ -93,7 +93,7 @@ export default function PortfolioOrderEditor({ items: initial }: { items: Item[]
                   type="button"
                   onClick={() => move(i, 0)}
                   disabled={i === 0}
-                  className="h-11 rounded-full border border-line px-4 text-sm disabled:opacity-25"
+                  className="h-11 rounded-none border border-line px-4 text-sm disabled:opacity-25"
                 >
                   Paling depan
                 </button>
@@ -103,7 +103,7 @@ export default function PortfolioOrderEditor({ items: initial }: { items: Item[]
         ))}
       </ol>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur">
+      <div className="admin-savebar fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <p aria-live="polite" className={`flex-1 text-sm ${status.error ? "text-red-700" : "text-foreground/80"}`}>
             {status.text}
@@ -112,7 +112,7 @@ export default function PortfolioOrderEditor({ items: initial }: { items: Item[]
             type="button"
             onClick={save}
             disabled={!dirty || saving}
-            className="h-11 rounded-full bg-accent-strong px-6 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
+            className="h-11 rounded-none bg-foreground px-6 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
           >
             Simpan
           </button>

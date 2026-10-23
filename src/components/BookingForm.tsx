@@ -13,7 +13,7 @@ type Props = {
 };
 
 const fieldClass =
-  "w-full rounded-md border border-field bg-white px-3.5 py-3.5 text-base text-foreground placeholder:text-muted/80 md:px-4";
+  "w-full min-w-0 rounded-none border-0 border-b border-field bg-transparent px-0 py-3.5 text-base text-foreground placeholder:text-muted/80 focus:border-foreground focus:outline-none";
 const STORAGE_KEY = "mua-ranni-booking-form";
 const FORM_FIELDS = ["name", "eventType", "serviceGroup", "serviceItem", "date", "time", "location", "mapsUrl", "people", "hairdo"] as const;
 const EMPTY_SERVICE_GROUPS: Props["serviceGroups"] = [];
@@ -140,15 +140,16 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
       ref={formRef}
       onChange={saveForm}
       onSubmit={submit}
-      className="grid gap-5 rounded-lg bg-accent-soft p-5 sm:grid-cols-2 sm:p-8 md:p-10"
+      className="booking-form grid gap-x-6 gap-y-7 border border-line bg-surface p-5 sm:grid-cols-2 sm:p-8 md:p-10"
     >
-      <div className="sm:col-span-2">
-        <h2 className="font-heading text-[32px] leading-none md:text-4xl">Formulir booking</h2>
+      <div className="booking-form-intro sm:col-span-2">
+        <h2 className="editorial-label">Formulir booking</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted">
           Isi detail acara. Setelah itu WhatsApp akan terbuka dengan pesan yang sudah tersusun untuk kamu.
         </p>
       </div>
 
+      <div className="form-section-label editorial-label sm:col-span-2">Detail acara</div>
       <Field label="Nama" name="name" required autoComplete="name" placeholder="Nama kamu" />
 
       <label className="flex flex-col gap-1.5 text-[13px] font-medium md:gap-2 md:text-sm">
@@ -162,6 +163,7 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
         </select>
       </label>
 
+      <div className="form-section-label editorial-label sm:col-span-2">Paket &amp; Layanan</div>
       <label className="flex flex-col gap-1.5 text-[13px] font-medium md:gap-2 md:text-sm">
         Paket
         <select ref={groupSelectRef} name="serviceGroup" defaultValue="" disabled={serviceGroups.length === 0} className={fieldClass}>
@@ -255,7 +257,7 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
 
       <button
         type="submit"
-        className="rounded-full bg-accent-strong px-6 py-4 text-center font-medium text-white transition-colors hover:bg-foreground sm:col-span-2 md:py-[18px]"
+        className="rounded-none bg-foreground px-6 py-4 text-center font-medium text-white transition-colors hover:bg-foreground sm:col-span-2 md:py-[18px]"
       >
         Lanjut ke WhatsApp
       </button>

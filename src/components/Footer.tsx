@@ -14,17 +14,17 @@ export default async function Footer() {
   ];
 
   return (
-    <footer className="mt-auto bg-foreground text-background">
-      <div className="mx-auto grid max-w-6xl gap-10 border-t border-background/15 px-5 py-12 sm:px-6 md:grid-cols-4 md:gap-8">
-        <div className="hidden md:block">
-          <p className="font-heading text-3xl">{site.name}</p>
-          <p className="mt-2 text-sm leading-relaxed text-background/75">{site.tagline}</p>
+    <footer className="site-footer mt-auto border-t border-line bg-accent-soft/50 text-foreground">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-6 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_1fr_1.2fr] lg:gap-12">
+        <div className="block">
+          <p className="font-heading text-2xl uppercase">{site.name}</p>
+          <p className="mt-2 text-sm leading-relaxed text-muted">{site.tagline}</p>
         </div>
 
-        <FooterColumn title="Menu" className="hidden md:block">
+        <FooterColumn title="Menu" className="block">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link href={link.href} className="hover:text-accent-soft hover:underline">
+              <Link prefetch={true} href={link.href} className="hover:text-accent-strong hover:underline">
                 {link.label}
               </Link>
             </li>
@@ -34,33 +34,19 @@ export default async function Footer() {
         <FooterColumn title="Kontak">
           {socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} target={s.href.startsWith("/") ? undefined : "_blank"} rel={s.href.startsWith("/") ? undefined : "noopener noreferrer"} className="hover:text-accent-soft hover:underline">
-                {s.label}
-              </a>
+              {s.href.startsWith("/") ? <Link href={s.href} className="hover:text-accent-strong hover:underline">{s.label}</Link> : <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-accent-strong hover:underline">{s.label}</a>}
             </li>
           ))}
         </FooterColumn>
 
         <FooterColumn title="Lokasi & layanan" className="min-w-0">
           <li>{site.location.address}</li>
-          <li className="overflow-hidden rounded-lg border border-background/15 bg-sand">
-            <iframe
-              src={site.location.embedUrl}
-              title={`Peta area ${site.location.address}`}
-              width="600"
-              height="180"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-              className="block h-[180px] w-full border-0"
-            />
-          </li>
           <li>
             <a
               href={site.location.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center hover:text-accent-soft hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+              className="inline-flex min-h-11 items-center hover:text-accent-strong hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
             >
               Buka Google Maps →
             </a>
@@ -71,7 +57,7 @@ export default async function Footer() {
       </div>
 
       <div className="mx-auto max-w-6xl px-5 pt-2 pb-24 sm:px-6 sm:pb-10">
-        <p className="text-xs text-background/70">
+        <p className="border-t border-line pt-6 text-[10px] tracking-[0.12em] text-muted uppercase">
           © {new Date().getFullYear()} {site.name}. Semua foto digunakan dengan izin klien.
         </p>
       </div>
@@ -82,8 +68,8 @@ export default async function Footer() {
 function FooterColumn({ title, className = "", children }: { title: string; className?: string; children: React.ReactNode }) {
   return (
     <div className={className}>
-      <h2 className="text-[11px] font-medium uppercase tracking-[0.25em] text-background/70">{title}</h2>
-      <ul className="mt-4 space-y-2 text-[15px]">{children}</ul>
+      <h2 className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted">{title}</h2>
+      <ul className="mt-4 space-y-2 text-xs leading-relaxed">{children}</ul>
     </div>
   );
 }

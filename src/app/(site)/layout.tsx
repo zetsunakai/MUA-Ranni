@@ -12,8 +12,9 @@ export const revalidate = 3600;
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <>
+      <a href="#main-content" className="skip-link">Lewati navigasi</a>
       <Navbar />
-      <main className="flex flex-1 flex-col">{children}</main>
+      <main id="main-content" className="site-main flex flex-1 flex-col">{children}</main>
       <Footer />
       <FloatingWhatsAppButton />
     </>

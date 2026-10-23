@@ -2,6 +2,7 @@ import "server-only";
 
 import { and, asc, gte, lte } from "drizzle-orm";
 import { cache } from "react";
+import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
 import { scheduleDays } from "@/db/schema";
 import { addDays, addMonths, todayInJakarta, type ScheduleStatus } from "@/lib/dates";
@@ -21,10 +22,10 @@ export const getPublicSchedule = cache(async (): Promise<Record<string, Schedule
   const db = getDb();
   if (!db) return {};
   const { from, to } = range();
-  const rows = await db
+  const rows = await readWithRetry(() => db
     .select({ date: scheduleDays.date, status: scheduleDays.status })
     .from(scheduleDays)
-    .where(and(gte(scheduleDays.date, from), lte(scheduleDays.date, to)));
+    .where(and(gte(scheduleDays.date, from), lte(scheduleDays.date, to))));
   return Object.fromEntries(rows.map((r) => [r.date, r.status]));
 });
 

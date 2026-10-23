@@ -50,10 +50,10 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt, sizes }: P
           </span>
         </div>
 
-        <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-foreground/70 px-2.5 py-1 text-xs text-white">
+        <span className="pointer-events-none absolute top-3 left-3 rounded-none bg-foreground/70 px-2.5 py-1 text-xs text-white">
           Sebelum
         </span>
-        <span className="pointer-events-none absolute top-3 right-3 rounded-full bg-foreground/70 px-2.5 py-1 text-xs text-white">
+        <span className="pointer-events-none absolute top-3 right-3 rounded-none bg-foreground/70 px-2.5 py-1 text-xs text-white">
           Sesudah
         </span>
 

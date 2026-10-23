@@ -12,7 +12,7 @@ import { slugify, uniqueId } from "@/lib/slug";
 const labelSchema = z.string().trim().min(2, "Nama kategori minimal 2 huruf.").max(30, "Maksimal 30 karakter.");
 
 function revalidateCategories() {
-  for (const path of ["/", "/portfolio", "/admin/portofolio", "/admin/portofolio/kategori", "/admin/testimoni"]) {
+  for (const path of ["/", "/portfolio", "/kontak", "/admin/portofolio", "/admin/portofolio/kategori", "/admin/testimoni"]) {
     revalidatePath(path);
   }
 }

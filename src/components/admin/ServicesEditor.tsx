@@ -1,5 +1,7 @@
 "use client";
 
+import { ServiceComparison } from "@/components/editorial/ServiceSuite";
+import { formatRupiah } from "@/lib/format";
 import { startTransition, useActionState, useState, useTransition, type FormEvent, type ReactNode } from "react";
 import type { FormState } from "@/app/admin/actions";
 import {
@@ -55,9 +57,13 @@ export default function ServicesEditor({ groups, addOns }: Props) {
         : { text: state.message, error: state.status === "error" };
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6 pb-28">
+    <form onSubmit={onSubmit} className="services-configurator space-y-10 pb-28">
+      <div className="suite-config-grid">
       {groups.map((group, gi) => (
-        <section key={group.id} className="rounded-xl border border-line bg-surface p-3 sm:p-5">
+        <section key={group.id} className="suite-config-card">
+          <h2 className="mb-4 font-heading text-3xl">{group.name}</h2>
+          {group.items.length > 0 && <div className="suite-price"><p className="editorial-label">Harga mulai dari, per orang.</p><p className="font-heading">{formatRupiah(Math.min(...group.items.map(item => item.price)))}</p></div>}
+          <details className="suite-config-details" open={Object.keys(errors).some(key => key.includes(group.id) || group.items.some(item => key.startsWith(`item:${item.id}:`)))}><summary>Ubah harga <span>({group.items.length} layanan) +</span></summary>
           <div className="flex items-start gap-2">
             <MoveButtons
               label={group.name}
@@ -107,7 +113,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
                   last={ii === group.items.length - 1}
                   onMove={(dir) => run(() => move("item", item.id, dir))}
                 />
-                <div className="grid min-w-0 flex-1 gap-2 sm:grid-cols-[1fr_9rem]">
+                <div className="suite-item-inputs grid min-w-0 flex-1 gap-2 sm:grid-cols-[1fr_9rem]">
                   <Field error={errors[`item:${item.id}:name`]}>
                     <input
                       name={`item:${item.id}:name`}
@@ -150,10 +156,12 @@ export default function ServicesEditor({ groups, addOns }: Props) {
               Hapus grup ini
             </button>
           </div>
+          </details>
         </section>
       ))}
+      </div>
 
-      <section className="rounded-xl border border-dashed border-line bg-surface p-3 sm:p-5">
+      <section className="rounded-none border border-dashed border-line bg-surface p-3 sm:p-5">
         <h2 className="font-heading text-xl">Tambah grup</h2>
         <AddRow
           placeholder="contoh: Paket Keluarga"
@@ -164,7 +172,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
         />
       </section>
 
-      <section className="rounded-xl border border-line bg-surface p-3 sm:p-5">
+      <section className="addons-editor rounded-none border border-line bg-surface p-5 sm:p-8">
         <h2 className="font-heading text-2xl">Layanan tambahan</h2>
         <ul className="mt-2 divide-y divide-line">
           {addOns.map((addOn, ai) => (
@@ -207,7 +215,9 @@ export default function ServicesEditor({ groups, addOns }: Props) {
         <AddRow placeholder="Nama layanan tambahan" withPrice buttonLabel="Tambah" disabled={busy} onAdd={(name, price) => run(() => addExtra(name, price))} />
       </section>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur">
+      <section><h2 className="mb-5 font-heading text-3xl">Termasuk</h2><ServiceComparison groups={groups} /></section>
+
+      <div className="admin-savebar fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <p aria-live="polite" className={`flex-1 text-sm ${status.error ? "text-red-700" : "text-foreground/80"}`}>
             {status.text}
@@ -215,7 +225,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
           <button
             type="submit"
             disabled={saving || busy}
-            className="h-11 rounded-full bg-accent-strong px-6 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
+            className="h-11 rounded-none bg-foreground px-6 font-medium text-white transition-colors hover:bg-foreground disabled:opacity-60"
           >
             Simpan
           </button>
@@ -226,7 +236,7 @@ export default function ServicesEditor({ groups, addOns }: Props) {
 }
 
 function inputClass(error?: string) {
-  return `h-11 w-full rounded-lg border bg-background px-3 text-base outline-none focus:border-accent-strong ${
+  return `h-11 w-full rounded-none border bg-background px-3 text-base outline-none focus:border-accent-strong ${
     error ? "border-red-600" : "border-line"
   }`;
 }
@@ -242,7 +252,7 @@ function Field({ error, className = "", children }: { error?: string; className?
 
 function PriceInput({ name, defaultValue, error, label, placeholder }: { name: string; defaultValue: string; error?: string; label: string; placeholder?: string }) {
   return (
-    <div className={`flex h-11 items-center rounded-lg border bg-background px-3 focus-within:border-accent-strong ${error ? "border-red-600" : "border-line"}`}>
+    <div className={`flex h-11 items-center rounded-none border bg-background px-3 focus-within:border-accent-strong ${error ? "border-red-600" : "border-line"}`}>
       <span className="text-sm text-foreground/70">Rp</span>
       <input
         name={name}
@@ -312,7 +322,7 @@ function AddRow({
   };
 
   return (
-    <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto_auto]">
+    <div className="add-row mt-3 grid gap-2 sm:grid-cols-[1fr_auto_auto]">
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -322,7 +332,7 @@ function AddRow({
         className={inputClass()}
       />
       {withPrice && (
-        <div className="flex h-11 items-center rounded-lg border border-line bg-background px-3 focus-within:border-accent-strong sm:w-36">
+        <div className="flex h-11 items-center rounded-none border border-line bg-background px-3 focus-within:border-accent-strong sm:w-36">
           <span className="text-sm text-foreground/70">Rp</span>
           <input
             value={price}
@@ -345,7 +355,7 @@ function AddRow({
         type="button"
         onClick={submit}
         disabled={disabled || !name.trim()}
-        className="h-11 rounded-full border border-accent-strong px-4 text-sm font-medium text-accent-strong disabled:opacity-40"
+        className="h-11 rounded-none border border-accent-strong px-4 text-sm font-medium text-accent-strong disabled:opacity-40"
       >
         + {buttonLabel}
       </button>

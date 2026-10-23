@@ -41,7 +41,7 @@ export default function MonthCalendar({
   const weeks = monthGrid(month);
 
   return (
-    <div className="@container rounded-lg border border-line bg-white p-4 sm:p-6 lg:p-8">
+    <div className="calendar-panel @container rounded-none border border-line bg-white p-4 sm:p-6 lg:p-8">
       <div className="flex items-center justify-between gap-3">
         <p aria-live="polite" className="font-heading text-[30px] leading-none @md:text-[40px]">
           {formatMonth(month)}
@@ -52,7 +52,7 @@ export default function MonthCalendar({
             onClick={() => onMonthChange(addMonths(month, -1))}
             disabled={month <= minMonth}
             aria-label="Bulan sebelumnya"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground transition-colors hover:bg-accent-soft disabled:opacity-30 disabled:hover:bg-transparent @md:h-12 @md:w-12"
+            className="flex h-11 w-11 items-center justify-center border border-line transition-colors hover:bg-accent-soft disabled:opacity-30 disabled:hover:bg-transparent @md:h-12 @md:w-12"
           >
             <Arrow direction="left" />
           </button>
@@ -61,7 +61,7 @@ export default function MonthCalendar({
             onClick={() => onMonthChange(addMonths(month, 1))}
             disabled={month >= maxMonth}
             aria-label="Bulan berikutnya"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground bg-foreground text-background transition-colors hover:bg-accent-strong hover:border-accent-strong disabled:opacity-30 disabled:hover:bg-foreground @md:h-12 @md:w-12"
+            className="flex h-11 w-11 items-center justify-center border border-line bg-foreground text-background transition-colors hover:bg-accent-strong hover:border-accent-strong disabled:opacity-30 disabled:hover:bg-foreground @md:h-12 @md:w-12"
           >
             <Arrow direction="right" />
           </button>
@@ -100,7 +100,7 @@ export default function MonthCalendar({
                       onClick={() => onSelect(date)}
                       aria-pressed={isSelected}
                       aria-label={`${formatLongDate(date)}, ${past ? "sudah lewat" : statusLabel[status ?? "available"]}`}
-                      className={`relative flex h-11 w-full flex-col items-center justify-center rounded-md text-sm tabular-nums transition-colors @md:h-[84px] @md:items-start @md:justify-between @md:px-2.5 @md:py-2 @md:text-[17px] @lg:px-3 @lg:py-2.5 ${cellClass(
+                      className={`relative flex h-11 w-full flex-col items-center justify-center rounded-none text-sm tabular-nums transition-colors @md:h-[84px] @md:items-start @md:justify-between @md:px-2.5 @md:py-2 @md:text-[17px] @lg:px-3 @lg:py-2.5 ${cellClass(
                         status,
                         past,
                         isSelected,
