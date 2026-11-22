@@ -12,7 +12,7 @@ export default function FinanceOverview({ report }: { report: Report }) {
     { label: "Pemasukan", value: current.income, href: "/admin/booking" },
     { label: "Belanja", value: current.spending, href: `/admin/belanja?bulan=${current.month}` },
     { label: "Laba", value: current.profit, href: undefined },
-    { label: "Piutang", value: receivable, href: "/admin/booking?status=confirmed", note: `${unpaid.length} booking belum lunas` },
+    { label: "Piutang", value: receivable, href: "/admin/booking?status=confirmed" },
   ];
 
   return (
@@ -32,7 +32,6 @@ export default function FinanceOverview({ report }: { report: Report }) {
               <strong className={`mt-3 block font-heading text-3xl font-normal tabular-nums ${tile.value < 0 ? "text-red-700" : ""}`}>
                 {tile.value < 0 ? `−${formatRupiah(-tile.value)}` : formatRupiah(tile.value)}
               </strong>
-              {tile.note && <span className="mt-1 block text-xs text-foreground/60">{tile.note}</span>}
             </>
           );
           return (

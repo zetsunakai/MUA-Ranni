@@ -125,17 +125,30 @@ export default function ServicesEditor({ groups, addOns, categories }: Props) {
                   <Field error={errors[`item:${item.id}:price`]}>
                     <PriceInput name={`item:${item.id}:price`} defaultValue={display(item.price)} error={errors[`item:${item.id}:price`]} label={`Harga ${item.name}`} />
                   </Field>
-                  <fieldset className="flex flex-wrap gap-1.5">
-                    <legend className="sr-only">Jenis acara untuk {item.name}</legend>
-                    {categories.map((category) => (
-                      <label key={category.id} className="cursor-pointer">
-                        <input type="checkbox" name={`item:${item.id}:cat`} value={category.id} defaultChecked={item.categories?.includes(category.id)} className="peer sr-only" />
-                        <span className="inline-flex min-h-8 items-center border border-line px-2.5 text-xs text-foreground/70 peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-background peer-focus-visible:outline-2 peer-focus-visible:outline-accent-strong">
-                          {category.label}
-                        </span>
-                      </label>
-                    ))}
-                  </fieldset>
+                  {/* Ringkas: tampilkan jenis acara terpilih, chip lengkap dibuka saat perlu.
+                      Checkbox di dalam <details> yang tertutup tetap ikut terkirim saat Simpan. */}
+                  <details className="group text-xs">
+                    <summary className="flex min-h-9 cursor-pointer list-none items-center gap-1 text-foreground/70 [&::-webkit-details-marker]:hidden">
+                      <span className="min-w-0 truncate">
+                        {item.categories?.length
+                          ? categories.filter((c) => item.categories?.includes(c.id)).map((c) => c.label).join(", ")
+                          : "Belum ada jenis acara"}
+                      </span>
+                      <span className="shrink-0 text-accent-strong underline underline-offset-2 group-open:hidden">ubah</span>
+                      <span className="hidden shrink-0 text-accent-strong underline underline-offset-2 group-open:inline">tutup</span>
+                    </summary>
+                    <fieldset className="mt-1 flex flex-wrap gap-1">
+                      <legend className="sr-only">Jenis acara untuk {item.name}</legend>
+                      {categories.map((category) => (
+                        <label key={category.id} className="cursor-pointer">
+                          <input type="checkbox" name={`item:${item.id}:cat`} value={category.id} defaultChecked={item.categories?.includes(category.id)} className="peer sr-only" />
+                          <span className="inline-flex min-h-8 items-center border border-line px-2 text-xs text-foreground/70 peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-background peer-focus-visible:outline-2 peer-focus-visible:outline-accent-strong">
+                            {category.label}
+                          </span>
+                        </label>
+                      ))}
+                    </fieldset>
+                  </details>
                 </div>
                 <DeleteButton
                   label={`Hapus ${item.name}`}
@@ -185,43 +198,46 @@ export default function ServicesEditor({ groups, addOns, categories }: Props) {
 
       <section className="addons-editor rounded-none border border-line bg-surface p-5 sm:p-8">
         <h2 className="font-heading text-2xl">Layanan tambahan</h2>
-        <ul className="mt-2 divide-y divide-line">
-          {addOns.map((addOn, ai) => (
-            <li key={addOn.id} className="flex items-start gap-2 py-3">
-              <MoveButtons
-                label={addOn.name}
-                first={ai === 0}
-                last={ai === addOns.length - 1}
-                onMove={(dir) => run(() => move("addon", addOn.id, dir))}
-              />
-              <div className="grid min-w-0 flex-1 gap-2">
-                <Field error={errors[`addon:${addOn.id}:name`]}>
-                  <input name={`addon:${addOn.id}:name`} defaultValue={addOn.name} aria-label="Nama layanan tambahan" className={inputClass(errors[`addon:${addOn.id}:name`])} />
-                </Field>
-                <Field error={errors[`addon:${addOn.id}:note`]}>
+        {/* Satu baris per layanan tambahan, seperti tabel: nama · catatan · harga · aksi. */}
+        <div className="mt-4 hidden grid-cols-[5rem_minmax(0,1.2fr)_minmax(0,1fr)_17rem_2.5rem] gap-2 px-1 pb-2 text-[10px] tracking-[0.14em] text-foreground/60 uppercase sm:grid">
+          <span className="sr-only">Urutan</span>
+          <span>Layanan</span>
+          <span>Catatan (opsional)</span>
+          <span>Harga mulai – sampai</span>
+          <span className="sr-only">Aksi</span>
+        </div>
+        <ul className="divide-y divide-line border-y border-line">
+          {addOns.map((addOn, ai) => {
+            const err = (field: string) => errors[`addon:${addOn.id}:${field}`];
+            const rowError = err("name") ?? err("note") ?? err("from") ?? err("to");
+            return (
+              <li key={addOn.id} className="py-3">
+                <div className="grid grid-cols-[5rem_minmax(0,1fr)_2.5rem] items-center gap-2 sm:grid-cols-[5rem_minmax(0,1.2fr)_minmax(0,1fr)_17rem_2.5rem]">
+                  <div className="flex items-center gap-0">
+                    <IconButton label={`Naikkan ${addOn.name}`} disabled={ai === 0} onClick={() => run(() => move("addon", addOn.id, "up"))}>▲</IconButton>
+                    <IconButton label={`Turunkan ${addOn.name}`} disabled={ai === addOns.length - 1} onClick={() => run(() => move("addon", addOn.id, "down"))}>▼</IconButton>
+                  </div>
+                  <input name={`addon:${addOn.id}:name`} defaultValue={addOn.name} aria-label="Nama layanan tambahan" className={inputClass(err("name"))} />
                   <input
                     name={`addon:${addOn.id}:note`}
                     defaultValue={addOn.note}
-                    placeholder="Catatan (opsional), mis. Sesuai request"
-                    aria-label="Catatan"
-                    className={`${inputClass(errors[`addon:${addOn.id}:note`])} text-sm`}
+                    placeholder="mis. Sesuai request"
+                    aria-label={`Catatan ${addOn.name}`}
+                    className={`${inputClass(err("note"))} col-span-2 col-start-2 row-start-2 text-sm sm:col-span-1 sm:col-start-auto sm:row-start-auto`}
                   />
-                </Field>
-                <div className="grid grid-cols-2 gap-2">
-                  <Field error={errors[`addon:${addOn.id}:from`]}>
-                    <PriceInput name={`addon:${addOn.id}:from`} defaultValue={display(addOn.priceFrom)} error={errors[`addon:${addOn.id}:from`]} label="Harga mulai" />
-                  </Field>
-                  <Field error={errors[`addon:${addOn.id}:to`]}>
-                    <PriceInput name={`addon:${addOn.id}:to`} defaultValue={display(addOn.priceTo)} error={errors[`addon:${addOn.id}:to`]} label="Sampai (opsional)" placeholder="sampai…" />
-                  </Field>
+                  <div className="col-span-2 col-start-2 row-start-3 flex items-center gap-1.5 sm:col-span-1 sm:col-start-auto sm:row-start-auto">
+                    <div className="min-w-0 flex-1"><PriceInput name={`addon:${addOn.id}:from`} defaultValue={display(addOn.priceFrom)} error={err("from")} label={`Harga mulai ${addOn.name}`} /></div>
+                    <span aria-hidden="true" className="text-foreground/50">–</span>
+                    <div className="min-w-0 flex-1"><PriceInput name={`addon:${addOn.id}:to`} defaultValue={display(addOn.priceTo)} error={err("to")} label={`Harga sampai ${addOn.name} (opsional)`} placeholder="opsional" /></div>
+                  </div>
+                  <div className="col-start-3 row-start-1 flex justify-end sm:col-start-auto sm:row-start-auto">
+                    <IconButton label={`Hapus ${addOn.name}`} danger onClick={() => run(() => deleteExtra(addOn.id), `Hapus "${addOn.name}"?`)}>✕</IconButton>
+                  </div>
                 </div>
-              </div>
-              <DeleteButton
-                label={`Hapus ${addOn.name}`}
-                onClick={() => run(() => deleteExtra(addOn.id), `Hapus "${addOn.name}"?`)}
-              />
-            </li>
-          ))}
+                {rowError && <p className="mt-1 text-xs text-red-700">{rowError}</p>}
+              </li>
+            );
+          })}
         </ul>
         <AddRow placeholder="Nama layanan tambahan" withPrice buttonLabel="Tambah" disabled={busy} onAdd={(name, price) => run(() => addExtra(name, price))} />
       </section>
@@ -291,6 +307,21 @@ function MoveButtons({ label, first, last, onMove }: { label: string; first: boo
         ▼
       </button>
     </div>
+  );
+}
+
+function IconButton({ label, disabled, danger, onClick, children }: { label: string; disabled?: boolean; danger?: boolean; onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      title={label}
+      className={`flex h-10 w-10 items-center justify-center text-sm hover:bg-accent-soft disabled:opacity-25 ${danger ? "text-red-700" : "text-foreground/70"}`}
+    >
+      {children}
+    </button>
   );
 }
 

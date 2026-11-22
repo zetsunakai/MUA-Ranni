@@ -34,8 +34,35 @@ export default async function KategoriPage() {
               {categories.map((c, i) => {
                 const used = c.photos + c.testimonials;
                 return (
-                  <li key={c.id} className="space-y-2 px-3 py-3">
-                    <form action={renameCategory} className="flex items-center gap-2">
+                  <li key={c.id} className="flex flex-wrap items-center gap-2 px-3 py-2 sm:flex-nowrap">
+                    <div className="flex shrink-0 items-center gap-0.5">
+                      {/* Tombol urutan 44x44 px: cukup besar untuk jempol di HP. */}
+                      <form action={moveCategory}>
+                        <input type="hidden" name="id" value={c.id} />
+                        <input type="hidden" name="direction" value="up" />
+                        <button
+                          type="submit"
+                          disabled={i === 0}
+                          aria-label={`Naikkan ${c.label}`}
+                          className="flex h-11 w-11 items-center justify-center text-sm text-foreground/70 hover:bg-accent-soft disabled:opacity-25"
+                        >
+                          ▲
+                        </button>
+                      </form>
+                      <form action={moveCategory}>
+                        <input type="hidden" name="id" value={c.id} />
+                        <input type="hidden" name="direction" value="down" />
+                        <button
+                          type="submit"
+                          disabled={i === categories.length - 1}
+                          aria-label={`Turunkan ${c.label}`}
+                          className="flex h-11 w-11 items-center justify-center text-sm text-foreground/70 hover:bg-accent-soft disabled:opacity-25"
+                        >
+                          ▼
+                        </button>
+                      </form>
+                    </div>
+                    <form action={renameCategory} className="flex min-w-0 flex-1 basis-[calc(100%-6.5rem)] items-center gap-2 sm:basis-0">
                       <input type="hidden" name="id" value={c.id} />
                       <input
                         name="label"
@@ -51,49 +78,17 @@ export default async function KategoriPage() {
                       </ConfirmButton>
                     </form>
 
-                    <div className="flex items-center gap-2">
-                      {/* Tombol urutan 44x44 px: cukup besar untuk jempol di HP. */}
-                      <form action={moveCategory}>
-                        <input type="hidden" name="id" value={c.id} />
-                        <input type="hidden" name="direction" value="up" />
-                        <button
-                          type="submit"
-                          disabled={i === 0}
-                          aria-label={`Naikkan ${c.label}`}
-                          className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-base disabled:opacity-25"
-                        >
-                          ▲
-                        </button>
-                      </form>
-                      <form action={moveCategory}>
-                        <input type="hidden" name="id" value={c.id} />
-                        <input type="hidden" name="direction" value="down" />
-                        <button
-                          type="submit"
-                          disabled={i === categories.length - 1}
-                          aria-label={`Turunkan ${c.label}`}
-                          className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-base disabled:opacity-25"
-                        >
-                          ▼
-                        </button>
-                      </form>
-                      <p className="flex-1 text-xs text-foreground/70">
-                        {used > 0
-                          ? `Dipakai ${[c.photos && `${c.photos} foto`, c.testimonials && `${c.testimonials} testimoni`].filter(Boolean).join(" · ")}`
-                          : "Belum dipakai"}
-                      </p>
-                      <form action={deleteCategory}>
-                        <input type="hidden" name="id" value={c.id} />
-                        <ConfirmButton
-                          disabled={used > 0}
-                          title={used > 0 ? "Pindahkan atau hapus dulu foto/testimoni di kategori ini" : undefined}
-                          confirmMessage={`Hapus kategori "${c.label}"?`}
-                          className="h-11 rounded-full px-4 text-sm text-red-700 disabled:cursor-not-allowed disabled:opacity-30"
-                        >
-                          Hapus
-                        </ConfirmButton>
-                      </form>
-                    </div>
+                    <form action={deleteCategory} className="ml-auto shrink-0">
+                      <input type="hidden" name="id" value={c.id} />
+                      <ConfirmButton
+                        disabled={used > 0}
+                        title={used > 0 ? "Pindahkan atau hapus dulu foto/testimoni di kategori ini" : undefined}
+                        confirmMessage={`Hapus kategori "${c.label}"?`}
+                        className="h-11 px-3 text-sm text-red-700 disabled:cursor-not-allowed disabled:opacity-30"
+                      >
+                        Hapus
+                      </ConfirmButton>
+                    </form>
                   </li>
                 );
               })}
