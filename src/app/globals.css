@@ -237,6 +237,8 @@ body:has(dialog[open]) {
 .editorial-container { max-width: 1280px; padding-inline: 40px; }
 .editorial-label { font-size: 10px; line-height: 1.7; font-weight: 500; letter-spacing: .19em; text-transform: uppercase; color: var(--color-accent-strong); }
 .editorial-display { font-family: var(--font-heading); font-size: clamp(40px, 4.5vw, 66px); line-height: 1.12; letter-spacing: -.025em; margin-top: 20px; }
+/* Tanpa label kecil di atasnya, judul tidak perlu jarak atas. */
+.editorial-display:first-child, .editorial-title:first-child, .quote-panel blockquote:first-child { margin-top: 0; }
 .editorial-title { font-family: var(--font-heading); font-size: clamp(30px, 3vw, 44px); line-height: 1.2; margin-top: 12px; letter-spacing: -.02em; }
 .editorial-description { color: var(--color-muted); font-size: 14px; line-height: 1.85; font-weight: 300; }
 .editorial-section { padding-block: 80px; }
@@ -330,7 +332,8 @@ body:has(dialog[open]) {
 .booking-terms-spread dl > div { border-top: 1px solid var(--color-line); padding: 22px 0; }
 .booking-terms-spread dt { font-size: 28px; margin-bottom: 10px; }
 .terms-list { margin-top: 20px; }
-.terms-list li { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--color-line); font-size: 13px; color: var(--color-muted); line-height: 1.8; }
+.terms-list li { display: flex; align-items: baseline; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--color-line); font-size: 13px; color: var(--color-muted); line-height: 1.8; }
+.terms-list li > span { flex: none; min-width: 1.75em; font-size: inherit; line-height: inherit; letter-spacing: .04em; }
 .contact-opening > div { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap: 60px; align-items: center; padding-block: 55px; }
 .contact-opening .profile-intro { font-size: 23px; max-width: 700px; }
 .response-card { padding: 26px; background: white; }
@@ -498,6 +501,7 @@ body:has(dialog[open]) {
 .faq-spread { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,2fr); gap: 72px; align-items: start; }
 .faq-spread > aside { position: sticky; top: 180px; padding: 28px; background: var(--color-accent-soft); }
 .faq-spread > div { padding: 0 28px; background: white; }
+.faq-spread-single { grid-template-columns: minmax(0,1fr); max-width: 960px; }
 .faq-spread summary > span:first-child { font-size: 24px; }
 @media (max-width: 767px) { .faq-spread { grid-template-columns: minmax(0,1fr); gap: 32px; } .faq-spread > aside { position: static; } .faq-spread > div { padding-inline: 20px; } }
 /* Continuously moving testimonial cards, with the photo beside the quote. */

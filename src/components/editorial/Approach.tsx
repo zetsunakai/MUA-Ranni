@@ -8,7 +8,7 @@ const approach = [
 
 export default function Approach() {
   return <section className="editorial-container editorial-section">
-    <ChapterHeading label="Tentang" title="Cara aku merias"><p>Riasan disesuaikan dengan wajah dan busanamu, dikerjakan langsung di lokasimu.</p></ChapterHeading>
+    <ChapterHeading label="Tentang" title="Cara aku merias" />
     <ol className="approach-grid">{approach.map((item, index) => <li key={item.title}>
       <div className="flex items-center justify-between border-b border-line pb-5"><span className="editorial-label">0{index + 1}</span><span aria-hidden="true" className="text-accent-strong">✧</span></div>
       <h3 className="font-heading">{item.title}</h3><p className="editorial-description">{item.text}</p>

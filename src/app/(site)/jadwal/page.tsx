@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Jadwal", description: "Cek tanggal y
 export default async function JadwalPage() {
   const [statuses, profile] = await Promise.all([getPublicSchedule(), getProfile()]);
   return <>
-    <section className="contact-opening product-band"><div className="editorial-container"><div><p className="editorial-label">Jadwal</p><h1 className="editorial-display">Cek tanggalmu,<br /><em>kunci lebih awal.</em></h1><p className="editorial-description mt-6">Musim wisuda dan nikah cepat penuh. Lihat tanggal yang masih tersedia, lalu kirim detail acaramu lewat WhatsApp.</p></div><div className="response-card"><p className="editorial-label">Sebelum booking</p><p className="font-heading">Kunci tanggal</p><p className="editorial-description mt-4">{profile.depositInfo}</p></div></div></section>
+    <section className="contact-opening product-band"><div className="editorial-container"><div><h1 className="editorial-display">Cek tanggalmu,<br /><em>kunci lebih awal.</em></h1></div><div className="response-card"><p className="font-heading">Kunci tanggal</p><p className="editorial-description mt-4">{profile.depositInfo}</p></div></div></section>
     <section className="editorial-container editorial-section"><AvailabilityCalendar statuses={statuses} monthsAhead={SCHEDULE_MONTHS_AHEAD} renderedToday={todayInJakarta()} footnote={`Tanggal yang tampil tersedia tetap dikonfirmasi lewat WhatsApp sebelum dianggap terkunci. ${profile.depositInfo}`} /></section>
     <BookingCTA compact />
   </>;

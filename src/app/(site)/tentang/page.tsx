@@ -16,7 +16,7 @@ export default async function TentangPage() {
   const [profile, brands] = await Promise.all([getProfile(), getBrands()]);
   return <>
     <section className="editorial-container profile-spread">
-      <div className="profile-story"><p className="editorial-label">Tentang · Ranni Tary Makeup</p><h1 className="editorial-display">{/[.!?]$/.test(profile.greeting.trim()) ? profile.greeting : `${profile.greeting}.`}</h1>
+      <div className="profile-story"><h1 className="editorial-display">{/[.!?]$/.test(profile.greeting.trim()) ? profile.greeting : `${profile.greeting}.`}</h1>
         {profile.bio.map((paragraph, i) => <p key={paragraph} className={i === 0 ? "profile-intro" : "editorial-description mt-5"}>{paragraph}</p>)}
         <dl className="profile-facts">{profile.serviceAreas.map(area => <div key={area}><dt>Area layanan</dt><dd>{area}</dd></div>)}</dl>
       </div>
@@ -24,8 +24,8 @@ export default async function TentangPage() {
     </section>
     {profile.bio[1] && <QuotePanel label="Cara aku merias" quote={profile.bio[1]} name="Ranni Tary" />}
     <Approach />
-    <section className="product-band"><div className="editorial-container editorial-section"><ChapterHeading label="Tentang" title="Produk yang dipakai"><p>{profile.bio[2]}</p></ChapterHeading><BrandLogos brands={brands} /></div></section>
-    <section className="editorial-container editorial-section area-spread"><div><p className="editorial-label">Home service</p><h2 className="editorial-title">Area layanan</h2></div><div>{profile.serviceAreas.map((area, index) => <div className="area-row" key={area}><span className="editorial-label">0{index + 1}</span><h3 className="font-heading">{area}</h3><span className="editorial-label">Home service</span></div>)}<p className="editorial-label mt-6">{profile.responseHours}</p></div></section>
+    <section className="product-band"><div className="editorial-container editorial-section"><ChapterHeading label="Tentang" title="Produk yang dipakai" /><BrandLogos brands={brands} /></div></section>
+    <section className="editorial-container editorial-section area-spread"><div><h2 className="editorial-title">Area layanan</h2></div><div>{profile.serviceAreas.map((area, index) => <div className="area-row" key={area}><span className="editorial-label">0{index + 1}</span><h3 className="font-heading">{area}</h3><span className="editorial-label">Home service</span></div>)}<p className="editorial-label mt-6">{profile.responseHours}</p></div></section>
     <BookingCTA />
   </>;
 }

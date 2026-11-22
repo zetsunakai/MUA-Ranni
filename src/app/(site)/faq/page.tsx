@@ -26,8 +26,7 @@ export default async function FaqPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
       <section className="contact-opening product-band"><div className="editorial-container"><div>
-          <p className="text-xs font-semibold tracking-[0.25em] text-accent-strong uppercase">FAQ</p>
-          <h1 className="mt-4 font-heading text-[44px] leading-[1.12] tracking-[-0.025em] md:mt-5 md:text-[64px]">
+          <h1 className="font-heading text-[44px] leading-[1.12] tracking-[-0.025em] md:text-[64px]">
             Yang sering <em>ditanyakan.</em>
           </h1>
           <p className="mt-4 text-[15px] leading-[1.9] text-muted md:mt-5 md:text-base">
@@ -42,8 +41,7 @@ export default async function FaqPage() {
             .
           </p>
       </div><div className="response-card"><p className="editorial-label">Jam respon chat</p><p className="font-heading">{profile.responseHours}</p><Link href={bookingFormUrl("faq-cta")} className="editorial-text-link">Chat WhatsApp →</Link></div></div></section>
-      <div className="editorial-container faq-spread editorial-section">
-        <aside><p className="editorial-label">FAQ</p><h2 className="editorial-title">Sebelum booking</h2><p className="editorial-description mt-6">{profile.depositInfo}</p><p className="editorial-description mt-4">{profile.paymentInfo}</p><Link href="/kontak" className="editorial-text-link">Mulai booking di sini. →</Link></aside>
+      <div className="editorial-container faq-spread faq-spread-single editorial-section">
         <div className="border-t border-foreground">
           {faqs.map((f) => (
             <details key={f.q} className="group border-b border-line">
@@ -68,14 +66,11 @@ export default async function FaqPage() {
 
       {/* Ajakan chat, sebelum footer */}
       <section className="bg-foreground text-background">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pt-12 pb-12 sm:px-6 md:flex-row md:items-end md:justify-between md:pt-20">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-12 sm:px-6 md:flex-row md:items-center md:justify-between md:py-16">
           <div>
             <h2 className="font-heading text-[44px] leading-none md:text-7xl">
               Masih ada <em>pertanyaan?</em>
             </h2>
-            <p className="mt-5 max-w-md text-[15px] text-background/80 md:text-[17px]">
-              Tanya langsung lewat WhatsApp, dibalas secepatnya.
-            </p>
           </div>
           <Link
             href={bookingFormUrl("faq-cta", { note: "Saya mau tanya soal makeup." })}

@@ -7,7 +7,6 @@ export function ServiceSuite({ group }: { group: ServiceGroup }) {
   const from = group.items.length ? Math.min(...group.items.map(i => i.price)) : null;
   return <article id={group.id} className={`service-suite ${group.tier === "premium" ? "service-suite-premium" : ""}`}>
     <h3 className="font-heading">{group.name}</h3>
-    <p className="suite-includes">Termasuk: {group.includes.join(" · ")}</p>
     {from !== null && <div className="suite-price"><span className="editorial-label">mulai · per orang</span><p className="font-heading">{formatRupiah(from)}</p></div>}
     <ul className="suite-services">{group.items.map(item => <li key={item.id}>
       <Link href={bookingFormUrl("layanan", { service: `${group.name} — ${item.name} (${formatRupiah(item.price)})` })} aria-label={`Booking ${item.name}, ${formatRupiah(item.price)}, lewat WhatsApp`}>
