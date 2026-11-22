@@ -85,6 +85,20 @@
       "when": 1795332845562,
       "tag": "0011_service_item_categories",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1795333221481,
+      "tag": "0012_expenses",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1795334325706,
+      "tag": "0013_expenses_simplify",
+      "breakpoints": true
     }
   ]
 }

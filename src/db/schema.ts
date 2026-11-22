@@ -184,3 +184,18 @@ export const payments = pgTable("payments", {
   note: text("note"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [index("payments_booking_idx").on(t.bookingId), index("payments_paid_on_idx").on(t.paidOn)]).enableRLS();
+
+// ---------- Belanja / pengeluaran (khusus admin) ----------
+export const EXPENSE_CATEGORIES = ["bahan", "alat", "lainnya"] as const;
+
+export const expenses = pgTable("expenses", {
+  id: text("id").primaryKey(),
+  spentOn: date("spent_on", { mode: "string" }).notNull(),
+  category: text("category", { enum: EXPENSE_CATEGORIES }).notNull(),
+  item: text("item").notNull(),
+  store: text("store"),
+  amount: integer("amount").notNull(),
+  note: text("note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index("expenses_spent_on_idx").on(t.spentOn)]).enableRLS();
