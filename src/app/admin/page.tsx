@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
 import DashboardCalendar from "@/components/admin/DashboardCalendar";
+import FinanceOverview from "@/components/admin/FinanceOverview";
 import { site } from "@/data/site";
 import { requireAdmin } from "@/lib/auth";
 import { addDays, formatLongDate, todayInJakarta } from "@/lib/dates";
 import { getPortfolioItems } from "@/lib/portfolio";
 import { getServiceGroups } from "@/lib/prices";
+import { getFinanceReport } from "@/lib/reports";
 import { getAdminSchedule, SCHEDULE_MONTHS_AHEAD } from "@/lib/schedule";
 import { getTestimonialAdminData } from "@/lib/testimonials";
 
@@ -15,7 +17,7 @@ export const metadata: Metadata = { title: "Ringkasan" };
 export default async function AdminDashboard() {
   const admin = await requireAdmin();
   const today = todayInJakarta();
-  const [schedule, testimonials, portfolio, groups] = await Promise.all([getAdminSchedule(), getTestimonialAdminData(), getPortfolioItems(), getServiceGroups()]);
+  const [schedule, testimonials, portfolio, groups, finance] = await Promise.all([getAdminSchedule(), getTestimonialAdminData(), getPortfolioItems(), getServiceGroups(), getFinanceReport(today)]);
   const thisWeek = (schedule ?? []).filter(d => d.date >= today && d.date <= addDays(today, 6));
   const pending = testimonials?.pending ?? [];
   const openInvites = testimonials?.openInvites ?? [];
@@ -28,6 +30,7 @@ export default async function AdminDashboard() {
   ];
   return <><AdminHeader email={admin.email} current="/admin" /><div className="admin-content mx-auto w-full max-w-6xl">
     <div className="admin-page-intro"><div><p className="editorial-label">Ringkasan</p><h1 className="font-heading">Halo! 👋</h1><p className="editorial-description">Ringkasan {site.name} hari ini, {formatLongDate(today)}.</p></div><Link href="/admin/jadwal" className="editorial-button editorial-button-primary">Tandai jadwal</Link></div>
+    {finance && <FinanceOverview report={finance} />}
     <ul className="admin-metrics">{stats.map(stat => <li key={stat.label}><Link href={stat.href}><span className="editorial-label">{stat.label}</span><strong className="font-heading">{stat.value.toString().padStart(2, "0")}</strong></Link></li>)}</ul>
     <div className="dashboard-spread"><div>
       {schedule ? <DashboardCalendar days={schedule} today={today} monthsAhead={SCHEDULE_MONTHS_AHEAD} /> : <div className="sidebar-panel">Database belum disambungkan.</div>}
