@@ -22,10 +22,6 @@ export default async function KategoriPage() {
             ← Kembali ke portofolio
           </Link>
           <h1 className="mt-2 font-heading text-4xl">Kategori</h1>
-          <p className="mt-1 text-sm text-foreground/70">
-            Dipakai untuk filter di halaman Portofolio dan pilihan &quot;jenis acara&quot; di testimoni. Urutan di sini
-            sama dengan urutan filter di website.
-          </p>
         </div>
 
         {!categories ? (

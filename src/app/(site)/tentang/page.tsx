@@ -4,7 +4,7 @@ import Approach from "@/components/editorial/Approach";
 import { BookingCTA, ChapterHeading, QuotePanel } from "@/components/editorial/Editorial";
 import BrandLogos from "@/components/BrandLogos";
 import { about } from "@/data/about";
-import { bookingInfo, brands } from "@/data/services";
+import { brands } from "@/data/services";
 import { site } from "@/data/site";
 import { getProfile } from "@/lib/profile";
 
@@ -26,7 +26,7 @@ export default async function TentangPage() {
     {profile.bio[1] && <QuotePanel label="Cara aku merias" quote={profile.bio[1]} name="Ranni Tary" />}
     <Approach />
     <section className="product-band"><div className="editorial-container editorial-section"><ChapterHeading label="Tentang" title="Produk yang dipakai"><p>{profile.bio[2]}</p></ChapterHeading><BrandLogos brands={brands} /></div></section>
-    <section className="editorial-container editorial-section area-spread"><div><p className="editorial-label">Home service</p><h2 className="editorial-title">Area layanan</h2><p className="editorial-description mt-5">{bookingInfo.transport}</p></div><div>{profile.serviceAreas.map((area, index) => <div className="area-row" key={area}><span className="editorial-label">0{index + 1}</span><h3 className="font-heading">{area}</h3><span className="editorial-label">Home service</span></div>)}<p className="editorial-label mt-6">{profile.responseHours}</p></div></section>
+    <section className="editorial-container editorial-section area-spread"><div><p className="editorial-label">Home service</p><h2 className="editorial-title">Area layanan</h2></div><div>{profile.serviceAreas.map((area, index) => <div className="area-row" key={area}><span className="editorial-label">0{index + 1}</span><h3 className="font-heading">{area}</h3><span className="editorial-label">Home service</span></div>)}<p className="editorial-label mt-6">{profile.responseHours}</p></div></section>
     <BookingCTA />
   </>;
 }

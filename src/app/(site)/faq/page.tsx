@@ -9,7 +9,7 @@ import { bookingFormUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "Jawaban pertanyaan yang sering ditanyakan: cara booking, DP, transport, cancel, reschedule, dan persiapan sebelum dirias.",
+  description: "Jawaban pertanyaan yang sering ditanyakan: cara booking, DP, cancel, reschedule, dan persiapan sebelum dirias.",
   alternates: { canonical: "/faq" },
 };
 
@@ -40,8 +40,7 @@ export default async function FaqPage() {
       a: `Paket Reguler sudah termasuk ${includesByTier("reguler")}. Paket Premium sudah termasuk ${includesByTier("premium")}. Tambahan di luar paket: ${extras}.`,
     },
     { q: "Apakah harga bisa ditawar?", a: term("Semua harga") },
-    { q: "Apakah ada biaya transport?", a: bookingInfo.transport },
-    { q: "Area mana saja yang dilayani?", a: `${profile.serviceAreas.join(", ")}. ${bookingInfo.transport}` },
+    { q: "Area mana saja yang dilayani?", a: `${profile.serviceAreas.join(", ")}.` },
     { q: "Bagaimana kalau cancel atau ganti tanggal?", a: `${term("Cancel")} ${term("Reschedule")}` },
     {
       q: "Apa yang perlu disiapkan sebelum dirias?",

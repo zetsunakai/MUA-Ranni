@@ -22,7 +22,6 @@ export default async function KontakPage() {
   const faq = [
     { q: "Berapa DP-nya dan kapan pelunasan?", a: `${bookingInfo.deposit} ${bookingInfo.payment}` },
     { q: "Bagaimana kalau cancel atau ganti tanggal?", a: terms.filter(t => /^(Cancel|Reschedule)/.test(t)).join(" ") },
-    { q: "Apakah ada biaya transport?", a: bookingInfo.transport },
   ];
   return <>
     <section className="contact-opening product-band"><div className="editorial-container">

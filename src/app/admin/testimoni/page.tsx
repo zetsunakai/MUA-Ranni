@@ -22,9 +22,6 @@ export default async function AdminTestimoniPage() {
       <div className="admin-content mx-auto w-full max-w-6xl space-y-8 px-4 py-6">
         <div>
           <h1 className="font-heading text-4xl">Testimoni</h1>
-          <p className="mt-1 text-sm text-foreground/70">
-            Hanya testimoni yang disetujui yang tampil di Home.
-          </p>
         </div>
 
         {!data ? (

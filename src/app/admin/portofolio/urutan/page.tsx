@@ -21,10 +21,6 @@ export default async function UrutanPortfolioPage() {
             ← Kembali ke portofolio
           </Link>
           <h1 className="mt-2 font-heading text-4xl">Urutan foto</h1>
-          <p className="mt-1 text-sm text-foreground/70">
-            Urutan di sini sama dengan urutan foto di halaman Portofolio. Di Home, foto yang ditandai &quot;Tampil di
-            Home&quot; didahulukan sesuai urutan ini. Foto baru otomatis masuk paling depan.
-          </p>
         </div>
 
         {!getDb() ? (

@@ -20,9 +20,6 @@ export default async function AdminJadwalPage({ searchParams }: PageProps<"/admi
       <div className="admin-content mx-auto w-full max-w-6xl space-y-8 px-4 py-6">
         <div>
           <h1 className="font-heading text-4xl">Jadwal</h1>
-          <p className="mt-1 text-sm text-foreground/70">
-            Pengunjung hanya melihat status tanggal (tersedia / terbatas / penuh), tidak melihat catatan.
-          </p>
         </div>
 
         {!days ? (

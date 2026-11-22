@@ -85,7 +85,6 @@ export const addOns: AddOn[] = [
 ];
 
 export const bookingInfo = {
-  transport: "Gratis transport sampai 3 km. Lebih dari itu dikenakan Rp2.500/km.",
   deposit: "Booking dengan DP Rp50.000–100.000 setelah tanggal dan lokasi makeup fix.",
   payment: "Pelunasan bisa dilakukan saat hari H.",
 };
