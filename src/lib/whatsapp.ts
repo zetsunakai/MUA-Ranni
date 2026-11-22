@@ -1,3 +1,5 @@
+import { site } from "@/data/site";
+
 
 export const DEFAULT_WHATSAPP_MESSAGE = "Halo Kak, saya mau tanya jadwal dan paket makeup.";
 
@@ -68,8 +70,8 @@ export function bookingMessage(input: { name: string } & BookingContext): string
     ...(note ? ["", "*Catatan*", note] : []),
     "",
     "*Info rekening*",
-    "BCA: 7175262261",
-    "a.n. Ranni Lestary",
+    ...site.bankAccounts.map((account) => `${account.bank}: ${account.number}`),
+    `a.n. ${site.bankAccountName}`,
   ].join("\n");
 }
 

@@ -12,6 +12,12 @@ export const site = {
   tiktokUrl: "https://tiktok.com/@rannitary_makeup",
   serviceAreas: ["Kab. Bogor", "Kota Bogor", "Depok"],
   responseHours: "Setiap hari, 08.00–22.00 WIB",
+  // Dipakai pesan booking WhatsApp dan invoice.
+  bankAccounts: [
+    { bank: "BCA", number: "7175262261" },
+    { bank: "SeaBank", number: "901374084549" },
+  ],
+  bankAccountName: "Ranni Lestary",
   location: {
     name: "Tonjong",
     address: "Tonjong, Kec. Tajur Halang, Kabupaten Bogor, Jawa Barat",

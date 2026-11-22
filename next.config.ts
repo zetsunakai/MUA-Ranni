@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   // Supaya HP di Wi-Fi yang sama bisa membuka dev server lewat IP laptop (http://192.168.1.27:3000)
   // tanpa diblokir. Hanya berlaku saat `next dev`. Ganti kalau IP laptop berubah.
   allowedDevOrigins: ["192.168.1.27"],
+  // Font untuk gambar invoice dibaca lewat fs saat request; pastikan ikut ter-deploy.
+  outputFileTracingIncludes: {
+    "/admin/booking/\\[id\\]/invoice": ["./src/assets/fonts/**"],
+  },
   images: {
     // next/image hanya mau mengoptimasi gambar remote dari host yang didaftarkan di sini.
     // `search` sengaja tidak diisi supaya query Unsplash (?w=...&sat=...) diizinkan.

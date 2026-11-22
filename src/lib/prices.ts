@@ -27,7 +27,7 @@ export const getServiceGroups = cache(async (): Promise<ServiceGroup[]> => {
     tier: g.tier,
     includes: g.includes,
     order: g.sortOrder,
-    items: items.filter((i) => i.groupId === g.id).map((i) => ({ id: i.id, name: i.name, price: i.price })),
+    items: items.filter((i) => i.groupId === g.id).map((i) => ({ id: i.id, name: i.name, price: i.price, categories: i.categories })),
   }));
 });
 

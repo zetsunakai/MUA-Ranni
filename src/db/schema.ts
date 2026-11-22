@@ -1,4 +1,5 @@
-import { boolean, date, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { boolean, date, index, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 // Tabel harga, mengikuti tipe ServiceGroup / ServiceItem / AddOn di src/types.
 // Padanan di Odoo: setiap pgTable = satu models.Model, setiap kolom = satu fields.*.
@@ -23,6 +24,9 @@ export const serviceItems = pgTable("service_items", {
     .references(() => serviceGroups.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   price: integer("price").notNull(),
+  // Id kategori jenis acara (tabel categories) yang cocok untuk layanan ini, boleh lebih dari satu.
+  // Dipakai untuk menyaring pilihan layanan di form booking admin sesuai jenis acara.
+  categories: text("categories").array().notNull().default(sql`'{}'::text[]`),
   sortOrder: integer("sort_order").notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
@@ -119,3 +123,64 @@ export const siteProfile = pgTable("site_profile", {
   bio: text("bio").array(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
+
+// ---------- Booking (catatan order & pemasukan, khusus admin) ----------
+// Padanan Odoo: bookings = sale.order, booking_lines = sale.order.line, payments = account.payment.
+// Data klien disimpan langsung di booking (tanpa tabel klien terpisah).
+// Estimasi dan booking adalah baris yang sama: status "estimasi" lalu di-confirm.
+// Semua nominal dalam rupiah (integer, tanpa desimal).
+export const BOOKING_STATUSES = ["estimasi", "confirmed", "selesai", "batal"] as const;
+
+export const bookings = pgTable("bookings", {
+  id: text("id").primaryKey(),
+  code: text("code").notNull().unique(), // contoh BK-2611-001 (tahun-bulan dibuat + nomor urut)
+  clientName: text("client_name").notNull(),
+  clientPhone: text("client_phone"),
+  eventType: text("event_type"),
+  eventDate: date("event_date", { mode: "string" }).notNull(),
+  makeupTime: text("makeup_time"),
+  location: text("location"),
+  mapsUrl: text("maps_url"),
+  people: integer("people"),
+  hairdo: text("hairdo"),
+  note: text("note"),
+  status: text("status", { enum: BOOKING_STATUSES }).notNull().default("estimasi"),
+  transportFee: integer("transport_fee").notNull().default(0),
+  discount: integer("discount").notNull().default(0),
+  // Diisi saat admin pertama kali membuat invoice (INV-2611-001). Kosong = belum pernah dibuat.
+  invoiceNumber: text("invoice_number").unique(),
+  invoiceIssuedAt: date("invoice_issued_at", { mode: "string" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index("bookings_event_date_idx").on(t.eventDate)]).enableRLS();
+
+// Harga disalin saat booking dibuat (unit_price), jadi perubahan price list
+// tidak mengubah booking lama. service_item_id hanya penanda asal baris.
+export const bookingLines = pgTable("booking_lines", {
+  id: text("id").primaryKey(),
+  bookingId: text("booking_id")
+    .notNull()
+    .references(() => bookings.id, { onDelete: "cascade" }),
+  serviceItemId: text("service_item_id").references(() => serviceItems.id, { onDelete: "set null" }),
+  description: text("description").notNull(),
+  qty: integer("qty").notNull().default(1),
+  unitPrice: integer("unit_price").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+}, (t) => [index("booking_lines_booking_idx").on(t.bookingId)]).enableRLS();
+
+export const PAYMENT_KINDS = ["dp", "pelunasan", "lainnya"] as const;
+export const PAYMENT_METHODS = ["bca", "seabank", "cash", "lainnya"] as const;
+
+// Uang yang benar-benar masuk. Inilah angka "pemasukan" di laporan.
+export const payments = pgTable("payments", {
+  id: text("id").primaryKey(),
+  bookingId: text("booking_id")
+    .notNull()
+    .references(() => bookings.id, { onDelete: "cascade" }),
+  paidOn: date("paid_on", { mode: "string" }).notNull(),
+  amount: integer("amount").notNull(),
+  kind: text("kind", { enum: PAYMENT_KINDS }).notNull(),
+  method: text("method", { enum: PAYMENT_METHODS }).notNull(),
+  note: text("note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index("payments_booking_idx").on(t.bookingId), index("payments_paid_on_idx").on(t.paidOn)]).enableRLS();

@@ -37,7 +37,7 @@ export async function saveServices(_prev: FormState, formData: FormData): Promis
 
   const fieldErrors: Record<string, string> = {};
   const groups = new Map<string, { name: string; tier: "reguler" | "premium"; includes: string[] }>();
-  const items = new Map<string, { name: string; price: number }>();
+  const items = new Map<string, { name: string; price: number; categories: string[] }>();
   const extras = new Map<string, { name: string; note: string | null; from: number; to: number | null }>();
   const get = (key: string) => formData.get(key);
 
@@ -66,7 +66,8 @@ export async function saveServices(_prev: FormState, formData: FormData): Promis
     if (!name.success) fieldErrors[`item:${id}:name`] = name.error.issues[0].message;
     if (p === null) fieldErrors[`item:${id}:price`] = "Harga wajib diisi.";
     else if (!price.safeParse(p).success) fieldErrors[`item:${id}:price`] = "Harga tidak valid.";
-    if (name.success && p !== null && !fieldErrors[`item:${id}:price`]) items.set(id, { name: name.data, price: p });
+    const categories = [...new Set(formData.getAll(`item:${id}:cat`).map(String).filter((c) => /^[a-z0-9-]{1,40}$/.test(c)))].sort();
+    if (name.success && p !== null && !fieldErrors[`item:${id}:price`]) items.set(id, { name: name.data, price: p, categories });
   }
 
   for (const id of ids("addon")) {
@@ -102,7 +103,7 @@ export async function saveServices(_prev: FormState, formData: FormData): Promis
   });
   const changedItems = curItems.filter((i) => {
     const n = items.get(i.id);
-    return n && (n.name !== i.name || n.price !== i.price);
+    return n && (n.name !== i.name || n.price !== i.price || n.categories.join(",") !== [...i.categories].sort().join(","));
   });
   const changedExtras = curExtras.filter((a) => {
     const n = extras.get(a.id);
@@ -121,7 +122,7 @@ export async function saveServices(_prev: FormState, formData: FormData): Promis
       const n = items.get(i.id)!;
       await tx
         .update(serviceItems)
-        .set({ name: n.name, price: n.price, updatedAt: sql`now()` })
+        .set({ name: n.name, price: n.price, categories: n.categories, updatedAt: sql`now()` })
         .where(eq(serviceItems.id, i.id));
     }
     for (const a of changedExtras) {

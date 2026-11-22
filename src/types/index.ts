@@ -27,6 +27,7 @@ export type ServiceItem = {
   id: string;
   name: string;
   price: number; // rupiah per orang
+  categories?: string[]; // id kategori jenis acara
 };
 
 export type ServiceGroup = {

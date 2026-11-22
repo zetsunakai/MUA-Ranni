@@ -4,6 +4,7 @@ import { site } from "@/data/site";
 
 const tabs = [
   { href: "/admin", label: "Ringkasan", icon: "M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" },
+  { href: "/admin/booking", label: "Booking", icon: "M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7" },
   { href: "/admin/jadwal", label: "Jadwal", icon: "M4 5h16v16H4zM8 2v6M16 2v6M4 11h16" },
   { href: "/admin/layanan", label: "Layanan", icon: "M4 6h16M4 12h16M4 18h16M8 3v6M16 9v6M10 15v6" },
   { href: "/admin/portofolio", label: "Portofolio", icon: "M3 3h18v18H3zM3 17l6-6 4 4 3-3 5 5M15 7h.01" },

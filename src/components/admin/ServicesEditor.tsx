@@ -15,16 +15,16 @@ import {
   saveServices,
   type ActionResult,
 } from "@/app/admin/layanan/actions";
-import type { AddOn, ServiceGroup } from "@/types";
+import type { AddOn, CategoryOption, ServiceGroup } from "@/types";
 
 const initialState: FormState = { status: "idle", message: "" };
 
 // 150000 -> "150.000". Server membuang titik lagi saat menyimpan.
 const display = (n: number | undefined) => (n === undefined ? "" : n.toLocaleString("id-ID"));
 
-type Props = { groups: ServiceGroup[]; addOns: AddOn[] };
+type Props = { groups: ServiceGroup[]; addOns: AddOn[]; categories: CategoryOption[] };
 
-export default function ServicesEditor({ groups, addOns }: Props) {
+export default function ServicesEditor({ groups, addOns, categories }: Props) {
   const [state, formAction, saving] = useActionState(saveServices, initialState);
   const [busy, startAction] = useTransition();
   const [notice, setNotice] = useState<ActionResult | null>(null);
@@ -125,6 +125,17 @@ export default function ServicesEditor({ groups, addOns }: Props) {
                   <Field error={errors[`item:${item.id}:price`]}>
                     <PriceInput name={`item:${item.id}:price`} defaultValue={display(item.price)} error={errors[`item:${item.id}:price`]} label={`Harga ${item.name}`} />
                   </Field>
+                  <fieldset className="flex flex-wrap gap-1.5">
+                    <legend className="sr-only">Jenis acara untuk {item.name}</legend>
+                    {categories.map((category) => (
+                      <label key={category.id} className="cursor-pointer">
+                        <input type="checkbox" name={`item:${item.id}:cat`} value={category.id} defaultChecked={item.categories?.includes(category.id)} className="peer sr-only" />
+                        <span className="inline-flex min-h-8 items-center border border-line px-2.5 text-xs text-foreground/70 peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-background peer-focus-visible:outline-2 peer-focus-visible:outline-accent-strong">
+                          {category.label}
+                        </span>
+                      </label>
+                    ))}
+                  </fieldset>
                 </div>
                 <DeleteButton
                   label={`Hapus ${item.name}`}
