@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { boolean, date, index, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 // Tabel harga, mengikuti tipe ServiceGroup / ServiceItem / AddOn di src/types.
 // Padanan di Odoo: setiap pgTable = satu models.Model, setiap kolom = satu fields.*.
@@ -121,7 +121,41 @@ export const siteProfile = pgTable("site_profile", {
   responseHours: text("response_hours"),
   greeting: text("greeting"),
   bio: text("bio").array(),
+  // Aturan booking (tampil di Layanan, Kontak, Jadwal, FAQ).
+  depositInfo: text("deposit_info"),
+  paymentInfo: text("payment_info"),
+  terms: text("terms").array(),
+  // Foto profil di Home & Tentang (bucket "portfolio", folder profile/).
+  photoUrl: text("photo_url"),
+  photoPath: text("photo_path"),
+  // Lokasi base untuk footer & halaman Kontak.
+  locationName: text("location_name"),
+  locationAddress: text("location_address"),
+  locationMapsUrl: text("location_maps_url"),
+  // Rekening untuk pesan booking WhatsApp & invoice.
+  bankAccounts: jsonb("bank_accounts").$type<{ bank: string; number: string }[]>(),
+  bankAccountName: text("bank_account_name"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}).enableRLS();
+
+// FAQ yang diketik admin. Tabel kosong = FAQ bawaan yang dirangkai otomatis (src/lib/faqs.ts).
+export const faqs = pgTable("faqs", {
+  id: text("id").primaryKey(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+}).enableRLS();
+
+// Logo brand produk. logo_path kosong = file bawaan di public/images/brands;
+// selain itu file upload di bucket "portfolio" folder brands/.
+export const brands = pgTable("brands", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  logoUrl: text("logo_url").notNull(),
+  logoPath: text("logo_path"),
+  width: integer("width").notNull(),
+  height: integer("height").notNull(),
+  sortOrder: integer("sort_order").notNull(),
 }).enableRLS();
 
 // ---------- Booking (catatan order & pemasukan, khusus admin) ----------

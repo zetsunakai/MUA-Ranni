@@ -1,5 +1,3 @@
-import { site } from "@/data/site";
-
 
 export const DEFAULT_WHATSAPP_MESSAGE = "Halo Kak, saya mau tanya jadwal dan paket makeup.";
 
@@ -48,7 +46,9 @@ export function bookingFormUrl(source: WhatsAppSource, context: BookingContext =
   return `/kontak?${params.toString()}#form-booking`;
 }
 
-export function bookingMessage(input: { name: string } & BookingContext): string {
+export type BankInfo = { accounts: { bank: string; number: string }[]; name: string };
+
+export function bookingMessage(input: { name: string } & BookingContext, bank: BankInfo): string {
   const mapsUrl = input.mapsUrl?.trim();
   const note = input.note?.trim();
 
@@ -68,10 +68,9 @@ export function bookingMessage(input: { name: string } & BookingContext): string
     `Alamat: ${input.location?.trim() || "-"}`,
     ...(mapsUrl ? ["Link Google Maps:", mapsUrl] : []),
     ...(note ? ["", "*Catatan*", note] : []),
-    "",
-    "*Info rekening*",
-    ...site.bankAccounts.map((account) => `${account.bank}: ${account.number}`),
-    `a.n. ${site.bankAccountName}`,
+    ...(bank.accounts.length
+      ? ["", "*Info rekening*", ...bank.accounts.map((account) => `${account.bank}: ${account.number}`), `a.n. ${bank.name}`]
+      : []),
   ].join("\n");
 }
 

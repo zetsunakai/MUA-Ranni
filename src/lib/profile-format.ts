@@ -22,3 +22,21 @@ export function normalizeHandle(input: string): string | null {
   const handle = (fromUrl ?? trimmed).replace(/^@/, "");
   return /^[A-Za-z0-9._]{1,30}$/.test(handle) ? handle : null;
 }
+
+// Satu rekening per baris: "BCA 7175262261" / "SeaBank: 9013 7408 4549" -> { bank, number }.
+// Baris yang tidak cocok dikembalikan di `invalid` supaya admin bisa memperbaikinya.
+export function parseBankLines(text: string): { accounts: { bank: string; number: string }[]; invalid: string[] } {
+  const accounts: { bank: string; number: string }[] = [];
+  const invalid: string[] = [];
+  for (const line of text.split("\n").map((l) => l.trim()).filter(Boolean)) {
+    const match = line.match(/^(.+?)[\s:–-]+(\d[\d\s.-]{4,})$/);
+    const number = match?.[2].replace(/\D/g, "") ?? "";
+    if (match && number.length >= 5 && number.length <= 20) accounts.push({ bank: match[1].trim(), number });
+    else invalid.push(line);
+  }
+  return { accounts, invalid };
+}
+
+export function formatBankLines(accounts: { bank: string; number: string }[]): string {
+  return accounts.map((a) => `${a.bank} ${a.number}`).join("\n");
+}

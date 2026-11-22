@@ -26,7 +26,7 @@ export type InvoiceData = {
   lines: { id: string; description: string; qty: number; unitPrice: number }[];
   payments: { id: string; paidOn: string; amount: number; kind: PaymentKind; method: PaymentMethod }[];
   totals: { subtotal: number; total: number; paid: number; balance: number };
-  contact: { whatsappDisplay: string; instagramHandle: string };
+  contact: { whatsappDisplay: string; instagramHandle: string; bankAccounts: { bank: string; number: string }[]; bankAccountName: string };
 };
 
 const fontDir = join(process.cwd(), "src/assets/fonts");
@@ -64,7 +64,7 @@ export async function renderInvoiceImage({ booking: b, lines, payments, totals, 
     (summaryRows.length + 1) * 52 + 60 +
     (payments.length ? 110 + payments.length * 48 : 0) +
     90 + // sisa tagihan / lunas
-    (paidOff ? 0 : 240) + // info rekening
+    (paidOff || profile.bankAccounts.length === 0 ? 0 : 240) + // info rekening
     180; // footer
 
   return new ImageResponse(
@@ -158,18 +158,18 @@ export async function renderInvoiceImage({ booking: b, lines, payments, totals, 
         </div>
 
         {/* Rekening */}
-        {!paidOff && (
+        {!paidOff && profile.bankAccounts.length > 0 && (
           <div style={{ display: "flex", flexDirection: "column", marginTop: 40 }}>
             <Label>Transfer ke</Label>
             <div style={{ display: "flex", gap: 24, marginTop: 14 }}>
-              {site.bankAccounts.map((account) => (
+              {profile.bankAccounts.map((account) => (
                 <div key={account.bank} style={{ display: "flex", flexDirection: "column", flex: 1, padding: "18px 24px", background: C.surface, border: `1px solid ${C.line}` }}>
                   <span style={{ fontSize: 18, color: C.muted }}>{account.bank}</span>
                   <span style={{ marginTop: 6, fontSize: 30, fontWeight: 600, letterSpacing: 1 }}>{account.number}</span>
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", marginTop: 12, fontSize: 22, color: C.muted }}>{`a.n. ${site.bankAccountName}`}</div>
+            <div style={{ display: "flex", marginTop: 12, fontSize: 22, color: C.muted }}>{`a.n. ${profile.bankAccountName}`}</div>
           </div>
         )}
 

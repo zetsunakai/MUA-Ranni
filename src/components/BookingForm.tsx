@@ -4,10 +4,11 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { PAST_BOOKING_DATE_MESSAGE, todayInJakarta } from "@/lib/dates";
 import { isGoogleMapsUrl } from "@/lib/maps";
-import { bookingMessage, isWhatsAppSource, whatsappUrl } from "@/lib/whatsapp";
+import { bookingMessage, isWhatsAppSource, whatsappUrl, type BankInfo } from "@/lib/whatsapp";
 import type { CategoryOption } from "@/types";
 
 type Props = {
+  bank: BankInfo;
   eventTypes: CategoryOption[];
   serviceGroups: { id: string; name: string; items: { id: string; name: string }[] }[];
 };
@@ -18,7 +19,7 @@ const STORAGE_KEY = "mua-ranni-booking-form";
 const FORM_FIELDS = ["name", "eventType", "serviceGroup", "serviceItem", "date", "time", "location", "mapsUrl", "people", "hairdo"] as const;
 const EMPTY_SERVICE_GROUPS: Props["serviceGroups"] = [];
 
-export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_GROUPS }: Props) {
+export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_GROUPS, bank }: Props) {
   const [dateError, setDateError] = useState("");
   const [mapsError, setMapsError] = useState("");
   const mapsInputRef = useRef<HTMLInputElement>(null);
@@ -154,7 +155,7 @@ export default function BookingForm({ eventTypes, serviceGroups = EMPTY_SERVICE_
       people: String(fields.get("people") ?? ""),
       hairdo: String(fields.get("hairdo") ?? ""),
       note: new URLSearchParams(window.location.search).get("note") ?? "",
-    });
+    }, bank);
     window.location.assign(whatsappUrl(activeSource, message));
   }
 

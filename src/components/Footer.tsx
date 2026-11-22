@@ -40,10 +40,10 @@ export default async function Footer() {
         </FooterColumn>
 
         <FooterColumn title="Lokasi & layanan" className="min-w-0">
-          <li>{site.location.address}</li>
+          <li>{profile.location.address}</li>
           <li>
             <a
-              href={site.location.mapsUrl}
+              href={profile.location.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center hover:text-accent-strong hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"

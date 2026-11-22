@@ -5,7 +5,6 @@ import { BookingCTA, ChapterHeading, QuotePanel } from "@/components/editorial/E
 import ServicesContent from "@/components/editorial/ServicesContent";
 import ClientQuotes from "@/components/editorial/ClientQuotes";
 import LookbookPreview from "@/components/home/LookbookPreview";
-import { about } from "@/data/about";
 import { getCategories } from "@/lib/categories";
 import { getPortfolioItems } from "@/lib/portfolio";
 import { getProfile } from "@/lib/profile";
@@ -28,7 +27,7 @@ export default async function Home() {
         <div className="mt-8 flex flex-wrap gap-3"><Link href={bookingFormUrl("hero")} className="editorial-button editorial-button-primary">Chat WhatsApp</Link><Link href="/portfolio" className="editorial-button editorial-button-outline">Lihat portofolio</Link></div>
         <dl className="profile-facts"><div><dt>Home service</dt><dd>Datang ke lokasimu</dd></div><div><dt>Termasuk</dt><dd>Bulu mata &amp; hijab do termasuk</dd></div><div><dt>Jam respon chat</dt><dd>{profile.responseHours}</dd></div></dl>
       </div>
-      <figure className="profile-portrait"><div className="portrait-mat"><div className="portrait-image"><Image src={about.photoUrl} alt={about.photoAlt} fill preload sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 85vw" className="object-cover" /></div><figcaption><span>Ranni Tary</span><span>Makeup artist</span></figcaption></div><div className="portrait-footnote"><span>Home service · Bogor</span><Link href="/tentang">Tentang →</Link></div></figure>
+      <figure className="profile-portrait"><div className="portrait-mat"><div className="portrait-image"><Image src={profile.photoUrl} alt={profile.photoAlt} fill preload sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 85vw" className="object-cover" /></div><figcaption><span>Ranni Tary</span><span>Makeup artist</span></figcaption></div><div className="portrait-footnote"><span>Home service · Bogor</span><Link href="/tentang">Tentang →</Link></div></figure>
     </section>
     {profile.bio[1] && <QuotePanel label="Tentang" quote={profile.bio[1]} name="Ranni Tary" />}
     <section className="editorial-container editorial-section">

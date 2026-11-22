@@ -3,9 +3,8 @@ import Image from "next/image";
 import Approach from "@/components/editorial/Approach";
 import { BookingCTA, ChapterHeading, QuotePanel } from "@/components/editorial/Editorial";
 import BrandLogos from "@/components/BrandLogos";
-import { about } from "@/data/about";
-import { brands } from "@/data/services";
 import { site } from "@/data/site";
+import { getBrands } from "@/lib/brands";
 import { getProfile } from "@/lib/profile";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,14 +13,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TentangPage() {
-  const profile = await getProfile();
+  const [profile, brands] = await Promise.all([getProfile(), getBrands()]);
   return <>
     <section className="editorial-container profile-spread">
       <div className="profile-story"><p className="editorial-label">Tentang · Ranni Tary Makeup</p><h1 className="editorial-display">{/[.!?]$/.test(profile.greeting.trim()) ? profile.greeting : `${profile.greeting}.`}</h1>
         {profile.bio.map((paragraph, i) => <p key={paragraph} className={i === 0 ? "profile-intro" : "editorial-description mt-5"}>{paragraph}</p>)}
         <dl className="profile-facts">{profile.serviceAreas.map(area => <div key={area}><dt>Area layanan</dt><dd>{area}</dd></div>)}</dl>
       </div>
-      <figure className="profile-portrait"><div className="portrait-mat"><p className="editorial-label mb-5">Ranni Tary · Makeup artist</p><div className="portrait-image"><Image src={about.photoUrl} alt={about.photoAlt} fill preload sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 85vw" className="object-cover" /></div><figcaption><span>Home service</span><span>{profile.serviceAreas.join(" · ")}</span></figcaption></div><div className="portrait-footnote"><span>Instagram</span><a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer">@{profile.instagramHandle} ↗</a></div></figure>
+      <figure className="profile-portrait"><div className="portrait-mat"><p className="editorial-label mb-5">Ranni Tary · Makeup artist</p><div className="portrait-image"><Image src={profile.photoUrl} alt={profile.photoAlt} fill preload sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 85vw" className="object-cover" /></div><figcaption><span>Home service</span><span>{profile.serviceAreas.join(" · ")}</span></figcaption></div><div className="portrait-footnote"><span>Instagram</span><a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer">@{profile.instagramHandle} ↗</a></div></figure>
     </section>
     {profile.bio[1] && <QuotePanel label="Cara aku merias" quote={profile.bio[1]} name="Ranni Tary" />}
     <Approach />

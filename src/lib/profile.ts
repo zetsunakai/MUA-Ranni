@@ -3,6 +3,7 @@ import "server-only";
 import { eq } from "drizzle-orm";
 import { cache } from "react";
 import { about } from "@/data/about";
+import { bookingInfo, terms } from "@/data/services";
 import { site } from "@/data/site";
 import { readWithRetry } from "@/db/read-query";
 import { getDb } from "@/db";
@@ -20,7 +21,22 @@ export type Profile = {
   responseHours: string;
   greeting: string;
   bio: string[];
+  depositInfo: string;
+  paymentInfo: string;
+  terms: string[];
+  photoUrl: string;
+  photoAlt: string;
+  location: { name: string; address: string; mapsUrl: string; embedUrl: string };
+  bankAccounts: BankAccount[];
+  bankAccountName: string;
 };
+
+export type BankAccount = { bank: string; number: string };
+
+// Peta Google dari teks alamat (tanpa API key).
+export function mapsEmbedUrl(address: string): string {
+  return `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=14&output=embed`;
+}
 
 const defaults = {
   whatsappNumber: site.whatsappNumber,
@@ -30,6 +46,13 @@ const defaults = {
   responseHours: site.responseHours,
   greeting: about.greeting,
   bio: about.bio,
+  depositInfo: bookingInfo.deposit,
+  paymentInfo: bookingInfo.payment,
+  terms,
+  photoUrl: about.photoUrl,
+  location: site.location,
+  bankAccounts: site.bankAccounts,
+  bankAccountName: site.bankAccountName,
 };
 
 // Profil yang ditampilkan di website: isi dari admin, atau nilai bawaan kalau kosong.
@@ -53,5 +76,20 @@ export const getProfile = cache(async (): Promise<Profile> => {
     responseHours: row?.responseHours || defaults.responseHours,
     greeting: row?.greeting || defaults.greeting,
     bio: row?.bio?.length ? row.bio : defaults.bio,
+    depositInfo: row?.depositInfo || defaults.depositInfo,
+    paymentInfo: row?.paymentInfo || defaults.paymentInfo,
+    terms: row?.terms?.length ? row.terms : defaults.terms,
+    photoUrl: row?.photoUrl || defaults.photoUrl,
+    photoAlt: about.photoAlt,
+    location: row?.locationAddress
+      ? {
+          name: row.locationName || row.locationAddress,
+          address: row.locationAddress,
+          mapsUrl: row.locationMapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(row.locationAddress)}`,
+          embedUrl: mapsEmbedUrl(row.locationAddress),
+        }
+      : defaults.location,
+    bankAccounts: row?.bankAccounts?.length ? row.bankAccounts : defaults.bankAccounts,
+    bankAccountName: row?.bankAccountName || defaults.bankAccountName,
   };
 });
